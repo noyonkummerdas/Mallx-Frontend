@@ -1,0 +1,79 @@
+# 💎 MallX Frontend Project Documentation
+
+এই ডকুমেন্টটিতে আমরা এখন পর্যন্ত ফ্রন্টএন্ডে যে কাজগুলো সম্পন্ন করেছি তার একটি পূর্ণাঙ্গ বিবরণ দেওয়া হলো। এটি একটি মডার্ন, স্কেলেবল এবং হাই-পারফরম্যান্স ই-কমার্স ফ্রন্টএন্ড আর্কিটেকচার।
+
+## 🏗️ Technical Stack
+*   **Framework**: Next.js 15+ (App Router)
+*   **Language**: TypeScript (Full Type Safety)
+*   **Styling**: Tailwind CSS (Premium White Theme)
+*   **State Management**: Redux Toolkit (RTK Query for API fetching)
+*   **Font**: Poppins (Clean & Professional Typography)
+
+---
+
+## 📂 Project Architecture (Modular Structure)
+আমরা একটি **Module-Based** ফোল্ডার স্ট্রাকচার অনুসরণ করেছি যাতে ভবিষ্যতে প্রজেক্টটি বড় হলেও কোড ম্যানেজ করা সহজ হয়। প্রতিটি মডিউলের ভেতর `components`, `hooks`, `services`, এবং `types` ফোল্ডার রয়েছে।
+
+### ১. Identity Module (Authentication)
+*   **Features**: Login, Registration, OTP Verification, 2FA.
+*   **Pages**: `/auth/login`, `/auth/register`.
+*   **Service**: [authApi.ts](file:///d:/GroupProject/mallx-frontend/src/modules/identity/services/authApi.ts) (RTK Query দিয়ে অটোমেটিক টোকেন হ্যান্ডেল করা হয়েছে)।
+
+### ২. Catalog Module (Product Management)
+*   **Features**: Product Listing, Product Details, Category-wise Filtering.
+*   **Pages**: `/catalog/products`, `/catalog/products/[id]`.
+*   **Service**: [catalogApi.ts](file:///d:/GroupProject/mallx-frontend/src/modules/catalog/services/catalogApi.ts).
+
+### ৩. Shopping Module (User Experience)
+*   **Features**: Cart Management, Checkout Flow, Wishlist.
+*   **Pages**: `/shopping/cart`, `/shopping/checkout`.
+*   **Service**: [shoppingApi.ts](file:///d:/GroupProject/mallx-frontend/src/modules/shopping/services/shoppingApi.ts).
+
+### ৪. Logistics & Delivery Module
+*   **Features**: Live Tracking updates, Shipment status, Delivery boy dashboard.
+*   **Pages**: `/dashboard/delivery`.
+*   **Service**: [logisticsApi.ts](file:///d:/GroupProject/mallx-frontend/src/modules/logistics/services/logisticsApi.ts).
+
+### ৫. Business & Vendor Module
+*   **Features**: Vendor Shop details, KYC Document Upload, Partner Vendor list.
+*   **Pages**: `/dashboard/vendor`.
+*   **Service**: [businessApi.ts](file:///d:/GroupProject/mallx-frontend/src/modules/business/services/businessApi.ts).
+
+### ৬. Finance & Payout Module
+*   **Features**: Wallet Balance check, Withdrawal requests, Transaction history.
+*   **Service**: [financeApi.ts](file:///d:/GroupProject/mallx-frontend/src/modules/finance/services/financeApi.ts).
+
+### ৭. Marketing & Promotions
+*   **Features**: Coupon validation, Flash Sale listing, Gift Card redemption.
+*   **Service**: [marketingApi.ts](file:///d:/GroupProject/mallx-frontend/src/modules/marketing/services/marketingApi.ts).
+
+### ৮. Notification System
+*   **Features**: Real-time alerts, Read/Unread management.
+*   **Service**: [notificationApi.ts](file:///d:/GroupProject/mallx-frontend/src/modules/notifications/services/notificationApi.ts).
+
+---
+
+## 🎨 Design System (Premium White Theme)
+ইউজার ইন্টারফেসটি এমনভাবে ডিজাইন করা হয়েছে যা দেখতে প্রিমিয়াম এবং অত্যন্ত পরিচ্ছন্ন।
+
+*   **Background**: Clean White (`bg-white`) এবং Soft Slate (`bg-slate-50`) এর কম্বিনেশন।
+*   **Typography**: Poppins ফন্ট ব্যবহার করা হয়েছে যা একটি ইন্টারন্যাশনাল লুক দেয়।
+*   **Components**:
+    *   **Navbar**: স্টিকি গ্লাস-মরফিক নেভিগেশন।
+    *   **Cards**: মডার্ন বর্ডার এবং সাবটল শ্যাডো ইফেক্ট।
+    *   **Buttons**: আকর্ষণীয় হোভার ইফেক্ট এবং সলিড ইন্ডিগো (`bg-indigo-600`) থিম।
+
+---
+
+## 🔗 Backend Integration
+*   **Base URL**: `http://localhost:8000/api/v1`
+*   **Authentication**: JWT Token ভিত্তিক। টোকেন `localStorage`-এ সেভ থাকে এবং প্রতিটি এপিআই রিকোয়েস্টের সাথে স্বয়ংক্রিয়ভাবে হেডার হিসেবে পাঠানো হয়।
+*   **API Client**: সম্পূর্ণভাবে RTK Query ব্যবহার করা হয়েছে (Axios এর পরিবর্তে), যা ডেটা ক্যাশিং এবং রি-ফেচিংকে অনেক দ্রুত করে।
+
+---
+
+## 🚀 Future Roadmap
+১. ডাইনামিক ডেটা দিয়ে রিয়েল-টাইম গ্রাফ এবং এনালিটিক্স চার্ট যুক্ত করা।
+২. ইমেজ আপলোডের জন্য ক্লাউড স্টোরেজ ইন্টিগ্রেশন।
+৩. হোয়াটসঅ্যাপ নোটিফিকেশন এলার্ট UI সেটআপ।
+৪. অ্যাডমিন প্যানেলের ফুল কন্ট্রোল প্যানেল তৈরি।
