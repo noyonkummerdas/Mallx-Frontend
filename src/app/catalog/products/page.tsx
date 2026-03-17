@@ -1,19 +1,37 @@
-"use client";
-
-import { useGetProductsQuery } from "@/modules/catalog/services/catalogApi";
+import { useGetProductsQuery, useGetCategoriesQuery } from "@/modules/catalog/services/catalogApi";
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export default function ProductListingPage() {
-  const { data, isLoading, isError } = useGetProductsQuery({});
+  const [search, setSearch] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("");
   
-  if (isLoading) return (
+  const { data: categoryData, isLoading: catLoading } = useGetCategoriesQuery({});
+  const { data: productData, isLoading, isError } = useGetProductsQuery({ 
+    name: search, 
+    categoryId: selectedCategory 
+  });
+
+  useEffect(() => {
+    if (categoryData) {
+      console.log("Categories loaded in console:", categoryData);
+    }
+  }, [categoryData]);
+
+  useEffect(() => {
+    if (productData) {
+      console.log("Products loaded in console:", productData);
+    }
+  }, [productData]);
+  
+  if (isLoading || catLoading) return (
     <div className="min-h-screen bg-slate-50 flex items-center justify-center">
       <div className="w-12 h-12 border-4 border-indigo-600 border-t-transparent rounded-full animate-spin" />
     </div>
   );
 
-  const products = data?.data?.products || [];
+  const products = productData?.data?.products || [];
+  const categories = categoryData?.data?.categories || [];
 
   return (
     <main className="min-h-screen bg-slate-50 text-slate-900 p-8">
@@ -23,15 +41,34 @@ export default function ProductListingPage() {
             <h1 className="text-4xl font-bold mb-3 tracking-tight text-slate-900">Marketplace Catalog</h1>
             <p className="text-slate-500 font-medium">Discover premium products from verified vendors</p>
           </div>
-          <div className="flex gap-4">
-             <div className="bg-white border border-slate-200 rounded-2xl px-4 py-2 flex items-center gap-3 shadow-sm">
-                <span className="text-slate-400 text-sm font-semibold">Sort by:</span>
-                <select className="bg-transparent text-sm font-bold outline-none cursor-pointer text-slate-700">
-                   <option>Newest</option>
-                   <option>Price: Low to High</option>
-                   <option>Price: High to Low</option>
-                </select>
-             </div>
+          
+          <div className="flex flex-col sm:flex-row gap-4 flex-1 max-w-2xl">
+            <div className="relative flex-1">
+              <input 
+                type="text" 
+                placeholder="Search premium products..." 
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                className="w-full bg-white border border-slate-200 rounded-2xl px-6 py-3 pl-12 text-sm font-bold shadow-sm focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none transition-all"
+              />
+              <svg className="w-5 h-5 absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+              </svg>
+            </div>
+
+            <div className="bg-white border border-slate-200 rounded-2xl px-4 py-2 flex items-center gap-3 shadow-sm min-w-[200px]">
+              <span className="text-slate-400 text-xs font-bold uppercase tracking-wider">Category:</span>
+              <select 
+                value={selectedCategory}
+                onChange={(e) => setSelectedCategory(e.target.value)}
+                className="bg-transparent text-sm font-black outline-none cursor-pointer text-indigo-600 flex-1"
+              >
+                <option value="">All Categories</option>
+                {categories.map((cat: any) => (
+                  <option key={cat._id} value={cat._id}>{cat.name}</option>
+                ))}
+              </select>
+            </div>
           </div>
         </header>
 
@@ -50,16 +87,21 @@ export default function ProductListingPage() {
                     No Image Found
                   </div>
                 )}
-                {product.price < 500 && (
+                {product.isFeatured && (
                   <div className="absolute top-4 left-4 bg-indigo-600 text-[10px] font-black uppercase px-3 py-1 text-white rounded-full shadow-lg">
-                    HOT
+                    FEATURED
+                  </div>
+                )}
+                {product.isNewArrival && (
+                  <div className="absolute top-4 right-4 bg-green-600 text-[10px] font-black uppercase px-3 py-1 text-white rounded-full shadow-lg">
+                    NEW
                   </div>
                 )}
               </div>
               
               <div className="p-6">
                 <div className="text-[10px] font-bold text-indigo-600 uppercase tracking-widest mb-2">
-                  {product.category?.name || "Global"}
+                  {product.categoryId?.name || "Global"}
                 </div>
                 <h3 className="font-bold text-lg mb-4 line-clamp-1 text-slate-900 group-hover:text-indigo-600 transition-colors uppercase tracking-tight">{product.name}</h3>
                 <div className="flex items-center justify-between">
@@ -75,7 +117,7 @@ export default function ProductListingPage() {
 
         {products.length === 0 && (
           <div className="text-center py-32 bg-white border border-dashed border-slate-200 rounded-[3rem] shadow-inner">
-            <p className="text-slate-400 font-bold italic tracking-wide">No products found in the catalog.</p>
+            <p className="text-slate-400 font-bold italic tracking-wide">No products found matching your criteria.</p>
           </div>
         )}
       </div>

@@ -14,7 +14,15 @@ export default function LoginPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
+      console.log("Calling login with:", { email, password });
       const result = await login({ email, password }).unwrap();
+      console.log("Login successful returned data:", result);
+
+      if (result.twoFactorRequired) {
+        router.push(`/auth/verify-otp?userId=${result.userId}`);
+        return;
+      }
+
       localStorage.setItem("mallx_token", result.token);
       router.push("/");
     } catch (err) {

@@ -26,6 +26,9 @@ export const logisticsApi = apiSlice.injectEndpoints({
     getShipmentDetails: builder.query({
       query: (id) => `/api/v1/delivery/shipment/${id}`,
     }),
+    getAvailableShipments: builder.query({
+      query: () => "/api/v1/delivery/available-requests",
+    }),
   }),
 });
 
@@ -33,5 +36,6 @@ export const {
   useAcceptOrderMutation, 
   useAssignOrderMutation,
   useUpdateTrackingMutation, 
-  useGetShipmentDetailsQuery 
+  useGetShipmentDetailsQuery,
+  useGetAvailableShipmentsQuery
 } = logisticsApi;

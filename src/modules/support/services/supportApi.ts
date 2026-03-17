@@ -16,10 +16,14 @@ export const supportApi = apiSlice.injectEndpoints({
         body: { response },
       }),
     }),
+    getMyTickets: builder.query({
+      query: () => "/api/v1/support/my-tickets",
+    }),
   }),
 });
 
 export const {
   useCreateTicketMutation,
   useRespondToTicketMutation,
+  useGetMyTicketsQuery,
 } = supportApi;

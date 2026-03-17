@@ -12,7 +12,7 @@ export const apiSlice = createApi({
       return headers;
     },
   }),
-  tagTypes: ['Product', 'User', 'Order', 'Cart', 'Category', 'Analytics', 'Support', 'Withdrawal', 'Marketing', 'Partner'],
+  tagTypes: ['Product', 'User', 'Order', 'Cart', 'Category', 'Analytics', 'Support', 'Withdrawal', 'Marketing', 'Partner', 'Loyalty'],
   endpoints: (builder) => ({
     // We will inject endpoints here using injectEndpoints for better modularity later
   }),

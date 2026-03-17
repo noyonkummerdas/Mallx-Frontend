@@ -11,7 +11,11 @@ export default function RegisterPage() {
     email: "",
     password: "",
     confirmPassword: "",
-    role: "Customer"
+    role: "Customer",
+    nid: "",
+    photo: "",
+    nomineeName: "",
+    nomineeNid: ""
   });
   const [register, { isLoading, error }] = useRegisterMutation();
   const router = useRouter();
@@ -23,12 +27,22 @@ export default function RegisterPage() {
       return;
     }
     try {
-      await register({
+      console.log("Calling register with:", formData);
+      const result = await register({
         name: formData.name,
         email: formData.email,
         password: formData.password,
-        role: formData.role
+        role: formData.role,
+        kyc: formData.role === "DeliveryBoy" ? {
+          nid: formData.nid,
+          photo: formData.photo,
+          nominee: {
+            name: formData.nomineeName,
+            nid: formData.nomineeNid
+          }
+        } : undefined
       }).unwrap();
+      console.log("Registration successful returned data:", result);
       router.push("/auth/login");
     } catch (err) {
       console.error("Registration failed:", err);
@@ -74,6 +88,58 @@ export default function RegisterPage() {
                 </select>
               </div>
             </div>
+
+            {formData.role === "DeliveryBoy" && (
+              <div className="space-y-4 border-l-4 border-indigo-500 pl-4 bg-indigo-50/30 py-4 pr-4 rounded-r-2xl animate-in fade-in slide-in-from-left-4">
+                <p className="text-xs font-bold text-indigo-600 uppercase tracking-widest mb-2">KYC Requirements (Mandatory)</p>
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="col-span-2 sm:col-span-1">
+                    <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">NID Number</label>
+                    <input
+                      type="text"
+                      required
+                      value={formData.nid}
+                      onChange={(e) => setFormData({...formData, nid: e.target.value})}
+                      className="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 text-sm outline-none focus:border-indigo-500"
+                      placeholder="NID-XXXX-XXXX"
+                    />
+                  </div>
+                  <div className="col-span-2 sm:col-span-1">
+                    <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">Passport Photo URL</label>
+                    <input
+                      type="text"
+                      required
+                      value={formData.photo}
+                      onChange={(e) => setFormData({...formData, photo: e.target.value})}
+                      className="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 text-sm outline-none focus:border-indigo-500"
+                      placeholder="https://..."
+                    />
+                  </div>
+                  <div className="col-span-2 sm:col-span-1">
+                    <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">Nominee Name</label>
+                    <input
+                      type="text"
+                      required
+                      value={formData.nomineeName}
+                      onChange={(e) => setFormData({...formData, nomineeName: e.target.value})}
+                      className="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 text-sm outline-none focus:border-indigo-500"
+                      placeholder="Jane Doe"
+                    />
+                  </div>
+                  <div className="col-span-2 sm:col-span-1">
+                    <label className="block text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-1">Nominee NID</label>
+                    <input
+                      type="text"
+                      required
+                      value={formData.nomineeNid}
+                      onChange={(e) => setFormData({...formData, nomineeNid: e.target.value})}
+                      className="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 text-sm outline-none focus:border-indigo-500"
+                      placeholder="NID-XXXX-XXXX"
+                    />
+                  </div>
+                </div>
+              </div>
+            )}
 
             <div>
               <label className="block text-xs font-bold text-slate-400 uppercase tracking-widest mb-2 ml-1">Email Address</label>

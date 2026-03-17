@@ -69,6 +69,10 @@ export const shoppingApi = apiSlice.injectEndpoints({
       query: () => "/api/v1/wishlist",
       providesTags: ["Product"],
     }),
+    getVendorOrders: builder.query({
+      query: () => "/api/v1/orders/vendor/all",
+      providesTags: ["Order"],
+    }),
   }),
 });
 
@@ -82,5 +86,6 @@ export const {
   useUpdateOrderStatusMutation,
   useCancelOrderMutation,
   useReturnOrderMutation,
-  useGetWishlistQuery 
+  useGetWishlistQuery,
+  useGetVendorOrdersQuery
 } = shoppingApi;
