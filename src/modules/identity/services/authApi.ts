@@ -9,6 +9,12 @@ export const authApi = apiSlice.injectEndpoints({
         body: credentials,
       }),
       invalidatesTags: ["User"],
+      transformResponse: (response: any) => {
+        if (response?.data?.user) {
+          response.data.user.role = response.data.user.roleId?.name || "Customer";
+        }
+        return response;
+      }
     }),
     register: builder.mutation({
       query: (userData) => ({
@@ -17,6 +23,12 @@ export const authApi = apiSlice.injectEndpoints({
         body: userData,
       }),
       invalidatesTags: ["User"],
+      transformResponse: (response: any) => {
+        if (response?.data?.user) {
+          response.data.user.role = response.data.user.roleId?.name || "Customer";
+        }
+        return response;
+      }
     }),
     verifyOtp: builder.mutation({
       query: (data) => ({
@@ -24,10 +36,22 @@ export const authApi = apiSlice.injectEndpoints({
         method: "POST",
         body: data,
       }),
+      transformResponse: (response: any) => {
+        if (response?.data?.user) {
+          response.data.user.role = response.data.user.roleId?.name || "Customer";
+        }
+        return response;
+      }
     }),
     getMe: builder.query({
       query: () => "/api/v1/auth/me",
       providesTags: ["User"],
+      transformResponse: (response: any) => {
+        if (response?.data?.user) {
+          response.data.user.role = response.data.user.roleId?.name || "Customer";
+        }
+        return response;
+      }
     }),
     toggle2fa: builder.mutation({
       query: (data) => ({
