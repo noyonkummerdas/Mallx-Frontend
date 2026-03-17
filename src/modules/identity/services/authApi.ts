@@ -8,6 +8,7 @@ export const authApi = apiSlice.injectEndpoints({
         method: "POST",
         body: credentials,
       }),
+      invalidatesTags: ["User"],
     }),
     register: builder.mutation({
       query: (userData) => ({
@@ -15,6 +16,7 @@ export const authApi = apiSlice.injectEndpoints({
         method: "POST",
         body: userData,
       }),
+      invalidatesTags: ["User"],
     }),
     verifyOtp: builder.mutation({
       query: (data) => ({

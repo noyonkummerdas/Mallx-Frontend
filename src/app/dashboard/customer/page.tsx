@@ -14,11 +14,11 @@ export default function CustomerDashboard() {
 
   useEffect(() => {
     if (userData?.data?.user) {
-      const role = userData.data.user.role;
-      if (role === "Vendor") router.push("/dashboard/vendor");
-      else if (role === "DeliveryBoy") router.push("/dashboard/delivery");
-      else if (role === "Partner") router.push("/dashboard/partner");
-      else if (role === "Admin") router.push("/dashboard/admin");
+      const role = userData.data.user.role?.toLowerCase();
+      if (role === "vendor") router.push("/dashboard/vendor");
+      else if (role === "deliveryboy") router.push("/dashboard/delivery");
+      else if (role === "partner") router.push("/dashboard/partner");
+      else if (role === "admin") router.push("/dashboard/admin");
     }
   }, [userData, router]);
 
@@ -30,7 +30,7 @@ export default function CustomerDashboard() {
 
   if (isUserLoading || isOrdersLoading) return (
     <div className="min-h-screen bg-slate-50 flex items-center justify-center">
-      <div className="w-12 h-12 border-4 border-indigo-600 border-t-transparent rounded-full animate-spin" />
+      <div className="w-12 h-12 border-4 border-slate-900 border-t-transparent rounded-full animate-spin" />
     </div>
   );
 

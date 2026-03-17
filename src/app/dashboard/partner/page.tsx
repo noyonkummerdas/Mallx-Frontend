@@ -2,10 +2,14 @@
 
 import { useGetPartnerDashboardQuery, useGetPartnerVendorsQuery, useSetCommissionMutation, useAssignPartnerCategoryMutation } from "@/modules/business/services/businessApi";
 import { useAssignOrderMutation, useGetAvailableShipmentsQuery } from "@/modules/logistics/services/logisticsApi";
+import { useGetMeQuery } from "@/modules/identity/services/authApi";
 import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import Sidebar from "@/components/Sidebar";
 
 export default function PartnerDashboard() {
+  const router = useRouter();
+  const { data: userData, isLoading: isUserLoading } = useGetMeQuery({});
   const { data: dashboardData } = useGetPartnerDashboardQuery({});
   const { data: vendorsData, refetch: refetchVendors } = useGetPartnerVendorsQuery({});
   const { data: shipmentsData } = useGetAvailableShipmentsQuery({});
@@ -16,10 +20,26 @@ export default function PartnerDashboard() {
   const [commissionVal, setCommissionVal] = useState("");
 
   useEffect(() => {
+    if (userData?.data?.user) {
+      const role = userData.data.user.role?.toLowerCase();
+      if (role === "customer") router.push("/dashboard/customer");
+      else if (role === "vendor") router.push("/dashboard/vendor");
+      else if (role === "deliveryboy") router.push("/dashboard/delivery");
+      else if (role === "admin") router.push("/dashboard/admin");
+    }
+  }, [userData, router]);
+
+  useEffect(() => {
     if (dashboardData) console.log("Partner Dashboard - Stats:", dashboardData);
     if (vendorsData) console.log("Partner Dashboard - Vendors:", vendorsData);
     if (shipmentsData) console.log("Partner Dashboard - Shipments:", shipmentsData);
   }, [dashboardData, vendorsData, shipmentsData]);
+
+  if (isUserLoading) return (
+    <div className="min-h-screen bg-slate-50 flex items-center justify-center">
+      <div className="w-12 h-12 border-4 border-slate-900 border-t-transparent rounded-full animate-spin" />
+    </div>
+  );
 
   const handleSetCommission = async (vendorId: string) => {
     try {

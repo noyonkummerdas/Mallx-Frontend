@@ -11,7 +11,7 @@ import Sidebar from "@/components/Sidebar";
 export default function VendorDashboard() {
   const router = useRouter();
   const { data: balanceData } = useGetBalanceQuery({});
-  const { data: userData } = useGetMeQuery({});
+  const { data: userData, isLoading: isUserLoading } = useGetMeQuery({});
   const { data: shopData } = useGetShopDetailsQuery({});
   const { data: ordersData, refetch: refetchOrders } = useGetVendorOrdersQuery({});
   const { data: historyData } = useGetWithdrawalHistoryQuery({});
@@ -24,11 +24,11 @@ export default function VendorDashboard() {
 
   useEffect(() => {
     if (userData?.data?.user) {
-      const role = userData.data.user.role;
-      if (role === "Customer") router.push("/dashboard/customer");
-      else if (role === "DeliveryBoy") router.push("/dashboard/delivery");
-      else if (role === "Partner") router.push("/dashboard/partner");
-      else if (role === "Admin") router.push("/dashboard/admin");
+      const role = userData.data.user.role?.toLowerCase();
+      if (role === "customer") router.push("/dashboard/customer");
+      else if (role === "deliveryboy") router.push("/dashboard/delivery");
+      else if (role === "partner") router.push("/dashboard/partner");
+      else if (role === "admin") router.push("/dashboard/admin");
     }
   }, [userData, router]);
 
@@ -37,6 +37,12 @@ export default function VendorDashboard() {
     if (ordersData) console.log("Vendor Dashboard - Vendor Orders:", ordersData);
     if (historyData) console.log("Vendor Dashboard - Withdrawal History:", historyData);
   }, [balanceData, ordersData, historyData]);
+
+  if (isUserLoading) return (
+    <div className="min-h-screen bg-slate-50 flex items-center justify-center">
+      <div className="w-12 h-12 border-4 border-slate-900 border-t-transparent rounded-full animate-spin" />
+    </div>
+  );
 
   const handleUpdateStatus = async (id: string, status: string) => {
     try {

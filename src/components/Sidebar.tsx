@@ -100,6 +100,8 @@ export default function Sidebar({ role }: SidebarProps) {
   const activeRole = user ? mapRoleToKey(user.role) : role;
   const items = menuItems[activeRole] || [];
 
+  console.log("Sidebar Debug - User:", user?.role, "Prop Role:", role, "Resolved:", activeRole);
+
   const handleLogout = () => {
     localStorage.removeItem("mallx_token");
     window.location.href = "/auth/login";
