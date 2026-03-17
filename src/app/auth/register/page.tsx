@@ -180,11 +180,21 @@ export default function RegisterPage() {
 
             <button
               disabled={isLoading}
-              className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-4 rounded-3xl shadow-xl shadow-indigo-600/20 transition-all mt-4"
+              className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-4 rounded-3xl shadow-xl shadow-indigo-600/20 transition-all mt-4 active:scale-95 disabled:opacity-50"
             >
               {isLoading ? "Creating Account..." : "Create Account"}
             </button>
           </form>
+
+          {error && (
+            <div className="mt-4 p-4 bg-red-50 border border-red-100 rounded-2xl animate-in fade-in zoom-in-95">
+              <p className="text-red-600 text-xs font-black uppercase tracking-widest text-center">
+                {(error as any)?.data?.message?.includes("duplicate key") 
+                  ? "Email already registered. Try another or Sign In." 
+                  : (error as any)?.data?.message || "Registration failed. Try again."}
+              </p>
+            </div>
+          )}
 
           <p className="text-center mt-8 text-slate-500 text-sm">
             Already have an account?{" "}

@@ -1,3 +1,5 @@
+"use client";
+
 import { useGetCartQuery, useUpdateCartQuantityMutation, useDeleteCartItemMutation } from "@/modules/shopping/services/shoppingApi";
 import Link from "next/link";
 import { useEffect } from "react";

@@ -32,18 +32,36 @@ export default function Home() {
           Beautifully engineered with Next.js, Tailwind, and TypeScript.
         </p>
 
-        <div className="flex flex-col sm:flex-row gap-4">
+        <div className="flex flex-col sm:flex-row gap-4 mb-20">
           <Link href="/catalog/products">
-            <button className="px-8 py-4 bg-indigo-600 text-white rounded-2xl font-bold hover:bg-indigo-700 transition-all shadow-xl shadow-indigo-600/20 flex items-center gap-2 group">
-              Explore Marketplace
-              <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" /></svg>
+            <button className="px-10 py-5 bg-indigo-600 text-white rounded-3xl font-black text-xs uppercase tracking-widest hover:bg-indigo-700 transition-all shadow-2xl shadow-indigo-600/30 flex items-center gap-3 group border border-indigo-500/20">
+              Enter Marketplace
+              <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M13 7l5 5m0 0l-5 5m5-5H6" /></svg>
             </button>
           </Link>
           <Link href="/dashboard/vendor">
-            <button className="px-8 py-4 bg-white border border-slate-200 text-slate-900 rounded-2xl font-bold hover:bg-slate-50 transition-all flex items-center gap-2 shadow-sm">
-              Vendor Dashboard
+            <button className="px-10 py-5 bg-white border border-slate-200 text-slate-900 rounded-3xl font-black text-xs uppercase tracking-widest hover:bg-slate-50 transition-all flex items-center gap-2 shadow-sm">
+              Operational Hub
             </button>
           </Link>
+        </div>
+
+        {/* Global Categories */}
+        <div className="grid grid-cols-2 md:grid-cols-5 gap-6 w-full max-w-5xl mb-32">
+           {[
+             { name: "Man's", slug: "mens", icon: "M" },
+             { name: "Women's", slug: "womens", icon: "W" },
+             { name: "Boy's", slug: "boys", icon: "B" },
+             { name: "Girls", slug: "girls", icon: "G" },
+             { name: "Kids", slug: "kids", icon: "K" }
+           ].map((cat) => (
+             <Link key={cat.slug} href={`/catalog/products?category=${cat.slug}`} className="p-8 bg-white border border-slate-100 rounded-[2.5rem] hover:border-indigo-600 transition-all group shadow-sm hover:shadow-xl hover:shadow-indigo-600/5">
+                <div className="w-12 h-12 bg-slate-50 rounded-2xl flex items-center justify-center text-indigo-600 font-black text-xl mb-4 group-hover:bg-indigo-600 group-hover:text-white transition-all">
+                   {cat.icon}
+                </div>
+                <p className="text-[10px] font-black uppercase tracking-widest text-slate-400 group-hover:text-slate-900 transition-colors">{cat.name}</p>
+             </Link>
+           ))}
         </div>
       </section>
 

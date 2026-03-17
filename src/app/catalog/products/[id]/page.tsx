@@ -1,3 +1,5 @@
+"use client";
+
 import { useGetProductDetailsQuery, usePostProductReviewMutation } from "@/modules/catalog/services/catalogApi";
 import { useAddToCartMutation } from "@/modules/shopping/services/shoppingApi";
 import { useParams } from "next/navigation";

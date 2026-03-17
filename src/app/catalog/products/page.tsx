@@ -1,3 +1,5 @@
+"use client";
+
 import { useGetProductsQuery, useGetCategoriesQuery } from "@/modules/catalog/services/catalogApi";
 import Link from "next/link";
 import { useState, useEffect } from "react";

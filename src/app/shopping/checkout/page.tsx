@@ -1,3 +1,5 @@
+"use client";
+
 import { useCheckoutMutation, useGetCartQuery } from "@/modules/shopping/services/shoppingApi";
 import { useGetAddressesQuery, useAddAddressMutation } from "@/modules/identity/services/authApi";
 import { useRouter } from "next/navigation";

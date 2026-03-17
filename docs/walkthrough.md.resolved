@@ -1,0 +1,43 @@
+# Walkthrough - Dashboard Sidebar & Navigation Enhancement
+
+I have successfully implemented the dynamic sidebar system and updated the main navigation with product categories as requested. The application now features a consistent, premium dashboard experience for all user roles.
+
+## Key Enhancements
+
+### 1. Dynamic Dashboard Sidebar
+A reusable [Sidebar.tsx](file:///d:/GroupProject/mallx-frontend/src/components/Sidebar.tsx) component has been created and integrated into all operational hubs. 
+
+````carousel
+![Desktop Sidebar View](file:///C:/Users/nk-noyon/.gemini/antigravity/brain/513cd81f-2436-4aed-9a46-9431b3c64bdc/admin_dashboard_check_1773744346467.png)
+<!-- slide -->
+![Mobile Sidebar Hidden](file:///C:/Users/nk-noyon/.gemini/antigravity/brain/513cd81f-2436-4aed-9a46-9431b3c64bdc/vendor_dashboard_mobile_1773744392312.png)
+````
+
+- **Admin**: Global stats, financial audits, systems monitoring.
+- **Vendor**: Shop overview, inventory management, settlement ledger.
+- **Partner**: Regional orchestration, merchant governance, logistics.
+- **Delivery**: Shipment queue, live tracking, security metrics.
+- **Customer**: Activity tracking, order history, rewards.
+- **Mobile Responsive**: Added a toggle button and backdrop for seamless mobile usage.
+
+### 2. Intelligent Global Navigation
+The main [Navbar.tsx](file:///d:/GroupProject/mallx-frontend/src/components/Navbar.tsx) now adapts to the user's state:
+- **Authenticated State**: Hides "Sign In" and "Join MallX" buttons, replacing them with a sleek user profile trigger.
+- **Visitor Attraction**: Implemented a non-obtrusive dynamic popup that appears after 5 seconds of browsing to encourage registration.
+- **Product Categories**: Direct entry points for Man's, Women's, Boy's, Girls, and Kids.
+
+![Navigation Categories](file:///C:/Users/nk-noyon/.gemini/antigravity/brain/513cd81f-2436-4aed-9a46-9431b3c64bdc/landing_page_check_1773744370731.png)
+
+### 3. Integrated User Experience
+The sidebar is now unified across:
+- **Order History**: Consistent layout for tracking purchases.
+- **Profile Settings**: Unified view for security and identity.
+- **Operational Support**: Direct relay for technical assistance.
+
+## Verification Held
+- [x] **Syntax Fixes**: Resolved build errors related to duplicate closing brackets.
+- [x] **Auth State Persistence**: Verified that Navbar buttons react correctly to `useGetMeQuery` results.
+- [x] **Mobile UX**: Added a fixed toggle button for the sidebar on small screens.
+
+## Visual Progress
+The UI now reflects a "Premium White" aesthetic with slate accents and vibrant indigo highlights, providing a high-end feel throughout the ecosystem.
