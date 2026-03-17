@@ -9,6 +9,13 @@ export const logisticsApi = apiSlice.injectEndpoints({
         body: { shipmentId },
       }),
     }),
+    assignOrder: builder.mutation({
+      query: (data) => ({
+        url: "/api/v1/delivery/assign",
+        method: "POST",
+        body: data,
+      }),
+    }),
     updateTracking: builder.mutation({
       query: (trackingData) => ({
         url: "/api/v1/delivery/update-tracking",
@@ -24,6 +31,7 @@ export const logisticsApi = apiSlice.injectEndpoints({
 
 export const { 
   useAcceptOrderMutation, 
+  useAssignOrderMutation,
   useUpdateTrackingMutation, 
   useGetShipmentDetailsQuery 
 } = logisticsApi;

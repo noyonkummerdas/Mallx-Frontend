@@ -16,11 +16,19 @@ export const financeApi = apiSlice.injectEndpoints({
     getWithdrawalHistory: builder.query({
       query: () => "/api/v1/withdrawals/history",
     }),
+    updateWithdrawalStatus: builder.mutation({
+      query: ({ id, status }) => ({
+        url: `/api/v1/withdrawals/${id}/status`,
+        method: "PATCH",
+        body: { status },
+      }),
+    }),
   }),
 });
 
 export const { 
   useGetBalanceQuery, 
   useRequestWithdrawalMutation, 
-  useGetWithdrawalHistoryQuery 
+  useGetWithdrawalHistoryQuery,
+  useUpdateWithdrawalStatusMutation
 } = financeApi;

@@ -27,6 +27,26 @@ export const authApi = apiSlice.injectEndpoints({
       query: () => "/api/v1/auth/me",
       providesTags: ["User"],
     }),
+    toggle2fa: builder.mutation({
+      query: (data) => ({
+        url: "/api/v1/auth/toggle-2fa",
+        method: "POST",
+        body: data,
+      }),
+      invalidatesTags: ["User"],
+    }),
+    getAddresses: builder.query({
+      query: () => "/api/v1/users/addresses",
+      providesTags: ["User"],
+    }),
+    addAddress: builder.mutation({
+      query: (address) => ({
+        url: "/api/v1/users/addresses",
+        method: "POST",
+        body: address,
+      }),
+      invalidatesTags: ["User"],
+    }),
   }),
 });
 
@@ -34,5 +54,8 @@ export const {
   useLoginMutation, 
   useRegisterMutation, 
   useVerifyOtpMutation, 
-  useGetMeQuery 
+  useGetMeQuery,
+  useToggle2faMutation,
+  useGetAddressesQuery,
+  useAddAddressMutation
 } = authApi;

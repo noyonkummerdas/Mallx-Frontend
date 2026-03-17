@@ -22,6 +22,23 @@ export const marketingApi = apiSlice.injectEndpoints({
         body: { code },
       }),
     }),
+    getBundles: builder.query({
+      query: () => "/api/v1/promotions/bundles",
+    }),
+    createFlashSale: builder.mutation({
+      query: (data) => ({
+        url: "/api/v1/marketing/flash-sales",
+        method: "POST",
+        body: data,
+      }),
+    }),
+    createCoupon: builder.mutation({
+      query: (data) => ({
+        url: "/api/v1/marketing/coupons",
+        method: "POST",
+        body: data,
+      }),
+    }),
   }),
 });
 
@@ -29,5 +46,8 @@ export const {
   useGetCouponsQuery, 
   useGetFlashSalesQuery, 
   useClaimVoucherMutation, 
-  useRedeemGiftCardMutation 
+  useRedeemGiftCardMutation,
+  useGetBundlesQuery,
+  useCreateFlashSaleMutation,
+  useCreateCouponMutation
 } = marketingApi;

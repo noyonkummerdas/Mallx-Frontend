@@ -9,17 +9,17 @@ export const supportApi = apiSlice.injectEndpoints({
         body: data,
       }),
     }),
-    getTickets: builder.query({
-      query: () => "/api/v1/support/tickets",
-    }),
-    getAdminStats: builder.query({
-      query: () => "/api/v1/analytics/admin/stats",
+    respondToTicket: builder.mutation({
+      query: ({ id, response }) => ({
+        url: `/api/v1/support/tickets/${id}/respond`,
+        method: "PATCH",
+        body: { response },
+      }),
     }),
   }),
 });
 
-export const { 
-  useCreateTicketMutation, 
-  useGetTicketsQuery, 
-  useGetAdminStatsQuery 
+export const {
+  useCreateTicketMutation,
+  useRespondToTicketMutation,
 } = supportApi;
