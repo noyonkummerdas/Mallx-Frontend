@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 :root {
-  --background: #f1f5f9;
+  --background: #e8eaed;
   --foreground: #0f172a;
 }
 
@@ -20,5 +20,5 @@ body {
 
 h1, h2, h3, h4, h5, h6 {
   font-size: 14px;
-  font-weight: 900;
+  font-weight: 400;
 }

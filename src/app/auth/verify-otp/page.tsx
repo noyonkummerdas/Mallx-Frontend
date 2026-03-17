@@ -25,7 +25,15 @@ export default function VerifyOtpPage() {
       console.log("OTP Verification successful returned data:", result);
       
       localStorage.setItem("mallx_token", result.token);
-      router.push("/");
+      
+      const role = result.data?.user?.role || result.user?.role;
+      switch(role) {
+        case "Admin": router.push("/dashboard/admin"); break;
+        case "Vendor": router.push("/dashboard/vendor"); break;
+        case "Partner": router.push("/dashboard/partner"); break;
+        case "DeliveryBoy": router.push("/dashboard/delivery"); break;
+        default: router.push("/profile"); break;
+      }
     } catch (err) {
       console.error("OTP Verification failed:", err);
     }

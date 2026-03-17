@@ -24,46 +24,72 @@ export default function LoginPage() {
       }
 
       localStorage.setItem("mallx_token", result.token);
-      router.push("/");
+      
+      // Redirect based on user role
+      console.log("Login Success. Raw result body:", result);
+      
+      const rawRole = result.data?.user?.role || result.user?.role || result.role || "Customer";
+      const roleStr = String(rawRole).toLowerCase();
+      
+      console.log("Resolved role string:", roleStr);
+
+      switch(roleStr) {
+        case "admin":
+          router.push("/dashboard/admin");
+          break;
+        case "vendor":
+          router.push("/dashboard/vendor");
+          break;
+        case "partner":
+          router.push("/dashboard/partner");
+          break;
+        case "deliveryboy":
+          router.push("/dashboard/delivery");
+          break;
+        default:
+          console.warn("Role not found or default, redirecting to Customer. Role was:", roleStr);
+          router.push("/dashboard/customer");
+          break;
+      }
     } catch (err) {
       console.error("Login failed:", err);
     }
   };
 
   return (
-    <main className="min-h-screen bg-slate-50 flex items-center justify-center p-6 relative overflow-hidden">
-      {/* Background blobs */}
-      <div className="absolute top-[-20%] right-[-10%] w-[50%] h-[50%] rounded-full bg-indigo-600/5 blur-[150px]" />
-      <div className="absolute bottom-[-10%] left-[-10%] w-[40%] h-[40%] rounded-full bg-purple-600/5 blur-[120px]" />
+    <main className="min-h-screen bg-slate-50 flex items-center justify-center p-6 relative overflow-hidden text-slate-900">
+      {/* Subtle Background Elements */}
+      <div className="absolute top-[-20%] right-[-10%] w-[50%] h-[50%] rounded-full bg-slate-200/40 blur-[150px]" />
+      <div className="absolute bottom-[-10%] left-[-10%] w-[40%] h-[40%] rounded-full bg-slate-200/40 blur-[120px]" />
 
-      <div className="w-full max-w-md relative z-10">
-        <div className="bg-white border border-slate-200 p-10 rounded-[2.5rem] shadow-2xl shadow-slate-200/50">
-          <div className="text-center mb-10">
-            <h1 className="text-3xl font-bold text-slate-900 mb-2">Welcome Back</h1>
-            <p className="text-slate-500">Sign in to your MallX account</p>
+      <div className="w-full max-w-sm relative z-10">
+        <div className="bg-white border border-slate-200 p-8 rounded-2xl shadow-2xl shadow-slate-200/40">
+          <div className="text-center mb-8">
+            <h1 className="text-2xl text-slate-900 mb-2 uppercase tracking-tighter">Welcome Back</h1>
+            <p className="text-slate-500 text-[10px] uppercase tracking-widest">Sign in to your account</p>
           </div>
 
-          <form onSubmit={handleSubmit} className="space-y-6">
+          <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-2 font-semibold">Email Address</label>
+              <label className="block text-[9px] text-slate-400 uppercase tracking-widest mb-2 px-1">Email Address</label>
               <input
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                className="w-full bg-slate-50 border border-slate-200 rounded-2xl px-5 py-4 text-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all placeholder:text-slate-400"
+                className="w-full bg-slate-50 border border-slate-200 rounded-xl px-5 py-3.5 text-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-900/5 focus:border-slate-900 transition-all placeholder:text-slate-400 text-xs"
                 placeholder="name@example.com"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-2 font-semibold">Password</label>
+              <label className="block text-[9px] text-slate-400 uppercase tracking-widest mb-2 px-1">Password</label>
               <input
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
-                className="w-full bg-slate-50 border border-slate-200 rounded-2xl px-5 py-4 text-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 transition-all placeholder:text-slate-400"
+                className="w-full bg-slate-50 border border-slate-200 rounded-xl px-5 py-3.5 text-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-900/5 focus:border-slate-900 transition-all placeholder:text-slate-400 text-xs"
                 placeholder="••••••••"
               />
             </div>
@@ -71,22 +97,26 @@ export default function LoginPage() {
             <button
               disabled={isLoading}
               type="submit"
-              className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-4 rounded-2xl shadow-lg shadow-indigo-600/30 transition-all active:scale-95 disabled:opacity-50"
+              className="w-full bg-slate-900 hover:bg-black text-white py-4 rounded-xl shadow-lg shadow-slate-900/20 transition-all active:scale-95 disabled:opacity-50 text-[10px] uppercase tracking-widest mt-2"
             >
-              {isLoading ? "Signing in..." : "Continue"}
+              {isLoading ? "Validating..." : "Sign In"}
             </button>
           </form>
 
           {error && (
-            <p className="text-red-500 text-sm mt-4 text-center font-medium">Invalid credentials. Please try again.</p>
+            <div className="mt-4 p-3 rounded-xl bg-red-50 border border-red-100 text-center">
+               <p className="text-red-600 text-[10px] uppercase tracking-tight">Invalid access credentials.</p>
+            </div>
           )}
 
-          <p className="text-center mt-8 text-slate-500 text-sm">
-            Don't have an account?{" "}
-            <Link href="/auth/register" className="text-indigo-600 font-bold hover:underline">
-              Create one
-            </Link>
-          </p>
+          <div className="text-center mt-8">
+            <p className="text-slate-500 text-[9px] uppercase tracking-widest">
+              Don't have an account?{" "}
+              <Link href="/auth/register" className="text-slate-900 hover:underline">
+                Create Account
+              </Link>
+            </p>
+          </div>
         </div>
       </div>
     </main>
