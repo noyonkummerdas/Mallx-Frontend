@@ -51,7 +51,8 @@ export default function ProductDetailPage() {
       await addToCart({ 
         productId: product._id, 
         variantId: selectedVariant?._id, 
-        quantity 
+        quantity,
+        price: product.price 
       }).unwrap();
       alert("Added to cart!");
     } catch (err) {
@@ -82,7 +83,7 @@ export default function ProductDetailPage() {
           <div className="space-y-6">
             <div className="aspect-square bg-slate-50 border border-slate-100 rounded-[3rem] overflow-hidden group relative shadow-sm">
                {product.images?.[0] ? (
-                 <img src={product.images[0].url} alt={product.name} className="w-full h-full object-cover" />
+                 <img src={product.images[0].imageUrl} alt={product.name} className="w-full h-full object-cover" />
                ) : (
                  <div className="w-full h-full flex items-center justify-center text-slate-300 font-bold text-sm tracking-widest uppercase">No Image Preview</div>
                )}
@@ -90,7 +91,7 @@ export default function ProductDetailPage() {
             <div className="grid grid-cols-4 gap-4">
                {product.images?.map((img: any, i: number) => (
                  <div key={i} className="aspect-square bg-slate-50 border border-slate-100 rounded-2xl overflow-hidden cursor-pointer hover:border-indigo-600 transition-colors shadow-sm">
-                    <img src={img.url} alt="" className="w-full h-full object-cover" />
+                    <img src={img.imageUrl} alt="" className="w-full h-full object-cover" />
                  </div>
                ))}
             </div>

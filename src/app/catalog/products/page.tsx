@@ -83,7 +83,7 @@ export default function ProductListingPage() {
             >
               <div className="aspect-square bg-slate-100 relative overflow-hidden">
                 {product.images && product.images[0] ? (
-                  <img src={product.images[0].url} alt={product.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+                  <img src={product.images[0].imageUrl} alt={product.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
                 ) : (
                   <div className="w-full h-full flex items-center justify-center text-slate-300 font-bold uppercase tracking-widest text-[10px]">
                     No Image Found
