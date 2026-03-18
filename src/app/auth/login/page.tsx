@@ -25,10 +25,8 @@ export default function LoginPage() {
 
       localStorage.setItem("mallx_token", result.token);
       
-      // Redirect based on user role
-      console.log("Login Success. Raw result body:", result);
-      
-      const rawRole = result.data?.user?.role || result.user?.role || result.role || "Customer";
+      const user = result.data?.user || result.user;
+      const rawRole = user?.role || user?.roleId?.name || result.role || "Customer";
       const roleStr = String(rawRole).toLowerCase();
       
       console.log("Resolved role string:", roleStr);

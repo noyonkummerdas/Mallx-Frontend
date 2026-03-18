@@ -32,6 +32,7 @@ export default function RegisterPage() {
         name: formData.name,
         email: formData.email,
         password: formData.password,
+        role: formData.role,
         roleName: formData.role,
         kyc: formData.role === "DeliveryBoy" ? {
           nid: formData.nid,

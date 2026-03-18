@@ -11,7 +11,8 @@ export const authApi = apiSlice.injectEndpoints({
       invalidatesTags: ["User"],
       transformResponse: (response: any) => {
         if (response?.data?.user) {
-          response.data.user.role = response.data.user.roleId?.name || "Customer";
+          const user = response.data.user;
+          user.role = user.role || user.roleId?.name || user.roleName || "Customer";
         }
         return response;
       }
@@ -25,7 +26,8 @@ export const authApi = apiSlice.injectEndpoints({
       invalidatesTags: ["User"],
       transformResponse: (response: any) => {
         if (response?.data?.user) {
-          response.data.user.role = response.data.user.roleId?.name || "Customer";
+          const user = response.data.user;
+          user.role = user.role || user.roleId?.name || user.roleName || "Customer";
         }
         return response;
       }
@@ -38,7 +40,8 @@ export const authApi = apiSlice.injectEndpoints({
       }),
       transformResponse: (response: any) => {
         if (response?.data?.user) {
-          response.data.user.role = response.data.user.roleId?.name || "Customer";
+          const user = response.data.user;
+          user.role = user.role || user.roleId?.name || user.roleName || "Customer";
         }
         return response;
       }
@@ -48,7 +51,8 @@ export const authApi = apiSlice.injectEndpoints({
       providesTags: ["User"],
       transformResponse: (response: any) => {
         if (response?.data?.user) {
-          response.data.user.role = response.data.user.roleId?.name || "Customer";
+          const user = response.data.user;
+          user.role = user.role || user.roleId?.name || user.roleName || "Customer";
         }
         return response;
       }
