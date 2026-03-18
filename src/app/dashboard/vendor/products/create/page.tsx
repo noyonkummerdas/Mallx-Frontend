@@ -104,232 +104,279 @@ export default function CreateProductPage() {
   );
 
   return (
-    <div className="flex bg-slate-50 min-h-screen font-['Poppins']">
+    <div className="flex bg-[#F8FAFC] min-h-screen font-['Inter']">
       <Sidebar role="vendor" />
       
-      <main className="flex-1 p-10 overflow-y-auto">
-        <div className="max-w-4xl mx-auto">
-           <header className="mb-10 flex items-center justify-between">
+      <main className="flex-1 p-8 overflow-y-auto">
+        <div className="max-w-[1200px] mx-auto">
+           {/* Header Section */}
+           <header className="mb-12 flex items-end justify-between border-b border-slate-200 pb-8">
               <div>
-                 <h1 className="text-2xl tracking-tighter text-black uppercase font-bold">List New Portfolio Item</h1>
-                 <p className="text-slate-500 text-[10px] uppercase tracking-widest mt-1">Submit high-quality product data for marketplace approval.</p>
+                 <div className="flex items-center gap-3 mb-2">
+                    <span className="w-2 h-8 bg-black"></span>
+                    <h1 className="text-3xl tracking-[-0.04em] text-black uppercase font-black leading-none">Product Hub</h1>
+                 </div>
+                 <p className="text-slate-400 text-[10px] uppercase tracking-[0.3em] font-bold">Standardized Inventory Ingestion Protocol</p>
               </div>
-              <button 
-                onClick={() => router.back()}
-                className="text-[10px] uppercase tracking-widest text-slate-400 hover:text-black transition-colors"
-              >
-                Back To Hub
-              </button>
+              <div className="flex items-center gap-6">
+                 <button 
+                  onClick={() => router.back()}
+                  className="text-[10px] uppercase tracking-widest text-slate-400 hover:text-black transition-all font-bold"
+                 >
+                  Back to dashboard
+                 </button>
+                 <div className="h-6 w-[1px] bg-slate-200"></div>
+                 <div className="flex items-center gap-2">
+                    <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
+                    <span className="text-[9px] text-slate-500 uppercase tracking-widest font-bold">System Online</span>
+                 </div>
+              </div>
            </header>
 
-           {/* Professional Image Gallery Section (Outside Form) */}
-           <section className="mb-8">
-              <div className="flex items-center justify-between mb-4">
-                  <h4 className="text-[10px] text-black uppercase tracking-widest font-bold">Product Media Assets</h4>
-                  <span className="text-[9px] text-slate-400 uppercase tracking-widest">{selectedImages.length}/4 Selected</span>
+           <form onSubmit={handleCreateProduct}>
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                 
+                 {/* Left Column: Core Data (8 Units) */}
+                 <div className="lg:col-span-8 space-y-8">
+                    
+                    {/* Visual Asset Module */}
+                    <div className="bg-white border border-slate-200 rounded-xl p-8 shadow-sm">
+                        <div className="flex items-center justify-between mb-8">
+                            <h4 className="text-[11px] text-black uppercase tracking-[0.2em] font-black">01. Visual Architecture</h4>
+                            <span className="text-[9px] text-slate-400 uppercase tracking-widest font-bold">{selectedImages.length} / 4 Assets Loaded</span>
+                        </div>
+
+                        <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
+                            {/* Hero Card */}
+                            <div className="md:col-span-8 group relative aspect-[4/3]">
+                                <div className={`w-full h-full bg-slate-50 border border-slate-200 rounded-xl flex items-center justify-center overflow-hidden transition-all duration-500 ${imagePreviews[0] ? 'border-none ring-1 ring-slate-100 shadow-xl' : 'hover:bg-slate-100 hover:border-slate-300'}`}>
+                                    {imagePreviews[0] ? (
+                                        <>
+                                            <img src={imagePreviews[0]} className="w-full h-full object-cover" alt="Hero View" />
+                                            <div className="absolute top-6 left-6 px-3 py-1 bg-black/90 backdrop-blur rounded-lg border border-white/10">
+                                                <p className="text-[8px] text-white uppercase tracking-widest font-black">Primary Hero</p>
+                                            </div>
+                                            <button 
+                                                type="button"
+                                                onClick={() => removeImage(0)}
+                                                className="absolute top-6 right-6 w-10 h-10 bg-white/90 backdrop-blur shadow-2xl rounded-xl flex items-center justify-center text-slate-400 hover:text-red-500 transition-all scale-0 group-hover:scale-100 active:scale-90"
+                                            >×</button>
+                                        </>
+                                    ) : (
+                                        <div className="flex flex-col items-center">
+                                            <div className="w-12 h-12 bg-white rounded-2xl flex items-center justify-center shadow-lg mb-4">
+                                                <svg className="w-6 h-6 text-slate-200" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.587-1.587a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+                                            </div>
+                                            <p className="text-[9px] text-slate-400 uppercase tracking-[0.3em] font-black">Initiate Hero Ingestion</p>
+                                        </div>
+                                    )}
+                                    <input 
+                                        type="file" 
+                                        accept="image/*"
+                                        onChange={handleImageChange}
+                                        className="absolute inset-0 opacity-0 cursor-pointer"
+                                    />
+                                </div>
+                            </div>
+
+                            {/* Angle slots */}
+                            <div className="md:col-span-4 grid grid-cols-1 grid-rows-3 gap-4">
+                                {[1, 2, 3].map((index) => (
+                                    <div key={index} className="relative group aspect-square">
+                                        <div className={`w-full h-full bg-slate-50 border border-slate-200 rounded-xl flex items-center justify-center overflow-hidden transition-all ${imagePreviews[index] ? 'border-none ring-1 ring-slate-100 shadow-lg' : 'hover:bg-slate-100'}`}>
+                                            {imagePreviews[index] ? (
+                                                <>
+                                                    <img src={imagePreviews[index]} className="w-full h-full object-cover" alt={`Angle ${index}`} />
+                                                    <button 
+                                                        type="button"
+                                                        onClick={() => removeImage(index)}
+                                                        className="absolute top-3 right-3 w-6 h-6 bg-white/90 backdrop-blur rounded-lg shadow-xl flex items-center justify-center text-[10px] text-slate-400 hover:text-red-500 scale-0 group-hover:scale-100 transition-all font-bold"
+                                                    >×</button>
+                                                </>
+                                            ) : (
+                                                <div className="flex flex-col items-center gap-2">
+                                                    <div className="w-1.5 h-1.5 bg-slate-200 rounded-full" />
+                                                    <p className="text-[7px] text-slate-300 uppercase tracking-widest leading-none font-black">Angle {index}</p>
+                                                    {!imagePreviews[index] && (
+                                                      <input 
+                                                          type="file" 
+                                                          accept="image/*"
+                                                          onChange={handleImageChange}
+                                                          className="absolute inset-0 opacity-0 cursor-pointer"
+                                                      />
+                                                    )}
+                                                </div>
+                                            )}
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* General Specifications Module */}
+                    <div className="bg-white border border-slate-200 rounded-xl p-8 shadow-sm">
+                        <div className="flex items-center gap-3 mb-10">
+                            <h4 className="text-[11px] text-black uppercase tracking-[0.2em] font-black">02. Data Core</h4>
+                            <div className="h-[1px] flex-1 bg-slate-50"></div>
+                        </div>
+
+                        <div className="space-y-10">
+                            {/* Field: Name */}
+                            <div className="group">
+                                <label className="text-[9px] text-slate-400 uppercase tracking-[0.25em] font-black mb-4 block group-focus-within:text-black transition-all">Identity Designation</label>
+                                <input 
+                                    required
+                                    type="text"
+                                    value={newProduct.name}
+                                    onChange={(e) => setNewProduct({...newProduct, name: e.target.value})}
+                                    className="w-full bg-[#fcfcfc] border-b-2 border-slate-50 px-0 py-4 outline-none text-xl text-black font-black placeholder:text-slate-200 focus:border-black transition-all"
+                                    placeholder="ENTER OFFICIAL PRODUCT NAME"
+                                />
+                            </div>
+
+                            {/* Field: Description */}
+                            <div className="group">
+                                <label className="text-[9px] text-slate-400 uppercase tracking-[0.25em] font-black mb-4 block group-focus-within:text-black transition-all">Feature Set & Technicalities</label>
+                                <textarea 
+                                    required
+                                    rows={5}
+                                    value={newProduct.description}
+                                    onChange={(e) => setNewProduct({...newProduct, description: e.target.value})}
+                                    className="w-full bg-[#fcfcfc] border-b-2 border-slate-50 px-0 py-4 outline-none text-sm text-black font-medium leading-[1.8] placeholder:text-slate-200 focus:border-black transition-all resize-none"
+                                    placeholder="Describe the aesthetic, material properties, and functional utility..."
+                                />
+                            </div>
+                        </div>
+                    </div>
+                 </div>
+
+                 {/* Right Column: Taxonomy & Pricing (4 Units) */}
+                 <div className="lg:col-span-4 space-y-8">
+                    
+                    {/* Taxonomy Module */}
+                    <div className="bg-white border border-slate-200 rounded-xl p-8 shadow-sm">
+                        <h4 className="text-[11px] text-black uppercase tracking-[0.2em] font-black mb-8">03. Marketplace Taxonomy</h4>
+                        
+                        <div className="relative">
+                            <label className="text-[9px] text-slate-400 uppercase tracking-[0.25em] font-black mb-3 block">Category Domain</label>
+                            <button
+                                type="button"
+                                onClick={() => setIsCategoryOpen(!isCategoryOpen)}
+                                className="w-full bg-slate-50 border border-slate-100 px-5 py-4 rounded-xl flex items-center justify-between transition-all hover:bg-slate-100 group"
+                            >
+                                <span className={`text-[10px] uppercase tracking-widest ${newProduct.categoryId ? 'text-black font-black' : 'text-slate-400 font-bold'}`}>
+                                    {categories.find((c: any) => c._id === newProduct.categoryId)?.name || "Select Category"}
+                                </span>
+                                <svg className={`w-4 h-4 text-slate-300 transition-transform duration-500 ${isCategoryOpen ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M19 9l-7 7-7-7" />
+                                </svg>
+                            </button>
+
+                            {isCategoryOpen && (
+                                <>
+                                    <div className="fixed inset-0 z-10" onClick={() => setIsCategoryOpen(false)} />
+                                    <div className="absolute top-full left-0 right-0 mt-3 bg-white border border-slate-200 rounded-2xl shadow-2xl z-20 overflow-hidden py-3 animate-in fade-in slide-in-from-top-4 duration-300">
+                                        <div className="max-h-72 overflow-y-auto custom-scrollbar">
+                                            {categories.map((cat: any) => (
+                                                <button
+                                                    key={cat._id}
+                                                    type="button"
+                                                    onClick={() => {
+                                                        setNewProduct({...newProduct, categoryId: cat._id});
+                                                        setIsCategoryOpen(false);
+                                                    }}
+                                                    className={`w-full px-6 py-4 text-left text-[9px] uppercase tracking-[0.3em] font-black transition-all hover:bg-black hover:text-white flex items-center justify-between group ${newProduct.categoryId === cat._id ? 'bg-slate-50 text-black' : 'text-slate-400'}`}
+                                                >
+                                                    {cat.name}
+                                                    {newProduct.categoryId === cat._id && (
+                                                        <div className="w-1.5 h-1.5 bg-black rounded-full" />
+                                                    )}
+                                                </button>
+                                            ))}
+                                        </div>
+                                    </div>
+                                </>
+                            )}
+                        </div>
+                    </div>
+
+                    {/* Financial Module */}
+                    <div className="bg-black text-white rounded-xl p-8 shadow-2xl shadow-black/20">
+                        <h4 className="text-[11px] text-white/50 uppercase tracking-[0.25em] font-black mb-10">04. Financial Value</h4>
+                        
+                        <div className="space-y-10">
+                            <div className="group">
+                                <label className="text-[8px] text-white/30 uppercase tracking-[0.3em] font-black mb-3 block">Retail Valuation (TK)</label>
+                                <div className="flex items-end gap-3 border-b border-white/10 pb-4 group-focus-within:border-white transition-all">
+                                    <span className="text-xl font-bold opacity-30">৳</span>
+                                    <input 
+                                        required
+                                        type="number"
+                                        value={newProduct.price}
+                                        onChange={(e) => setNewProduct({...newProduct, price: e.target.value})}
+                                        className="bg-transparent w-full text-3xl font-black outline-none placeholder:text-white/10"
+                                        placeholder="0.00"
+                                    />
+                                </div>
+                            </div>
+
+                            <div className="group">
+                                <label className="text-[8px] text-white/30 uppercase tracking-[0.3em] font-black mb-3 block">Available Inventory (QTY)</label>
+                                <div className="flex items-end gap-3 border-b border-white/10 pb-4 group-focus-within:border-white transition-all">
+                                    <span className="text-xl font-bold opacity-30">#</span>
+                                    <input 
+                                        required
+                                        type="number"
+                                        value={newProduct.stock}
+                                        onChange={(e) => setNewProduct({...newProduct, stock: e.target.value})}
+                                        className="bg-transparent w-full text-3xl font-black outline-none placeholder:text-white/10"
+                                        placeholder="0"
+                                    />
+                                </div>
+                            </div>
+
+                            <div className="pt-6">
+                                <button 
+                                    type="submit" 
+                                    disabled={isCreatingProduct || isUploadingImage}
+                                    className="w-full bg-white text-black font-black py-5 rounded-xl text-[11px] uppercase tracking-[0.4em] shadow-xl hover:bg-slate-100 transition-all active:scale-[0.98] disabled:opacity-30 ripple-effect"
+                                >
+                                    {isCreatingProduct || isUploadingImage ? "Syncing..." : "Publish To MallX"}
+                                </button>
+                                <p className="text-[7px] text-white/20 uppercase tracking-widest text-center mt-6 leading-relaxed">By pushing this asset, you confirm adherence to our international marketplace standards & logistics protocols.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Quick Tools */}
+                    <div className="bg-white border border-slate-200 rounded-xl p-6 flex items-center justify-between">
+                        <div className="flex -space-x-2">
+                            {[1,2,3].map(i => (
+                                <div key={i} className="w-8 h-8 rounded-full bg-slate-100 border-2 border-white flex items-center justify-center text-[10px] font-bold">A</div>
+                            ))}
+                        </div>
+                        <span className="text-[9px] text-slate-400 uppercase tracking-widest font-bold">Collaborator View</span>
+                    </div>
+
+                 </div>
               </div>
-              
-              <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-start">
-                  {/* Primary Slot */}
-                  <div className="md:col-span-12 group relative">
-                      <div className={`w-full h-80 bg-white border border-slate-200 rounded-xl flex items-center justify-center overflow-hidden transition-all shadow-sm ${imagePreviews[0] ? 'border-none' : 'hover:border-slate-900/20'}`}>
-                          {imagePreviews[0] ? (
-                              <>
-                                  <img src={imagePreviews[0]} className="w-full h-full object-cover" alt="Primary View" />
-                                  <div className="absolute top-6 left-6 px-3 py-1 bg-black/80 backdrop-blur rounded-full">
-                                      <p className="text-[8px] text-white uppercase tracking-widest font-bold">Hero Asset (Primary)</p>
-                                  </div>
-                                  <button 
-                                      onClick={() => removeImage(0)}
-                                      className="absolute top-6 right-6 w-8 h-8 bg-white shadow-xl rounded-full flex items-center justify-center text-slate-400 hover:text-red-500 transition-all active:scale-90"
-                                  >×</button>
-                              </>
-                          ) : (
-                              <div className="flex flex-col items-center">
-                                  <img src="/placeholder-product.png" className="w-32 opacity-10 mb-6 grayscale brightness-125" alt="Placeholder" />
-                                  <p className="text-[10px] text-slate-400 uppercase tracking-[0.2em]">Upload Primary Visual</p>
-                                  <input 
-                                      type="file" 
-                                      accept="image/*"
-                                      onChange={handleImageChange}
-                                      className="absolute inset-0 opacity-0 cursor-pointer"
-                                  />
-                              </div>
-                          )}
-                      </div>
-                  </div>
-
-                  {/* Secondary Slots */}
-                  <div className="md:col-span-12 grid grid-cols-3 gap-6">
-                      {[1, 2, 3].map((index) => (
-                          <div key={index} className="relative group">
-                              <div className={`aspect-square bg-white border border-slate-200 rounded-lg flex items-center justify-center overflow-hidden transition-all shadow-sm ${imagePreviews[index] ? 'border-none' : 'hover:border-slate-300'}`}>
-                                  {imagePreviews[index] ? (
-                                      <>
-                                          <img src={imagePreviews[index]} className="w-full h-full object-cover" alt={`Angle ${index}`} />
-                                          <button 
-                                              onClick={() => removeImage(index)}
-                                              className="absolute top-4 right-4 w-6 h-6 bg-white shadow-lg rounded-full flex items-center justify-center text-[10px] text-slate-400 hover:text-red-500"
-                                          >×</button>
-                                          <div className="absolute bottom-4 left-4 px-2 py-0.5 bg-black/50 backdrop-blur rounded-full">
-                                              <p className="text-[6px] text-white uppercase tracking-widest">Angle {index}</p>
-                                          </div>
-                                      </>
-                                  ) : (
-                                      <div className="flex flex-col items-center">
-                                          <div className="w-2 h-2 bg-slate-100 rounded-full mb-2" />
-                                          <p className="text-[8px] text-slate-300 uppercase tracking-widest">Extra {index}</p>
-                                          <input 
-                                              type="file" 
-                                              accept="image/*"
-                                              onChange={handleImageChange}
-                                              className="absolute inset-0 opacity-0 cursor-pointer"
-                                          />
-                                      </div>
-                                  )}
-                              </div>
-                          </div>
-                      ))}
-                  </div>
-              </div>
-           </section>
-
-           {/* Main Data Section */}
-           <section className="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm">
-              <form onSubmit={handleCreateProduct}>
-                  <div className="flex flex-col">
-                      {/* Row: Name */}
-                      <div className="grid grid-cols-1 md:grid-cols-4 border-b border-slate-100">
-                          <div className="md:col-span-1 bg-slate-50/50 p-6 flex items-center border-r border-slate-100">
-                              <label className="text-[10px] text-black uppercase tracking-[0.15em] font-bold leading-relaxed">Product Name</label>
-                          </div>
-                          <div className="md:col-span-3 p-4">
-                              <input 
-                                  required
-                                  type="text"
-                                  value={newProduct.name}
-                                  onChange={(e) => setNewProduct({...newProduct, name: e.target.value})}
-                                  className="w-full bg-transparent px-4 py-3 outline-none text-sm text-black placeholder:text-slate-400 transition-all focus:bg-slate-50/10 rounded-lg"
-                                  placeholder="Enter the official product name"
-                              />
-                          </div>
-                      </div>
-
-                      {/* Row: Category */}
-                      <div className="grid grid-cols-1 md:grid-cols-4 border-b border-slate-100">
-                          <div className="md:col-span-1 bg-slate-50/50 p-6 flex items-center border-r border-slate-100">
-                              <label className="text-[10px] text-black uppercase tracking-[0.15em] font-bold leading-relaxed">Category</label>
-                          </div>
-                          <div className="md:col-span-3 p-4">
-                              <div className="relative">
-                                  <button
-                                      type="button"
-                                      onClick={() => setIsCategoryOpen(!isCategoryOpen)}
-                                      className="w-full bg-slate-50/10 border border-slate-100 px-4 py-3 rounded-xl flex items-center justify-between transition-all hover:bg-slate-50/30 group"
-                                  >
-                                      <span className={`text-sm uppercase tracking-widest ${newProduct.categoryId ? 'text-black font-bold' : 'text-slate-400'}`}>
-                                          {categories.find((c: any) => c._id === newProduct.categoryId)?.name || "Select Product Category"}
-                                      </span>
-                                      <svg className={`w-4 h-4 text-slate-400 transition-transform duration-300 ${isCategoryOpen ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                                      </svg>
-                                  </button>
-
-                                  {isCategoryOpen && (
-                                      <>
-                                          <div 
-                                              className="fixed inset-0 z-10" 
-                                              onClick={() => setIsCategoryOpen(false)}
-                                          />
-                                          <div className="absolute top-full left-0 right-0 mt-2 bg-white border border-slate-100 rounded-2xl shadow-2xl shadow-black/10 z-20 overflow-hidden py-2 animate-in fade-in slide-in-from-top-2 duration-200">
-                                              <div className="max-h-60 overflow-y-auto">
-                                                  {categories.map((cat: any) => (
-                                                      <button
-                                                          key={cat._id}
-                                                          type="button"
-                                                          onClick={() => {
-                                                              setNewProduct({...newProduct, categoryId: cat._id});
-                                                              setIsCategoryOpen(false);
-                                                          }}
-                                                          className={`w-full px-6 py-3 text-left text-xs uppercase tracking-[0.2em] transition-all hover:bg-slate-50 flex items-center justify-between group ${newProduct.categoryId === cat._id ? 'bg-slate-50 text-black font-black' : 'text-slate-400'}`}
-                                                      >
-                                                          {cat.name}
-                                                          {newProduct.categoryId === cat._id && (
-                                                              <div className="w-1.5 h-1.5 bg-black rounded-full" />
-                                                          )}
-                                                      </button>
-                                                  ))}
-                                              </div>
-                                          </div>
-                                      </>
-                                  )}
-                              </div>
-                          </div>
-                      </div>
-
-                      {/* Row: Price & Stock */}
-                      <div className="grid grid-cols-1 md:grid-cols-4 border-b border-slate-100">
-                          <div className="md:col-span-1 bg-slate-50/50 p-6 flex items-center border-r border-slate-100">
-                              <label className="text-[10px] text-black uppercase tracking-[0.15em] font-bold leading-relaxed">Inventory</label>
-                          </div>
-                          <div className="md:col-span-3 grid grid-cols-1 md:grid-cols-2 divide-x divide-slate-100">
-                              <div className="p-4 flex items-center gap-4">
-                                  <span className="text-[9px] text-slate-400 uppercase tracking-widest">Price</span>
-                                  <input 
-                                      required
-                                      type="number"
-                                      value={newProduct.price}
-                                      onChange={(e) => setNewProduct({...newProduct, price: e.target.value})}
-                                      className="flex-1 bg-transparent px-2 py-3 outline-none text-sm font-bold text-black placeholder:text-slate-400"
-                                      placeholder="0.00 TK"
-                                  />
-                              </div>
-                              <div className="p-4 flex items-center gap-4">
-                                  <span className="text-[9px] text-slate-400 uppercase tracking-widest">Stock</span>
-                                  <input 
-                                      required
-                                      type="number"
-                                      value={newProduct.stock}
-                                      onChange={(e) => setNewProduct({...newProduct, stock: e.target.value})}
-                                      className="flex-1 bg-transparent px-2 py-3 outline-none text-sm font-bold text-black placeholder:text-slate-400"
-                                      placeholder="Quantity"
-                                  />
-                              </div>
-                          </div>
-                      </div>
-
-                      {/* Row: Description */}
-                      <div className="grid grid-cols-1 md:grid-cols-4 border-b border-slate-100">
-                          <div className="md:col-span-1 bg-slate-50/50 p-6 flex items-start pt-8 border-r border-slate-100">
-                              <label className="text-[10px] text-black uppercase tracking-[0.15em] font-bold leading-relaxed">Description</label>
-                          </div>
-                          <div className="md:col-span-3 p-4">
-                              <textarea 
-                                  required
-                                  rows={6}
-                                  value={newProduct.description}
-                                  onChange={(e) => setNewProduct({...newProduct, description: e.target.value})}
-                                  className="w-full bg-transparent px-4 py-4 outline-none text-sm text-black leading-relaxed resize-none placeholder:text-slate-400 focus:bg-slate-50/10 rounded-lg"
-                                  placeholder="Detail the technical aspects, materials, and benefits of the product..."
-                              />
-                          </div>
-                      </div>
-
-                      {/* Row: Action */}
-                      <div className="bg-slate-50/10 p-8 flex justify-end">
-                          <button 
-                              type="submit" 
-                              disabled={isCreatingProduct || isUploadingImage}
-                              className="bg-black text-white px-12 py-4 rounded-lg text-[10px] uppercase tracking-[0.25em] font-bold shadow-lg shadow-black/10 hover:bg-slate-900 active:scale-95 transition-all disabled:opacity-50"
-                          >
-                              {isCreatingProduct || isUploadingImage ? "Processing Protocol..." : "Commit To Marketplace"}
-                          </button>
-                      </div>
-                  </div>
-              </form>
-           </section>
+           </form>
         </div>
       </main>
+
+      <style jsx>{`
+        .custom-scrollbar::-webkit-scrollbar {
+          width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+          background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+          background: #000;
+          border-radius: 10px;
+        }
+      `}</style>
     </div>
   );
 }

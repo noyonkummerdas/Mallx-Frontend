@@ -21,6 +21,9 @@ export default function ProductDetailPage() {
 
   useEffect(() => {
     if (productData) {
+      console.log("-----------------------------------------");
+      console.log("REAL PRODUCT DATA FROM DATABASE:", productData.data?.product);
+      console.log("-----------------------------------------");
       if (productData.data?.product?.variants?.length > 0) {
         setSelectedVariant(productData.data.product.variants[0]);
       }
