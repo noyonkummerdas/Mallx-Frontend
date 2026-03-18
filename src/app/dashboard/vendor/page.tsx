@@ -132,7 +132,7 @@ export default function VendorDashboard() {
                  <h4 className="text-xs mb-6 border-l-2 border-slate-900 pl-3 uppercase tracking-tighter">Inventory Overview</h4>
                  <div className="space-y-3 max-h-[400px] overflow-y-auto pr-1 custom-scrollbar text-[10px]">
                     {vendorProducts.length > 0 ? vendorProducts.map((product: any) => (
-                       <Link href={`/catalog/products/${product._id}`} key={product._id} className="block p-4 rounded-xl bg-slate-50 border border-slate-100/50 hover:bg-white transition-all group">
+                        <Link href={`/dashboard/vendor/products/${product._id}`} key={product._id} className="block p-4 rounded-xl bg-slate-50 border border-slate-100/50 hover:bg-white transition-all group">
                           <div className="flex justify-between gap-3 mb-2">
                              <div>
                                 <p className="font-normal uppercase tracking-tight text-slate-900">{product.name}</p>

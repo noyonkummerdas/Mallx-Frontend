@@ -26,14 +26,16 @@ import {
 
 const menuItems = {
   admin: [
-    { name: "Global Stats", href: "/dashboard/admin", icon: LayoutDashboard },
-    { name: "Financial Audit", href: "/dashboard/admin#finance", icon: Wallet },
-    { name: "User Base", href: "/dashboard/admin#users", icon: Users },
-    { name: "Market Trends", href: "/dashboard/admin#trends", icon: TrendingUp },
+    { name: "Global Control", href: "/dashboard/admin", icon: LayoutDashboard },
+    { name: "Verification", href: "/dashboard/admin#verification", icon: Zap },
+    { name: "Catalog", href: "/dashboard/admin#catalog", icon: Package },
+    { name: "Finances", href: "/dashboard/admin#finance", icon: Wallet },
+    { name: "Users", href: "/dashboard/admin#users", icon: Users },
+    { name: "System", href: "/dashboard/admin#system", icon: Settings },
   ],
   vendor: [
     { name: "Shop Overview", href: "/dashboard/vendor", icon: LayoutDashboard },
-    { name: "Inventory", href: "/catalog/products", icon: Package },
+    { name: "Inventory", href: "/dashboard/vendor/products", icon: Package },
     { name: "Orders", href: "/dashboard/vendor#orders", icon: Store },
     { name: "Settlements", href: "/dashboard/vendor#finance", icon: Wallet },
   ],

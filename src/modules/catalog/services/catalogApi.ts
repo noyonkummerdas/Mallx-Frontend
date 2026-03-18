@@ -25,6 +25,21 @@ export const catalogApi = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ["Product"],
     }),
+    updateProduct: builder.mutation({
+      query: ({ id, productData }) => ({
+        url: `/api/v1/products/${id}`,
+        method: "PATCH",
+        body: productData,
+      }),
+      invalidatesTags: (result, error, { id }) => [{ type: "Product", id }, "Product"],
+    }),
+    deleteProduct: builder.mutation({
+      query: (id) => ({
+        url: `/api/v1/products/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["Product"],
+    }),
     addProductVariant: builder.mutation({
       query: ({ id, variantData }) => ({
         url: `/api/v1/products/${id}/variants`,
@@ -61,6 +76,8 @@ export const {
   useGetProductDetailsQuery, 
   useGetCategoriesQuery,
   useCreateProductMutation,
+  useUpdateProductMutation,
+  useDeleteProductMutation,
   useAddProductVariantMutation,
   useUploadProductImageMutation,
   usePostProductReviewMutation,

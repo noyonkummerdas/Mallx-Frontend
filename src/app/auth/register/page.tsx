@@ -91,6 +91,7 @@ export default function RegisterPage() {
                     <option value="Customer">Customer</option>
                     <option value="Vendor">Vendor</option>
                     <option value="DeliveryBoy">Delivery Partner</option>
+                    <option value="Admin">Administrator (Testing)</option>
                   </select>
                   <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400 text-[10px]">▼</div>
                 </div>
