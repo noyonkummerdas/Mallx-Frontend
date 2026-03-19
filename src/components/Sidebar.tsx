@@ -34,6 +34,7 @@ const menuItems = {
   admin: [
     { name: "Dashboard", href: "/dashboard/admin", icon: LayoutDashboard },
     { name: "Manage Users", href: "/dashboard/admin/users", icon: Users },
+    { name: "Categories", href: "/dashboard/admin/catalog", icon: Package },
     { name: "Partners", href: "/dashboard/admin/partners", icon: Handshake },
     { name: "Logistics", href: "/dashboard/admin/logistics", icon: Truck },
     { name: "Marketing", href: "/dashboard/admin/marketing", icon: Megaphone },
@@ -153,17 +154,17 @@ export default function Sidebar({ role }: SidebarProps) {
             )}
           </div>
           <div className="min-w-0">
-            <p className="text-[10px] text-slate-900 truncate uppercase tracking-tighter">
+            <p className="text-sm text-slate-900 truncate uppercase tracking-tighter">
               {user?.name || "Guest Account"}
             </p>
-            <p className="text-[8px] text-slate-400 uppercase tracking-widest mt-0.5">
+            <p className="text-sm text-slate-400 uppercase tracking-widest mt-0.5">
               {user?.role || "Member"}
             </p>
           </div>
         </div>
         
       <nav className="flex-1 px-3 py-6 space-y-1">
-        <p className="px-3 text-[9px] text-slate-400 uppercase tracking-widest mb-2 opacity-60">Navigation</p>
+        <p className="px-3 text-sm text-slate-400 uppercase tracking-widest mb-2 opacity-60">Navigation</p>
         
         {items.map((item) => {
           const Icon = item.icon;
@@ -180,17 +181,17 @@ export default function Sidebar({ role }: SidebarProps) {
               }`}
             >
               <Icon size={14} className={isActive ? "text-white" : "group-hover:scale-110 transition-transform"} />
-              <span className="text-[10px] uppercase tracking-wider">{item.name}</span>
+              <span className="text-sm uppercase tracking-wider">{item.name}</span>
             </Link>
           );
         })}
 
         <div className="pt-4 space-y-1">
-           <p className="px-3 text-[9px] text-slate-400 uppercase tracking-widest mb-2 opacity-60">Account</p>
+           <p className="px-3 text-sm text-slate-400 uppercase tracking-widest mb-2 opacity-60">Account</p>
            
            <Link href="/support" className="flex items-center gap-2.5 px-3 py-2 text-slate-500 hover:bg-slate-50 hover:text-slate-900 rounded-xl transition-all group">
               <MessageSquare size={14} />
-              <span className="text-[10px] uppercase tracking-wider">Support</span>
+              <span className="text-sm uppercase tracking-wider">Support</span>
            </Link>
            
            <Link href="/profile" className={`flex items-center gap-2.5 px-3 py-2 rounded-xl transition-all group ${
@@ -199,7 +200,7 @@ export default function Sidebar({ role }: SidebarProps) {
              : "text-slate-500 hover:bg-slate-50 hover:text-slate-900"
            }`}>
               <Settings size={14} />
-              <span className="text-[10px] uppercase tracking-wider">Profile</span>
+              <span className="text-sm uppercase tracking-wider">Profile</span>
            </Link>
 
            {user ? (
@@ -208,12 +209,12 @@ export default function Sidebar({ role }: SidebarProps) {
                className="w-full flex items-center gap-2.5 px-3 py-2 text-red-500 hover:bg-red-50 rounded-xl transition-all group"
              >
                <LogOut size={14} />
-               <span className="text-[10px] uppercase tracking-wider">Logout</span>
+               <span className="text-sm uppercase tracking-wider">Logout</span>
              </button>
            ) : (
              <Link href="/auth/login" className="flex items-center gap-2.5 px-3 py-2 text-slate-900 hover:bg-slate-50 rounded-xl transition-all group">
                <LogIn size={14} />
-               <span className="text-[10px] uppercase tracking-wider">Login</span>
+               <span className="text-sm uppercase tracking-wider">Login</span>
              </Link>
            )}
         </div>
@@ -223,7 +224,7 @@ export default function Sidebar({ role }: SidebarProps) {
       {user && (
         <div className="p-3 mt-auto">
           <div className="bg-slate-50 rounded-xl p-3 border border-slate-100">
-            <p className="text-[8px] text-slate-400 uppercase tracking-widest text-center">
+            <p className="text-sm text-slate-400 uppercase tracking-widest text-center">
               {user.email}
             </p>
           </div>

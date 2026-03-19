@@ -78,10 +78,6 @@ export const authApi = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ["User"],
     }),
-    getUsers: builder.query({
-      query: () => "/api/v1/direct-test",
-      providesTags: ["User"],
-    }),
   }),
 });
 
@@ -93,5 +89,4 @@ export const {
   useToggle2faMutation,
   useGetAddressesQuery,
   useAddAddressMutation,
-  useGetUsersQuery
 } = authApi;

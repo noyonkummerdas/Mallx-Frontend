@@ -86,13 +86,13 @@ export default function CheckoutPage() {
   return (
     <main className="min-h-screen bg-slate-50 text-slate-900 p-8">
       <div className="max-w-7xl mx-auto">
-        <h1 className="text-4xl font-black mb-12 tracking-tight text-slate-900 uppercase">Finalize Order</h1>
+        <h1 className="text-base font-black mb-12 tracking-tight text-slate-900 uppercase">Finalize Order</h1>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
           {/* Shipping Info */}
           <div className="space-y-10">
             <section>
-               <h2 className="text-xl font-black mb-6 flex items-center gap-4">
+               <h2 className="text-base font-black mb-6 flex items-center gap-4">
                   <span className="w-10 h-10 rounded-2xl bg-indigo-600 flex items-center justify-center text-sm font-black text-white shadow-lg shadow-indigo-600/20">1</span>
                   Delivery Destination
                </h2>
@@ -110,8 +110,8 @@ export default function CheckoutPage() {
                           : "border-white bg-white hover:border-slate-200"
                         }`}
                       >
-                         <p className="font-bold text-sm text-slate-900 mb-1 uppercase tracking-tight">{addr.street}</p>
-                         <p className="text-[10px] text-slate-500 font-black uppercase tracking-widest">{addr.city}, {addr.zipCode}</p>
+                         <p className="font-black text-sm text-slate-900 mb-1 uppercase tracking-tight">{addr.street}</p>
+                         <p className="text-sm text-slate-500 font-black uppercase tracking-widest">{addr.city}, {addr.zipCode}</p>
                       </div>
                     ))}
                     <button 
@@ -119,13 +119,13 @@ export default function CheckoutPage() {
                       className="p-6 rounded-3xl border-2 border-dashed border-slate-200 bg-transparent hover:bg-slate-50 transition-all flex flex-col items-center justify-center gap-2 group"
                     >
                        <svg className="w-5 h-5 text-slate-300 group-hover:text-indigo-600 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M12 4v16m8-8H4" /></svg>
-                       <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest group-hover:text-indigo-600">New Location</span>
+                       <span className="text-sm font-black text-slate-400 uppercase tracking-widest group-hover:text-indigo-600">New Location</span>
                     </button>
                   </div>
 
                   {showAddressForm && (
                     <form onSubmit={handleAddAddress} className="bg-white border border-indigo-100 p-8 rounded-[2.5rem] animate-in slide-in-from-top-4 fade-in duration-300">
-                       <h3 className="text-xs font-black text-indigo-600 uppercase tracking-widest mb-6">Register New Address</h3>
+                       <h3 className="text-sm font-black text-indigo-600 uppercase tracking-widest mb-6 border-l-4 border-indigo-600 pl-4">Register New Address</h3>
                        <div className="space-y-4">
                           <input 
                             required
@@ -151,8 +151,8 @@ export default function CheckoutPage() {
                              />
                           </div>
                           <div className="flex gap-4 pt-2">
-                             <button type="submit" disabled={isAddingAddress} className="flex-1 bg-indigo-600 text-white font-black py-3 rounded-xl text-xs uppercase tracking-widest shadow-lg shadow-indigo-600/20">Save</button>
-                             <button type="button" onClick={() => setShowAddressForm(false)} className="flex-1 bg-slate-100 text-slate-500 font-black py-3 rounded-xl text-xs uppercase tracking-widest">Cancel</button>
+                             <button type="submit" disabled={isAddingAddress} className="flex-1 bg-indigo-600 text-white font-black py-3 rounded-xl text-sm uppercase tracking-widest shadow-lg shadow-indigo-600/20">Save</button>
+                             <button type="button" onClick={() => setShowAddressForm(false)} className="flex-1 bg-slate-100 text-slate-500 font-black py-3 rounded-xl text-sm uppercase tracking-widest">Cancel</button>
                           </div>
                        </div>
                     </form>
@@ -160,7 +160,7 @@ export default function CheckoutPage() {
 
                   <div className="grid grid-cols-2 gap-4">
                      <div>
-                        <label className="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2 ml-1">Logistics Area</label>
+                        <label className="block text-sm font-black text-slate-400 uppercase tracking-widest mb-2 ml-1">Logistics Area</label>
                         <select 
                           value={area}
                           onChange={(e) => setArea(e.target.value)}
@@ -171,7 +171,7 @@ export default function CheckoutPage() {
                         </select>
                      </div>
                      <div>
-                        <label className="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2 ml-1">Contact Handset</label>
+                        <label className="block text-sm font-black text-slate-400 uppercase tracking-widest mb-2 ml-1">Contact Handset</label>
                         <input 
                           required
                           value={phone}
@@ -186,7 +186,7 @@ export default function CheckoutPage() {
             </section>
 
             <section>
-               <h2 className="text-xl font-black mb-6 flex items-center gap-4">
+               <h2 className="text-base font-black mb-6 flex items-center gap-4">
                   <span className="w-10 h-10 rounded-2xl bg-indigo-600 flex items-center justify-center text-sm font-black text-white shadow-lg shadow-indigo-600/20">2</span>
                   Preferred Payment
                </h2>
@@ -197,7 +197,7 @@ export default function CheckoutPage() {
                      </div>
                      <div>
                         <p className="font-black text-slate-900 uppercase tracking-tight">Cash on Delivery</p>
-                        <p className="text-xs text-slate-500 font-bold italic">Pay upon successful item reception</p>
+                        <p className="text-sm text-slate-500 font-black">Pay upon successful item reception</p>
                      </div>
                   </div>
                   <div className="w-6 h-6 rounded-full border-4 border-indigo-600 bg-white shadow-inner" />
@@ -207,7 +207,7 @@ export default function CheckoutPage() {
 
           {/* Order Review */}
           <div className="bg-white border border-slate-200 p-10 rounded-[3rem] shadow-2xl shadow-slate-200/50">
-             <h2 className="text-2xl font-black mb-8 border-b border-slate-50 pb-4 tracking-tighter uppercase">Review Selection</h2>
+             <h2 className="text-base font-black mb-8 border-b-4 border-black pb-4 tracking-tighter uppercase">Review Selection</h2>
              <div className="space-y-6 mb-10 pb-8 border-b border-slate-100 max-h-[400px] overflow-y-auto pr-4 custom-scrollbar">
                 {cartData?.data?.items?.map((item: any) => (
                   <div key={item._id} className="flex justify-between items-center group">
@@ -217,7 +217,7 @@ export default function CheckoutPage() {
                         </div>
                         <div>
                            <p className="font-black text-sm line-clamp-1 uppercase tracking-tight text-slate-900">{item.productId?.name}</p>
-                           <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Qty: {item.quantity} · {item.variantId?.size}</p>
+                           <p className="text-sm font-black text-slate-400 uppercase tracking-widest">Qty: {item.quantity} · {item.variantId?.size}</p>
                         </div>
                      </div>
                      <span className="font-black text-sm text-slate-900">{(item.price * item.quantity).toLocaleString()} TK</span>
@@ -226,21 +226,21 @@ export default function CheckoutPage() {
              </div>
 
              <div className="space-y-4 mb-10">
-                <div className="flex justify-between text-slate-500 font-bold uppercase tracking-widest text-[10px]">
+                <div className="flex justify-between text-slate-500 font-black uppercase tracking-widest text-sm">
                   <span>Subtotal</span>
                   <span className="text-slate-900 font-black">{subtotal.toLocaleString()} TK</span>
                 </div>
-                <div className="flex justify-between text-slate-500 font-bold uppercase tracking-widest text-[10px]">
+                <div className="flex justify-between text-slate-500 font-black uppercase tracking-widest text-sm">
                   <span>Logistics Fee</span>
                   <span className="text-green-600 font-black">{deliveryCharge.toLocaleString()} TK</span>
                 </div>
                 {subtotal > 2000 && (
-                   <div className="flex justify-between text-indigo-600 font-bold uppercase tracking-widest text-[10px] bg-indigo-50 px-3 py-1 rounded-lg">
+                   <div className="flex justify-between text-indigo-600 font-black uppercase tracking-widest text-sm bg-indigo-50 px-3 py-1 rounded-lg">
                       <span>Tiered Discount</span>
                       <span className="font-black">-20 TK</span>
                    </div>
                 )}
-                <div className="flex justify-between text-3xl font-black pt-6 border-t border-slate-100 tracking-tighter">
+                <div className="flex justify-between text-base font-black pt-6 border-t font-black border-slate-100 tracking-tighter">
                   <span className="text-slate-900 uppercase">Total pay</span>
                   <span className="text-indigo-600">{grandTotal.toLocaleString()} TK</span>
                 </div>
@@ -253,7 +253,7 @@ export default function CheckoutPage() {
              >
                 {isCheckingOut ? "Connecting Systems..." : `Secure Order - ${grandTotal.toLocaleString()} TK`}
              </button>
-             <p className="text-center mt-6 text-[10px] text-slate-400 font-bold uppercase tracking-widest italic opacity-60 leading-relaxed">By placing this order, you agree to MallX's hyper-local delivery terms and platform safety protocols.</p>
+             <p className="text-center mt-6 text-sm text-slate-400 font-black uppercase tracking-widest opacity-60 leading-relaxed">By placing this order, you agree to MallX's hyper-local delivery terms and platform safety protocols.</p>
           </div>
         </div>
       </div>

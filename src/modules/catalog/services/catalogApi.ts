@@ -73,6 +73,14 @@ export const catalogApi = apiSlice.injectEndpoints({
       query: () => "/api/v1/products/admin/inventory",
       providesTags: ["Product"],
     }),
+    createCategory: builder.mutation({
+      query: (categoryData) => ({
+        url: "/api/v1/categories",
+        method: "POST",
+        body: categoryData,
+      }),
+      invalidatesTags: ["Category"],
+    }),
   }),
 });
 
@@ -87,5 +95,6 @@ export const {
   useUploadProductImageMutation,
   usePostProductReviewMutation,
   useGetRecentlyViewedQuery,
-  useGetAdminInventoryQuery
+  useGetAdminInventoryQuery,
+  useCreateCategoryMutation
 } = catalogApi;

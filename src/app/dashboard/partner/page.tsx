@@ -75,31 +75,31 @@ export default function PartnerDashboard() {
       <main className="flex-1 p-10 overflow-y-auto">
         <div className="max-w-7xl mx-auto">
 <header className="mb-8">
-    <h1 className="text-lg tracking-tight mb-1 text-slate-900 uppercase">Partner Hub</h1>
-    <p className="text-slate-500 text-[10px] tracking-wide">Regional orchestration and merchant governance.</p>
+    <h1 className="text-base font-black tracking-tight mb-1 text-slate-900 uppercase leading-none">Partner Hub</h1>
+    <p className="text-slate-500 font-bold text-sm tracking-wide">Regional orchestration and merchant governance.</p>
 </header>
 
         {/* Stats Grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8 text-slate-900">
            <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm group">
-              <p className="text-[9px] text-slate-400 uppercase tracking-widest mb-2">Partner Yield</p>
-              <h3 className="text-xl mb-1 tracking-tighter">{stats.partnerEarnings?.toLocaleString()} <span className="text-[10px] font-normal text-slate-400">TK</span></h3>
-              <p className="text-slate-900 text-[8px] uppercase tracking-wider bg-slate-100 px-2 py-0.5 rounded-full w-fit">Tier 1</p>
+              <p className="text-sm font-black text-slate-400 uppercase tracking-widest mb-2">Partner Yield</p>
+              <h3 className="text-base font-black mb-1 tracking-tighter">{stats.partnerEarnings?.toLocaleString()} <span className="text-sm font-normal text-slate-400">TK</span></h3>
+              <p className="text-slate-900 text-sm font-black uppercase tracking-wider bg-slate-100 px-2 py-0.5 rounded-full w-fit">Tier 1</p>
            </div>
            <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm">
-              <p className="text-[9px] text-slate-400 uppercase tracking-widest mb-2">Merchants</p>
-              <h3 className="text-xl mb-1 tracking-tighter">{vendors.length} <span className="text-[10px] font-normal text-slate-400">Shops</span></h3>
-              <p className="text-orange-500 text-[8px] uppercase tracking-wider bg-orange-50 px-2 py-0.5 rounded-full w-fit">Regional</p>
+              <p className="text-sm font-black text-slate-400 uppercase tracking-widest mb-2">Merchants</p>
+              <h3 className="text-base font-black mb-1 tracking-tighter">{vendors.length} <span className="text-sm font-normal text-slate-400">Shops</span></h3>
+              <p className="text-orange-500 text-sm font-black uppercase tracking-wider bg-orange-50 px-2 py-0.5 rounded-full w-fit">Regional</p>
            </div>
            <div className="bg-white border border-slate-900 rounded-2xl p-6 shadow-md group relative overflow-hidden">
-              <p className="text-[9px] text-slate-900 uppercase tracking-widest mb-2">Logistics Load</p>
+              <p className="text-sm font-black text-slate-900 uppercase tracking-widest mb-2">Logistics Load</p>
               <div className="flex items-center gap-4">
                  <div className="w-10 h-10 bg-slate-50 rounded-xl flex items-center justify-center border border-slate-100">
-                    <span className="text-sm text-slate-900">{shipments.length}</span>
+                    <span className="text-sm font-black text-slate-900">{shipments.length}</span>
                  </div>
                  <div>
-                    <h3 className="text-xs tracking-tighter text-slate-900 uppercase">Pending</h3>
-                    <p className="text-slate-400 text-[8px] uppercase tracking-widest leading-none">Awaiting Assignment</p>
+                    <h3 className="text-base font-black tracking-tighter text-slate-900 uppercase">Pending</h3>
+                    <p className="text-slate-400 text-sm font-bold uppercase tracking-widest leading-none">Awaiting Assignment</p>
                  </div>
               </div>
            </div>
@@ -108,18 +108,18 @@ export default function PartnerDashboard() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 text-slate-900">
            {/* Vendor Management */}
            <section className="bg-white border border-slate-200 rounded-3xl p-8 shadow-sm">
-              <h2 className="text-xs mb-6 border-l-2 border-slate-900 pl-3 uppercase tracking-tighter">Governance</h2>
+              <h2 className="text-base font-black mb-6 border-l-2 border-slate-900 pl-3 uppercase tracking-tighter">Governance</h2>
               <div className="space-y-4">
                  {vendors.length > 0 ? vendors.map((vendor: any) => (
                     <div key={vendor._id} className="p-4 rounded-2xl bg-slate-50 border border-slate-100/50 hover:bg-white transition-all group">
                        <div className="flex justify-between gap-3 mb-3">
                           <div>
-                             <p className="text-xs uppercase tracking-tight text-slate-900">{vendor.shopName}</p>
-                             <p className="text-[9px] text-slate-400 tracking-widest">{vendor.category?.name || "General Merchant"}</p>
+                             <p className="text-sm font-bold uppercase tracking-tight text-slate-900">{vendor.shopName}</p>
+                             <p className="text-sm text-slate-400 font-bold tracking-widest">{vendor.category?.name || "General Merchant"}</p>
                           </div>
                           <div className="text-right">
-                             <p className="text-[8px] text-slate-900 uppercase tracking-widest leading-none">Rate</p>
-                             <p className="text-xs text-slate-900">{vendor.commissionRate}%</p>
+                             <p className="text-sm font-black text-slate-900 uppercase tracking-widest leading-none">Rate</p>
+                             <p className="text-sm font-bold text-slate-900">{vendor.commissionRate}%</p>
                           </div>
                        </div>
                        
@@ -130,57 +130,57 @@ export default function PartnerDashboard() {
                                 value={commissionVal}
                                 onChange={(e) => setCommissionVal(e.target.value)}
                                 placeholder="%" 
-                                className="w-16 bg-white border border-slate-200 rounded-lg px-2 py-1 text-[10px] outline-none focus:border-slate-900"
+                                className="w-16 bg-white border border-slate-200 rounded-lg px-2 py-1 text-sm outline-none focus:border-slate-900 font-bold"
                              />
                              <button 
                                 onClick={() => handleSetCommission(vendor._id)}
                                 disabled={isSettingCommission}
-                                className="px-4 py-1.5 bg-slate-900 text-white rounded-lg text-[9px] uppercase tracking-widest"
+                                className="px-4 py-1.5 bg-slate-900 text-white rounded-lg text-sm font-black uppercase tracking-widest"
                              >Set</button>
-                             <button onClick={() => setSelectedVendor(null)} className="px-2 py-1.5 bg-slate-200 rounded-lg text-[9px]">✕</button>
+                             <button onClick={() => setSelectedVendor(null)} className="px-2 py-1.5 bg-slate-200 rounded-lg text-sm">✕</button>
                           </div>
                        ) : (
                           <button 
                              onClick={() => setSelectedVendor(vendor._id)}
-                             className="w-full py-1.5 bg-white border border-slate-200 rounded-lg text-[9px] uppercase tracking-widest hover:bg-slate-100 transition-all shadow-sm"
+                             className="w-full py-1.5 bg-white border border-slate-200 rounded-lg text-sm font-black uppercase tracking-widest hover:bg-slate-100 transition-all shadow-sm"
                           >Configure</button>
                        )}
                     </div>
                  )) : (
-                    <div className="text-center py-6 opacity-50 italic text-[9px] font-black uppercase tracking-widest">No merchants.</div>
+                    <div className="text-center py-6 opacity-50 text-sm font-black uppercase tracking-widest">No merchants.</div>
                  )}
               </div>
            </section>
 
            {/* Logistics Orchestration */}
            <section className="bg-white border border-slate-200 rounded-3xl p-8 shadow-sm text-slate-900">
-              <h2 className="text-xs mb-6 border-l-2 border-slate-900 pl-3 uppercase tracking-tighter">Dispatch Queue</h2>
+              <h2 className="text-base font-black mb-6 border-l-2 border-slate-900 pl-3 uppercase tracking-tighter">Dispatch Queue</h2>
               <div className="space-y-4">
                  {shipments.length > 0 ? shipments.map((ship: any) => (
                     <div key={ship._id} className="p-4 rounded-2xl bg-slate-50 border border-slate-100/50 hover:bg-white transition-all group">
                        <div className="flex justify-between items-center mb-4">
                           <div>
-                             <p className="text-[8px] text-slate-900 uppercase tracking-widest leading-none mb-1">UNASSIGNED</p>
-                             <p className="text-xs uppercase tracking-tight text-slate-900">REF: {ship._id.slice(-6).toUpperCase()}</p>
+                             <p className="text-sm font-black text-slate-900 uppercase tracking-widest leading-none mb-1">UNASSIGNED</p>
+                             <p className="text-sm font-bold uppercase tracking-tight text-slate-900">REF: {ship._id.slice(-6).toUpperCase()}</p>
                           </div>
-                          <span className="text-[8px] text-slate-400 bg-white border border-slate-100 px-2 py-0.5 rounded-lg">{ship.status}</span>
+                          <span className="text-sm font-black text-slate-400 bg-white border border-slate-100 px-2 py-0.5 rounded-lg">{ship.status}</span>
                        </div>
                        
                        <div className="bg-slate-50 border border-slate-100 p-3 rounded-xl mb-3">
-                          <p className="text-[8px] text-slate-400 uppercase tracking-widest mb-1">Route Detail</p>
-                          <p className="text-[10px] text-slate-700 leading-tight truncate">{ship.orderId?.shippingAddress?.street}</p>
+                          <p className="text-sm font-black text-slate-400 uppercase tracking-widest mb-1">Route Detail</p>
+                          <p className="text-sm text-slate-700 leading-tight truncate font-medium">{ship.orderId?.shippingAddress?.street}</p>
                        </div>
 
                        <div className="flex gap-2">
-                          <select className="flex-1 bg-white border border-slate-200 rounded-lg px-2 py-1.5 text-[9px] uppercase tracking-widest outline-none shadow-sm focus:border-slate-900">
+                          <select className="flex-1 bg-white border border-slate-200 rounded-lg px-2 py-1.5 text-sm font-black uppercase tracking-widest outline-none shadow-sm focus:border-slate-900">
                              <option>Select Agent</option>
                              <option>Agent: Rahim</option>
                           </select>
-                          <button className="px-4 py-1.5 bg-slate-900 text-white rounded-lg text-[9px] uppercase tracking-widest hover:scale-95 transition-all shadow-lg shadow-indigo-600/20">Assign</button>
+                          <button className="px-4 py-1.5 bg-slate-900 text-white rounded-lg text-sm font-black uppercase tracking-widest hover:scale-95 transition-all shadow-lg shadow-indigo-600/20">Assign</button>
                        </div>
                     </div>
                  )) : (
-                    <div className="text-center py-6 opacity-50 italic text-[9px] uppercase tracking-widest">Queue Clear.</div>
+                    <div className="text-center py-6 opacity-50 text-sm font-black uppercase tracking-widest">Queue Clear.</div>
                  )}
               </div>
            </section>

@@ -3,7 +3,7 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 export const apiSlice = createApi({
   reducerPath: 'api',
   baseQuery: fetchBaseQuery({
-    baseUrl: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000',
+    baseUrl: (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000').replace(/\/$/, ''),
     prepareHeaders: (headers) => {
       const token = typeof window !== 'undefined' ? localStorage.getItem('mallx_token') : null;
       if (token) {

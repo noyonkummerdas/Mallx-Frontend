@@ -3,16 +3,16 @@ import { apiSlice } from "./apiSlice";
 export const partnerApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getPartners: builder.query({
-      query: () => '/api/v1/partners',
+      query: () => '/api/v1/admin/partners',
       providesTags: ['Partner'],
     }),
     getPartnerById: builder.query({
-      query: (id) => `/api/v1/partners/${id}`,
+      query: (id) => `/api/v1/admin/partners/${id}`,
       providesTags: (result, error, id) => [{ type: 'Partner', id }],
     }),
     createPartner: builder.mutation({
       query: (body) => ({
-        url: '/api/v1/partners',
+        url: '/api/v1/admin/partners',
         method: 'POST',
         body,
       }),
@@ -20,7 +20,7 @@ export const partnerApi = apiSlice.injectEndpoints({
     }),
     updatePartner: builder.mutation({
       query: ({ id, ...body }) => ({
-        url: `/api/v1/partners/${id}`,
+        url: `/api/v1/admin/partners/${id}`,
         method: 'PATCH',
         body,
       }),

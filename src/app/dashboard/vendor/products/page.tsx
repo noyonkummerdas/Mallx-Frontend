@@ -5,7 +5,7 @@ import { useGetShopDetailsQuery } from "@/modules/business/services/businessApi"
 import { useGetProductsQuery } from "@/modules/shopping/services/productApi";
 import Sidebar from "@/components/Sidebar";
 import Link from "next/link";
-import { Plus, Search, Filter, MoreVertical, Edit2, Eye, Trash2 } from "lucide-react";
+import { Plus, Search, Filter, MoreVertical, Edit2, Eye, Trash2, Package } from "lucide-react";
 import { useState } from "react";
 
 export default function VendorProductsPage() {
@@ -34,11 +34,11 @@ export default function VendorProductsPage() {
           {/* Header */}
           <header className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-10">
             <div>
-              <h1 className="text-2xl font-bold text-slate-900 uppercase tracking-tighter">Inventory Management</h1>
-              <p className="text-[10px] text-slate-500 uppercase tracking-widest mt-1">Manage and track your listed assets</p>
+              <h1 className="text-base font-bold text-slate-900 uppercase tracking-tighter">Inventory Management</h1>
+              <p className="text-sm text-slate-500 uppercase tracking-widest mt-1">Manage and track your listed assets</p>
             </div>
             <Link href="/dashboard/vendor/products/create">
-              <button className="flex items-center gap-2 bg-slate-900 text-white px-6 py-3 rounded-xl text-[10px] uppercase tracking-widest font-bold hover:bg-black transition-all shadow-lg shadow-slate-900/10 active:scale-95">
+              <button className="flex items-center gap-2 bg-slate-900 text-white px-6 py-3 rounded-xl text-sm uppercase tracking-widest font-bold hover:bg-black transition-all shadow-lg shadow-slate-900/10 active:scale-95">
                 <Plus size={14} />
                 List New Product
               </button>
@@ -58,12 +58,12 @@ export default function VendorProductsPage() {
               />
             </div>
             <div className="flex items-center gap-3 w-full md:w-auto">
-              <button className="flex items-center gap-2 px-4 py-3 bg-slate-50 border border-slate-100 rounded-xl text-[10px] uppercase tracking-widest font-bold text-slate-600 hover:bg-white transition-all">
+              <button className="flex items-center gap-2 px-4 py-3 bg-slate-50 border border-slate-100 rounded-xl text-sm uppercase tracking-widest font-bold text-slate-600 hover:bg-white transition-all">
                 <Filter size={14} />
                 Filter
               </button>
               <div className="h-8 w-[1px] bg-slate-100 hidden md:block"></div>
-              <p className="text-[10px] text-slate-400 uppercase tracking-widest font-bold px-2">
+              <p className="text-sm text-slate-400 uppercase tracking-widest font-bold px-2">
                 Total: {filteredProducts.length}
               </p>
             </div>
@@ -75,12 +75,12 @@ export default function VendorProductsPage() {
               <table className="w-full text-left">
                 <thead>
                   <tr className="bg-slate-50 border-b border-slate-100">
-                    <th className="px-6 py-4 text-[9px] uppercase tracking-[0.2em] font-black text-slate-400">Product Details</th>
-                    <th className="px-6 py-4 text-[9px] uppercase tracking-[0.2em] font-black text-slate-400">SKU / ID</th>
-                    <th className="px-6 py-4 text-[9px] uppercase tracking-[0.2em] font-black text-slate-400">Price</th>
-                    <th className="px-6 py-4 text-[9px] uppercase tracking-[0.2em] font-black text-slate-400">Inventory</th>
-                    <th className="px-6 py-4 text-[9px] uppercase tracking-[0.2em] font-black text-slate-400">Status</th>
-                    <th className="px-6 py-4 text-[9px] uppercase tracking-[0.2em] font-black text-slate-400 text-right">Actions</th>
+                    <th className="px-6 py-4 text-sm uppercase tracking-[0.2em] font-black text-slate-400">Product Details</th>
+                    <th className="px-6 py-4 text-sm uppercase tracking-[0.2em] font-black text-slate-400">SKU / ID</th>
+                    <th className="px-6 py-4 text-sm uppercase tracking-[0.2em] font-black text-slate-400">Price</th>
+                    <th className="px-6 py-4 text-sm uppercase tracking-[0.2em] font-black text-slate-400">Inventory</th>
+                    <th className="px-6 py-4 text-sm uppercase tracking-[0.2em] font-black text-slate-400">Status</th>
+                    <th className="px-6 py-4 text-sm uppercase tracking-[0.2em] font-black text-slate-400 text-right">Actions</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-50 font-['Inter']">
@@ -99,20 +99,20 @@ export default function VendorProductsPage() {
                             {product.images && product.images[0] ? (
                               <img src={product.images[0].url} alt={product.name} className="w-full h-full object-cover" />
                             ) : (
-                              <div className="w-full h-full flex items-center justify-center text-[10px] text-slate-300">N/A</div>
+                              <div className="w-full h-full flex items-center justify-center text-sm text-slate-300">N/A</div>
                             )}
                           </div>
                           <div className="min-w-0">
-                            <p className="text-[11px] font-bold text-slate-900 uppercase truncate mb-0.5">{product.name}</p>
-                            <p className="text-[9px] text-slate-400 uppercase tracking-widest">{product.categoryId?.name || "Uncategorized"}</p>
+                            <p className="text-sm font-bold text-slate-900 uppercase truncate mb-0.5">{product.name}</p>
+                            <p className="text-sm text-slate-400 uppercase tracking-widest">{product.categoryId?.name || "Uncategorized"}</p>
                           </div>
                         </div>
                       </td>
                       <td className="px-6 py-4">
-                        <p className="text-[10px] font-mono text-slate-500 uppercase">{product.sku || product._id.slice(-8)}</p>
+                        <p className="text-sm font-mono text-slate-500 uppercase">{product.sku || product._id.slice(-8)}</p>
                       </td>
                       <td className="px-6 py-4">
-                        <p className="text-xs font-bold text-slate-900">{product.price.toLocaleString()} TK</p>
+                        <p className="text-sm font-bold text-slate-900">{product.price.toLocaleString()} TK</p>
                       </td>
                       <td className="px-6 py-4">
                         <div className="flex items-center gap-2">
@@ -121,7 +121,7 @@ export default function VendorProductsPage() {
                         </div>
                       </td>
                       <td className="px-6 py-4">
-                        <span className={`px-2 py-1 rounded-lg text-[8px] uppercase tracking-[0.1em] font-black ${
+                        <span className={`px-2 py-1 rounded-lg text-sm uppercase tracking-[0.1em] font-black ${
                           product.status === 'Active' ? 'bg-green-50 text-green-600' : 
                           product.status === 'Pending' ? 'bg-orange-50 text-orange-600' : 'bg-slate-100 text-slate-400'
                         }`}>
@@ -149,7 +149,7 @@ export default function VendorProductsPage() {
                         <div className="mb-4 opacity-10">
                            <Package size={48} className="mx-auto" />
                         </div>
-                        <p className="text-[10px] text-slate-400 uppercase tracking-widest">No products found in your inventory</p>
+                        <p className="text-sm text-slate-400 uppercase tracking-widest">No products found in your inventory</p>
                       </td>
                     </tr>
                   )}

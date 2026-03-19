@@ -27,22 +27,22 @@ export default function AdminPartnerMappingPage() {
   return (
     <div className="p-6">
       <header className="mb-8">
-        <h1 className="text-xl font-black text-slate-900 uppercase tracking-tight">Strategic Category Ownership</h1>
-        <p className="text-[10px] text-slate-500 font-bold uppercase tracking-widest mt-1 italic">Map logistical partners to specific marketplace verticals</p>
+        <h1 className="text-base font-black text-slate-900 uppercase tracking-tight">Strategic Category Ownership</h1>
+        <p className="text-sm text-slate-500 font-bold uppercase tracking-widest mt-1">Map logistical partners to specific marketplace verticals</p>
       </header>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Mapping Controls */}
         <section className="lg:col-span-1 bg-white border border-slate-200 rounded-3xl p-8 shadow-sm">
-           <h2 className="text-xs font-black border-l-2 border-indigo-600 pl-3 uppercase tracking-tighter mb-8 font-mono text-indigo-900">Vertical Assignment</h2>
+           <h2 className="text-base font-black border-l-2 border-indigo-600 pl-3 uppercase tracking-tighter mb-8 font-mono text-indigo-900 leading-none">Vertical Assignment</h2>
            
            <div className="space-y-6">
               <div>
-                <label className="block text-[9px] font-black text-slate-400 uppercase tracking-widest mb-2 ml-1">Logistical Partner</label>
+                <label className="block text-sm font-black text-slate-400 uppercase tracking-widest mb-2 ml-1">Logistical Partner</label>
                 <select 
                   value={mapping.partnerId}
                   onChange={(e) => setMapping({...mapping, partnerId: e.target.value})}
-                  className="w-full bg-slate-50 border-none rounded-2xl px-4 py-3 text-[10px] font-bold text-slate-900 shadow-inner"
+                  className="w-full bg-slate-50 border-none rounded-2xl px-4 py-3 text-sm font-black text-slate-900 shadow-inner"
                 >
                    <option value="">Select Entity</option>
                    {partners.map((p: any) => (
@@ -52,11 +52,11 @@ export default function AdminPartnerMappingPage() {
               </div>
 
               <div>
-                <label className="block text-[9px] font-black text-slate-400 uppercase tracking-widest mb-2 ml-1">Marketplace Category</label>
+                <label className="block text-sm font-black text-slate-400 uppercase tracking-widest mb-2 ml-1">Marketplace Category</label>
                 <select 
                    value={mapping.categoryId}
                    onChange={(e) => setMapping({...mapping, categoryId: e.target.value})}
-                   className="w-full bg-slate-50 border-none rounded-2xl px-4 py-3 text-[10px] font-bold text-slate-900 shadow-inner"
+                   className="w-full bg-slate-50 border-none rounded-2xl px-4 py-3 text-sm font-black text-slate-900 shadow-inner"
                 >
                    <option value="">Select Domain</option>
                    {categories.map((c: any) => (
@@ -68,7 +68,7 @@ export default function AdminPartnerMappingPage() {
               <button 
                 onClick={handleAssign}
                 disabled={isAssigning}
-                className="w-full py-4 bg-indigo-600 text-white rounded-2xl text-[10px] font-black uppercase tracking-widest hover:bg-indigo-700 transition-all flex items-center justify-center gap-2 shadow-lg shadow-indigo-600/20 mt-4"
+                className="w-full py-4 bg-indigo-600 text-white rounded-2xl text-sm font-black uppercase tracking-widest hover:bg-indigo-700 transition-all flex items-center justify-center gap-2 shadow-lg shadow-indigo-600/20 mt-4"
               >
                  <Zap size={14} />
                  {isAssigning ? "Establishing Link..." : "Commence Mapping"}
@@ -79,8 +79,8 @@ export default function AdminPartnerMappingPage() {
         {/* Current Matrix */}
         <section className="lg:col-span-2 bg-white border border-slate-200 rounded-3xl p-8 shadow-sm">
            <div className="flex items-center justify-between mb-8 text-slate-900">
-              <h2 className="text-xs font-black border-l-2 border-slate-900 pl-3 uppercase tracking-tighter font-mono">Active Ownership Matrix</h2>
-              <div className="px-3 py-1 bg-slate-900 text-white text-[8px] font-black uppercase rounded-lg">Operational Live</div>
+              <h2 className="text-base font-black border-l-2 border-slate-900 pl-3 uppercase tracking-tighter font-mono leading-none">Active Ownership Matrix</h2>
+              <div className="px-3 py-1 bg-slate-900 text-white text-sm font-black uppercase rounded-lg">Operational Live</div>
            </div>
 
            <div className="space-y-3">
@@ -91,10 +91,10 @@ export default function AdminPartnerMappingPage() {
                           <Truck size={16} />
                        </div>
                        <div>
-                          <p className="text-[10px] font-black text-slate-900 uppercase leading-none mb-1">{partner.userId?.name}</p>
+                          <p className="text-sm font-black text-slate-900 uppercase leading-none mb-1">{partner.userId?.name}</p>
                           <div className="flex flex-wrap gap-1">
                              {partner.assignedCategories.map((cat: any) => (
-                                <span key={cat._id} className="text-[7px] font-black text-slate-400 bg-white border border-slate-100 px-1.5 py-0.5 rounded-md uppercase tracking-tighter">
+                                <span key={cat._id} className="text-sm font-black text-slate-400 bg-white border border-slate-100 px-1.5 py-0.5 rounded-md uppercase tracking-tighter">
                                    {cat.name}
                                 </span>
                              ))}
@@ -103,8 +103,8 @@ export default function AdminPartnerMappingPage() {
                     </div>
                     <div className="flex items-center gap-3">
                        <div className="text-right">
-                          <p className="text-[8px] font-black text-slate-400 uppercase tracking-widest leading-none">Status</p>
-                          <p className="text-[9px] font-black text-indigo-600 uppercase tracking-tight">Regulated</p>
+                          <p className="text-sm font-black text-slate-400 uppercase tracking-widest leading-none">Status</p>
+                          <p className="text-sm font-black text-indigo-600 uppercase tracking-tight">Regulated</p>
                        </div>
                        <div className="p-2 text-slate-300 group-hover:text-indigo-600 transition-colors">
                           <ChevronRight size={14} />
@@ -117,7 +117,7 @@ export default function AdminPartnerMappingPage() {
                     <div className="w-12 h-12 bg-slate-50 rounded-full flex items-center justify-center text-slate-200 mx-auto mb-4">
                        <LinkIcon size={20} />
                     </div>
-                    <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">No ownership links established yet.</p>
+                    <p className="text-sm font-black text-slate-400 uppercase tracking-widest">No ownership links established yet.</p>
                  </div>
               )}
            </div>
