@@ -21,17 +21,25 @@ import {
   X,
   ShoppingCart,
   User,
-  LogIn
+  LogIn,
+  CreditCard,
+  Handshake,
+  Megaphone,
+  ShoppingBag,
+  Activity,
+  UserCog
 } from "lucide-react";
 
 const menuItems = {
   admin: [
-    { name: "Global Control", href: "/dashboard/admin", icon: LayoutDashboard },
-    { name: "Verification", href: "/dashboard/admin#verification", icon: Zap },
-    { name: "Catalog", href: "/dashboard/admin#catalog", icon: Package },
-    { name: "Finances", href: "/dashboard/admin#finance", icon: Wallet },
-    { name: "Users", href: "/dashboard/admin#users", icon: Users },
-    { name: "System", href: "/dashboard/admin#system", icon: Settings },
+    { name: "Dashboard", href: "/dashboard/admin", icon: LayoutDashboard },
+    { name: "Manage Users", href: "/dashboard/admin/users", icon: Users },
+    { name: "Partners", href: "/dashboard/admin/partners", icon: Handshake },
+    { name: "Logistics", href: "/dashboard/admin/logistics", icon: Truck },
+    { name: "Marketing", href: "/dashboard/admin/marketing", icon: Megaphone },
+    { name: "Orders", href: "/dashboard/admin/orders/returns", icon: ShoppingBag },
+    { name: "Activity Logs", href: "/dashboard/admin/activity", icon: Activity },
+    { name: "Settings", href: "/dashboard/admin/settings/profile", icon: UserCog },
   ],
   vendor: [
     { name: "Shop Overview", href: "/dashboard/vendor", icon: LayoutDashboard },

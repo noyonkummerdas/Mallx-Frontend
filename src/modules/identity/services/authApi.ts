@@ -1,6 +1,7 @@
 import { apiSlice } from "@/store/api/apiSlice";
 
 export const authApi = apiSlice.injectEndpoints({
+  overrideExisting: true,
   endpoints: (builder) => ({
     login: builder.mutation({
       query: (credentials) => ({
@@ -77,6 +78,10 @@ export const authApi = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ["User"],
     }),
+    getUsers: builder.query({
+      query: () => "/api/v1/direct-test",
+      providesTags: ["User"],
+    }),
   }),
 });
 
@@ -87,5 +92,6 @@ export const {
   useGetMeQuery,
   useToggle2faMutation,
   useGetAddressesQuery,
-  useAddAddressMutation
+  useAddAddressMutation,
+  useGetUsersQuery
 } = authApi;

@@ -1,6 +1,7 @@
 import { apiSlice } from "@/store/api/apiSlice";
 
 export const catalogApi = apiSlice.injectEndpoints({
+  overrideExisting: true,
   endpoints: (builder) => ({
     getProducts: builder.query({
       query: (params) => ({
@@ -68,6 +69,10 @@ export const catalogApi = apiSlice.injectEndpoints({
       query: () => "/api/v1/products/personal/recently-viewed",
       providesTags: ["Product"],
     }),
+    getAdminInventory: builder.query({
+      query: () => "/api/v1/products/admin/inventory",
+      providesTags: ["Product"],
+    }),
   }),
 });
 
@@ -81,5 +86,6 @@ export const {
   useAddProductVariantMutation,
   useUploadProductImageMutation,
   usePostProductReviewMutation,
-  useGetRecentlyViewedQuery
+  useGetRecentlyViewedQuery,
+  useGetAdminInventoryQuery
 } = catalogApi;

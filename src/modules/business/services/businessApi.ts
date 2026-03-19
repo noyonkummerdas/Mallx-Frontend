@@ -1,9 +1,18 @@
 import { apiSlice } from "@/store/api/apiSlice";
 
 export const businessApi = apiSlice.injectEndpoints({
+  overrideExisting: true,
   endpoints: (builder) => ({
     getShopDetails: builder.query({
       query: () => "/api/v1/vendors/me/shop",
+      providesTags: ["User"],
+    }),
+    getAllDocuments: builder.query({
+      query: () => "/api/v1/vendors/all-documents",
+      providesTags: ["User"],
+    }),
+    getPartners: builder.query({
+      query: () => "/api/v1/partners",
       providesTags: ["User"],
     }),
     uploadDocuments: builder.mutation({
@@ -40,6 +49,13 @@ export const businessApi = apiSlice.injectEndpoints({
         body: data,
       }),
     }),
+    processRefund: builder.mutation({
+      query: (data) => ({
+        url: "/api/v1/payments/refund",
+        method: "POST",
+        body: data,
+      }),
+    }),
   }),
 });
 
@@ -50,5 +66,8 @@ export const {
   useGetPartnerDashboardQuery,
   useAssignPartnerCategoryMutation,
   useSetCommissionMutation,
-  useConfigurePaymentMethodsMutation
+  useConfigurePaymentMethodsMutation,
+  useProcessRefundMutation,
+  useGetAllDocumentsQuery,
+  useGetPartnersQuery
 } = businessApi;
