@@ -64,7 +64,9 @@ export default function PartnerDashboard() {
     }
   };
 
-  const stats = dashboardData?.data || { totalVendors: 0, activeShipments: 0, partnerEarnings: 0 };
+  const stats = dashboardData?.data?.stats || { totalSales: 0, orderCount: 0, vendorCount: 0 };
+  const partner = dashboardData?.data?.partner;
+  const assignedCategories = partner?.assignedCategories || [];
   const vendors = vendorsData?.data?.vendors || [];
   const shipments = shipmentsData?.data?.shipments || [];
 
@@ -74,10 +76,23 @@ export default function PartnerDashboard() {
       
       <main className="flex-1 p-10 overflow-y-auto">
         <div className="max-w-7xl mx-auto">
-<header className="mb-8">
-    <h1 className="text-base font-black tracking-tight mb-1 text-slate-900 uppercase leading-none">Partner Hub</h1>
-    <p className="text-slate-500 font-bold text-sm tracking-wide">Regional orchestration and merchant governance.</p>
-</header>
+          <header className="mb-8 flex flex-col md:flex-row md:items-end justify-between gap-4">
+              <div>
+                  <h1 className="text-base font-black tracking-tight mb-1 text-slate-900 uppercase leading-none">Partner Hub</h1>
+                  <p className="text-slate-500 font-bold text-sm tracking-wide">Regional orchestration and merchant governance.</p>
+              </div>
+              <div className="flex flex-wrap gap-2">
+                  {assignedCategories.length > 0 ? assignedCategories.map((cat: any) => (
+                      <span key={cat._id} className="px-3 py-1 bg-white border border-slate-200 text-slate-900 text-[10px] font-black uppercase tracking-widest rounded-xl shadow-sm">
+                          Sector: {cat.name}
+                      </span>
+                  )) : (
+                      <span className="px-3 py-1 bg-slate-900 text-white text-[10px] font-black uppercase tracking-widest rounded-xl shadow-sm">
+                          Universal Operations
+                      </span>
+                  )}
+              </div>
+          </header>
 
         {/* Stats Grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8 text-slate-900">

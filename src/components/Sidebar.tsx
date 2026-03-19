@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useGetMeQuery } from "@/modules/identity/services/authApi";
 import { 
   LayoutDashboard, 
@@ -103,10 +103,19 @@ export default function Sidebar({ role }: SidebarProps) {
   const pathname = usePathname();
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
+  const [hash, setHash] = useState("");
   const { data: userData } = useGetMeQuery({});
   
   const user = userData?.data?.user;
   
+  useEffect(() => {
+    // Current hash logic
+    setHash(window.location.hash);
+    const handleHash = () => setHash(window.location.hash);
+    window.addEventListener("hashchange", handleHash);
+    return () => window.removeEventListener("hashchange", handleHash);
+  }, [pathname]);
+
   // Use real role from API if available, otherwise use prop
   const activeRole = user ? mapRoleToKey(user.role) : role;
   const items = menuItems[activeRole] || [];
@@ -141,7 +150,7 @@ export default function Sidebar({ role }: SidebarProps) {
       }`}>
         
         {/* User Identity Section - Side-by-Side Layout */}
-        <div className="px-6 py-8 border-b border-slate-50 flex items-center gap-4 group">
+        <div className="sticky top-0 bg-white z-10 px-6 py-8 border-b border-slate-50 flex items-center gap-4 group">
           <div className="w-10 h-10 rounded-full overflow-hidden border border-slate-100 shadow-sm flex-shrink-0 group-hover:scale-110 transition-transform">
             {user?.photo ? (
               <img src={user.photo} alt={user.name} className="w-full h-full object-cover" />
@@ -168,12 +177,22 @@ export default function Sidebar({ role }: SidebarProps) {
         
         {items.map((item) => {
           const Icon = item.icon;
-          const isActive = pathname === item.href || pathname === item.href.split('#')[0];
+          const [itemPath, itemHash] = item.href.split('#');
+          const isActive = itemHash 
+            ? (pathname === itemPath && hash === '#' + itemHash)
+            : (pathname === itemPath && (hash === "" || hash === "#"));
+
+          console.log(`Sidebar Link [${item.name}] - isActive:`, isActive, { pathname, hash, itemPath, itemHash });
           
           return (
             <Link 
               key={item.href}
               href={item.href}
+              onClick={() => {
+                const [_, newHash] = item.href.split('#');
+                setHash(newHash ? '#' + newHash : "");
+                console.log(`Sidebar Click [${item.name}] - setting hash:`, newHash);
+              }}
               className={`flex items-center gap-2.5 px-3 py-2 rounded-xl transition-all group ${
                 isActive 
                 ? "bg-slate-900 text-white shadow-md shadow-slate-900/10" 

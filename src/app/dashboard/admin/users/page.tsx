@@ -1,13 +1,14 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Search, Filter, ChevronRight, Loader2, ShieldCheck, ShieldAlert, User as UserIcon } from "lucide-react";
+import { Search, Filter, ChevronRight, Loader2, ShieldCheck, ShieldAlert, User as UserIcon, Plus } from "lucide-react";
 import { useGetUsersQuery, useUpdateUserStatusMutation } from "@/store/api/userApi";
 
 export default function UsersPage() {
   const { data: usersData, isLoading, isError, error, refetch } = useGetUsersQuery({});
   const [updateStatus, { isLoading: isUpdating }] = useUpdateUserStatusMutation();
   const [updatingId, setUpdatingId] = useState<string | null>(null);
+  const [selectedUser, setSelectedUser] = useState<any>(null);
 
   // High-performance placeholder image generator
   const getProfileImage = (name: string, i: number) => {
@@ -31,6 +32,81 @@ export default function UsersPage() {
 
   return (
     <>
+      {/* Search & Oversight Modal */}
+      {selectedUser && (
+        <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-md z-[100] flex items-center justify-center p-4 transition-all duration-500 animate-in fade-in">
+          <div className="bg-white border border-slate-200 rounded-[40px] w-full max-w-lg shadow-[0_32px_128px_rgba(0,0,0,0.1)] overflow-hidden relative animate-in zoom-in-95 slide-in-from-bottom-8 duration-500">
+            <button 
+              onClick={() => setSelectedUser(null)}
+              className="absolute top-8 right-8 p-3 hover:bg-slate-100 rounded-2xl text-slate-400 hover:text-slate-900 transition-all z-10"
+            >
+              <Plus size={24} className="rotate-45" />
+            </button>
+            
+            <div className="h-32 bg-slate-900 relative">
+               <div className="absolute inset-0 opacity-20 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-indigo-500 via-transparent to-transparent" />
+            </div>
+            
+            <div className="px-10 pb-10 -mt-16 relative">
+              <div className="relative mb-6">
+                <img 
+                  src={getProfileImage(selectedUser.name, 0)}
+                  alt={selectedUser.name}
+                  className="w-28 h-28 rounded-[32px] object-cover border-8 border-white shadow-2xl bg-white"
+                />
+                <div className={`absolute bottom-2 left-24 w-6 h-6 rounded-full border-4 border-white ${selectedUser.status === 'Active' ? 'bg-emerald-500 shadow-[0_0_12px_rgba(16,185,129,0.5)]' : 'bg-rose-400'}`} />
+              </div>
+              
+              <div className="space-y-8">
+                <div>
+                  <h3 className="text-2xl font-black text-slate-900 uppercase tracking-tighter leading-none mb-2">
+                    {selectedUser.name}
+                  </h3>
+                  <p className="text-sm font-black text-slate-400 lowercase tracking-tight mb-4">{selectedUser.email}</p>
+                  <div className="flex gap-2">
+                    <span className={`px-3 py-1 rounded-xl text-[10px] font-black uppercase tracking-[0.2em] ${(selectedUser.role || selectedUser.roleId?.name) === 'Admin' ? 'bg-slate-900 text-white shadow-lg' : 'bg-indigo-50 text-indigo-600 border border-indigo-100'}`}>
+                      {(selectedUser.role || selectedUser.roleId?.name) || "Customer"}
+                    </span>
+                    <span className="px-3 py-1 bg-slate-50 text-slate-400 border border-slate-100 rounded-xl text-[10px] font-black uppercase tracking-[0.2em]">
+                      UID: {selectedUser._id?.slice(-8).toUpperCase()}
+                    </span>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-2 gap-4">
+                   <div className="bg-slate-50/50 rounded-3xl p-5 border border-slate-100 group hover:border-indigo-200 transition-all duration-300">
+                      <p className="text-[10px] text-slate-400 font-black uppercase tracking-[0.2em] mb-2">Registration</p>
+                      <p className="text-xs font-black text-slate-900 uppercase tracking-tighter">
+                        {new Date(selectedUser.createdAt).toLocaleDateString()}
+                      </p>
+                   </div>
+                   <div className="bg-slate-50/50 rounded-3xl p-5 border border-slate-100 group hover:border-emerald-200 transition-all duration-300">
+                      <p className="text-[10px] text-slate-400 font-black uppercase tracking-[0.2em] mb-2">Security Verification</p>
+                      <p className="text-xs font-black text-emerald-600 uppercase tracking-tighter">Authenticated</p>
+                   </div>
+                </div>
+
+                <div className="pt-8 border-t border-slate-100 flex gap-4">
+                   <button 
+                    onClick={() => handleStatusChange(selectedUser._id, selectedUser.status)}
+                    disabled={updatingId === selectedUser._id}
+                    className={`flex-1 py-4 rounded-3xl text-[10px] font-black uppercase tracking-[0.3em] transition-all active:scale-[0.98] shadow-lg ${selectedUser.status === 'Active' ? 'bg-rose-50 text-rose-500 hover:bg-rose-100 shadow-rose-500/5' : 'bg-emerald-50 text-emerald-600 hover:bg-emerald-100 shadow-emerald-500/5'}`}
+                   >
+                     {updatingId === selectedUser._id ? "Processing..." : (selectedUser.status === 'Active' ? "Deactivate Access" : "Restore Access")}
+                   </button>
+                   <button 
+                    onClick={() => setSelectedUser(null)}
+                    className="px-8 py-4 bg-slate-100 text-slate-400 rounded-3xl text-[10px] font-black uppercase tracking-[0.3em] hover:bg-slate-900 hover:text-white transition-all active:scale-[0.98]"
+                   >
+                     Exit
+                   </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
       <header className="mb-8 flex justify-between items-center">
         <div>
           <h1 className="text-base font-black tracking-tight mb-1 text-slate-900 uppercase leading-none">Universal Profiling</h1>
@@ -150,7 +226,10 @@ export default function UsersPage() {
                     </button>
                   </td>
                   <td className="py-5 px-2 text-right">
-                    <button className="p-2.5 bg-slate-50 text-slate-400 rounded-xl hover:text-indigo-600 hover:bg-indigo-50 transition-all">
+                    <button 
+                      onClick={() => setSelectedUser(user)}
+                      className="p-2.5 bg-slate-50 text-slate-400 rounded-xl hover:text-indigo-600 hover:bg-indigo-50 transition-all hover:scale-110 active:scale-95 shadow-sm"
+                    >
                        {user.status === 'Active' ? <ShieldCheck size={14} /> : <ShieldAlert size={14} />}
                     </button>
                   </td>

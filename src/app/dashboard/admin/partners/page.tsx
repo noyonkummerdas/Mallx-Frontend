@@ -5,23 +5,12 @@ import { Users, Search, Filter, ChevronRight, LayoutGrid, ShieldAlert, Plus } fr
 import { useGetPartnersQuery } from "@/store/api/partnerApi";
 
 export default function PartnersPage() {
-  const { data: partnersData, isLoading, refetch } = useGetPartnersQuery({});
+  const { data: partnersData, isLoading, isFetching, isSuccess, refetch } = useGetPartnersQuery({});
   const [selectedPartner, setSelectedPartner] = useState<any>(null);
 
-  useEffect(() => {
-    if (partnersData) {
-      console.log("Admin Partners Page - [LIST]:", partnersData);
-      const partnersList = Array.isArray(partnersData?.data) ? partnersData.data : partnersData?.data?.partners || [];
-      partnersList.forEach((p: any) => {
-        console.log(`🔍 Partner [${p.businessName || p.name || '?'}] Categories:`, p.assignedCategories);
-      });
-    }
-  }, [partnersData, isLoading]);
-
-  // Handle both { data: { partners: [...] } } and { data: [...] } structures
-  const partners = Array.isArray(partnersData?.data) 
-    ? partnersData.data 
-    : partnersData?.data?.partners || [];
+  // Robust data extraction
+  const partners = isSuccess ? (Array.isArray(partnersData?.data) ? partnersData.data : (partnersData?.data?.partners || [])) : [];
+  const showSkeleton = isLoading || (isFetching && partners.length === 0);
 
   return (
     <>
@@ -129,8 +118,8 @@ export default function PartnersPage() {
             </div>
          </div>
          
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-             {isLoading ? (
+           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+             {showSkeleton ? (
                [1, 2, 3].map(i => (
                 <div key={i} className="bg-slate-50 border border-slate-100 rounded-[32px] p-6 animate-pulse">
                   <div className="flex justify-between items-start mb-6">
@@ -208,14 +197,14 @@ export default function PartnersPage() {
                   </div>
                 </div>
               );
-            }) : (
+             }) : isSuccess && partners.length === 0 ? (
                <div className="col-span-full py-16 text-center">
                 <p className="text-sm uppercase font-black text-slate-400 mb-4">No regional partners detected in registry.</p>
                 <button onClick={() => window.location.href='/dashboard/admin/partners/create'} className="px-6 py-2.5 bg-slate-900 text-white rounded-xl text-sm font-black uppercase tracking-widest hover:bg-slate-800 transition-all shadow-lg shadow-slate-900/10">
                   Onboard Initial Partner
                 </button>
               </div>
-            )}
+            ) : null}
           </div>
       </section>
     </>
