@@ -26,6 +26,18 @@ export const partnerApi = apiSlice.injectEndpoints({
       }),
       invalidatesTags: (result, error, { id }) => ['Partner', { type: 'Partner', id }],
     }),
+    uploadPartnerPhoto: builder.mutation({
+      query: ({ id, image }) => {
+        const formData = new FormData();
+        formData.append('image', image);
+        return {
+          url: `/api/v1/admin/partners/${id}/upload-photo`,
+          method: 'POST',
+          body: formData,
+        };
+      },
+      invalidatesTags: (result, error, { id }) => ['Partner', { type: 'Partner', id }],
+    }),
   }),
 });
 
@@ -33,5 +45,6 @@ export const {
   useGetPartnersQuery, 
   useGetPartnerByIdQuery, 
   useCreatePartnerMutation, 
-  useUpdatePartnerMutation 
+  useUpdatePartnerMutation,
+  useUploadPartnerPhotoMutation
 } = partnerApi;

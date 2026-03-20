@@ -1,10 +1,14 @@
 "use client";
 
-import { useGetProductsQuery, useGetCategoriesQuery } from "@/modules/catalog/services/catalogApi";
+import { 
+  useGetProductsQuery, 
+  useGetCategoriesQuery, 
+  useCreateCategoryMutation, 
+  useUpdateCategoryMutation 
+} from "@/modules/catalog/services/catalogApi";
 import { useGetPartnersQuery, useAssignPartnerCategoryMutation } from "@/modules/business/services/businessApi";
 import { useEffect, useState } from "react";
 import { Zap, X, Truck, Box, Plus, Loader2, LayoutGrid } from "lucide-react";
-import { useCreateCategoryMutation } from "@/modules/catalog/services/catalogApi";
 
 export default function CatalogPage() {
   const { data: productsData, isLoading: isLoadingProducts } = useGetProductsQuery({});
@@ -12,6 +16,8 @@ export default function CatalogPage() {
   const { data: partnersData } = useGetPartnersQuery({});
   const [assignCategory, { isLoading: isAssigning }] = useAssignPartnerCategoryMutation();
   const [createCategory, { isLoading: isCreating }] = useCreateCategoryMutation();
+  const [updateCategory, { isLoading: isUpdating }] = useUpdateCategoryMutation();
+
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
@@ -78,6 +84,16 @@ export default function CatalogPage() {
       setNewCategory({ name: "", parentCategoryId: "" });
     } catch (err: any) {
       setStatusMessage({ type: 'error', text: "Creation failed: " + (err.data?.message || err.message || "Unknown error") });
+    }
+  };
+
+  const handleToggleStatus = async (id: string, currentStatus: string) => {
+    const newStatus = currentStatus === 'Active' ? 'Inactive' : 'Active';
+    try {
+      await updateCategory({ id, categoryData: { status: newStatus } }).unwrap();
+      setStatusMessage({ type: 'success', text: `Category status updated to ${newStatus}` });
+    } catch (err: any) {
+      setStatusMessage({ type: 'error', text: "Update failed: " + (err.data?.message || err.message || "Unknown error") });
     }
   };
 
@@ -161,12 +177,20 @@ export default function CatalogPage() {
                    </td>
                    <td className="py-5">
                       <div className="flex items-center gap-2">
-                        <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></div>
-                        <span className="text-sm font-black text-slate-900 uppercase tracking-widest text-[10px]">Active</span>
+                        <div className={`w-1.5 h-1.5 rounded-full ${cat.status === 'Active' ? 'bg-emerald-500 animate-pulse' : 'bg-slate-300'}`}></div>
+                        <span className={`text-sm font-black uppercase tracking-widest text-[10px] ${cat.status === 'Active' ? 'text-slate-900' : 'text-slate-400'}`}>
+                          {cat.status || 'Active'}
+                        </span>
                       </div>
                    </td>
                    <td className="py-5 text-right">
-                      <button className="text-sm font-black text-slate-400 hover:text-slate-900 uppercase tracking-widest transition-colors">Manage</button>
+                      <button 
+                        onClick={() => handleToggleStatus(cat._id, cat.status || 'Active')}
+                        disabled={isUpdating}
+                        className="text-sm font-black text-indigo-600 hover:text-indigo-900 uppercase tracking-widest transition-colors disabled:opacity-50"
+                      >
+                        {cat.status === 'Inactive' ? 'Activate' : 'Deactivate'}
+                      </button>
                    </td>
                  </tr>
                )) : (

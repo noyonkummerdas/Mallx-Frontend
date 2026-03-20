@@ -50,6 +50,7 @@ const menuItems = {
   ],
   partner: [
     { name: "Regional Ops", href: "/dashboard/partner", icon: LayoutDashboard },
+    { name: "Create Vendor", href: "/dashboard/partner/vendors/create", icon: Store },
     { name: "Merchants", href: "/dashboard/partner#vendors", icon: Users },
     { name: "Logistics", href: "/dashboard/partner#logistics", icon: Truck },
     { name: "Growth", href: "/dashboard/partner#growth", icon: TrendingUp },

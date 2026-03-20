@@ -3,15 +3,15 @@
 import Sidebar from "@/components/Sidebar";
 import RoleGuard from "@/modules/identity/components/RoleGuard";
 
-export default function AdminLayout({
+export default function PartnerLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
   return (
-    <RoleGuard allowedRole="admin">
+    <RoleGuard allowedRole="partner">
       <div className="flex bg-slate-50 min-h-screen">
-        <Sidebar role="admin" />
+        <Sidebar role="partner" />
         <main className="flex-1 p-10 overflow-y-auto">
           <div className="max-w-7xl mx-auto">
             {children}

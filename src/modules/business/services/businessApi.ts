@@ -56,6 +56,14 @@ export const businessApi = apiSlice.injectEndpoints({
         body: data,
       }),
     }),
+    createVendor: builder.mutation({
+      query: (data) => ({
+        url: "/api/v1/partners/vendors",
+        method: "POST",
+        body: data,
+      }),
+      invalidatesTags: ["User"],
+    }),
   }),
 });
 
@@ -69,5 +77,6 @@ export const {
   useConfigurePaymentMethodsMutation,
   useProcessRefundMutation,
   useGetAllDocumentsQuery,
-  useGetPartnersQuery
+  useGetPartnersQuery,
+  useCreateVendorMutation
 } = businessApi;

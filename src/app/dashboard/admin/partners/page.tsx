@@ -1,56 +1,164 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Users, Search, Filter, ChevronRight, LayoutGrid, ShieldAlert, Plus } from "lucide-react";
-import { useGetPartnersQuery } from "@/store/api/partnerApi";
+import { Users, Search, Filter, ChevronRight, LayoutGrid, ShieldAlert, Plus, Zap } from "lucide-react";
+import { useGetPartnersQuery, useUpdatePartnerMutation, useUploadPartnerPhotoMutation } from "@/store/api/partnerApi";
+import { Camera, Save, Phone, Mail, Building2, Pencil } from "lucide-react";
 
 export default function PartnersPage() {
   const { data: partnersData, isLoading, isFetching, isSuccess, refetch } = useGetPartnersQuery({});
+  const [updatePartner, { isLoading: isUpdating }] = useUpdatePartnerMutation();
+  const [uploadPhoto, { isLoading: isUploading }] = useUploadPartnerPhotoMutation();
+  
   const [selectedPartner, setSelectedPartner] = useState<any>(null);
+  const [isEditing, setIsEditing] = useState(false);
+  const [editForm, setEditForm] = useState({ businessName: "", phone: "" });
+  const [statusMessage, setStatusMessage] = useState<{ type: 'success' | 'error', text: string } | null>(null);
 
-  // Robust data extraction
+  useEffect(() => {
+    if (selectedPartner) {
+      setEditForm({
+        businessName: selectedPartner.businessName || "",
+        phone: selectedPartner.userId?.phone || ""
+      });
+    }
+  }, [selectedPartner]);
+
+  useEffect(() => {
+    if (statusMessage) {
+      const timer = setTimeout(() => setStatusMessage(null), 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [statusMessage]);
   const partners = isSuccess ? (Array.isArray(partnersData?.data) ? partnersData.data : (partnersData?.data?.partners || [])) : [];
   const showSkeleton = isLoading || (isFetching && partners.length === 0);
 
+  const handleUpdate = async () => {
+    try {
+      await updatePartner({ id: selectedPartner._id, ...editForm }).unwrap();
+      setStatusMessage({ type: 'success', text: "Partner updated successfully" });
+      setIsEditing(false);
+      // Update selectedPartner local state to reflect changes without full refetch if possible, 
+      // but the API invalidates 'Partner' so it should refresh.
+    } catch (err: any) {
+      setStatusMessage({ type: 'error', text: "Update failed: " + (err.data?.message || err.message) });
+    }
+  };
+
+  const handlePhotoUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    try {
+      await uploadPhoto({ id: selectedPartner._id, image: file }).unwrap();
+      setStatusMessage({ type: 'success', text: "Profile photo updated" });
+    } catch (err: any) {
+      setStatusMessage({ type: 'error', text: "Photo upload failed: " + (err.data?.message || err.message) });
+    }
+  };
+
   return (
     <>
+      {statusMessage && (
+        <div className={`fixed top-8 right-8 z-[200] animate-in slide-in-from-right-10 duration-300 p-4 rounded-2xl shadow-2xl border-2 flex items-center gap-3 max-w-sm ${
+          statusMessage.type === 'success' ? 'bg-emerald-50 border-emerald-100 text-emerald-800' : 'bg-rose-50 border-rose-100 text-rose-800'
+        }`}>
+          <div className={`p-2 rounded-xl ${statusMessage.type === 'success' ? 'bg-emerald-100' : 'bg-rose-100'}`}>
+            <Zap size={16} />
+          </div>
+          <p className="text-xs font-black uppercase tracking-widest leading-tight">{statusMessage.text}</p>
+        </div>
+      )}
       {/* Detail Oversight Modal */}
       {selectedPartner && (
         <div className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-[100] flex items-center justify-center p-4 transition-all duration-300 animate-in fade-in">
           <div className="bg-white border border-slate-200 rounded-[32px] w-full max-w-xl shadow-2xl overflow-hidden relative animate-in zoom-in-95 duration-200">
             <button 
-              onClick={() => setSelectedPartner(null)}
+              onClick={() => { setSelectedPartner(null); setIsEditing(false); }}
               className="absolute top-6 right-6 p-2 hover:bg-slate-100 rounded-xl text-slate-400 hover:text-slate-900 transition-all z-10"
             >
               <Plus size={20} className="rotate-45" />
             </button>
             
-            <div className="h-24 bg-gradient-to-r from-emerald-600 to-indigo-600" />
+            <div className={`h-24 bg-gradient-to-r ${selectedPartner.profilePhoto ? 'from-slate-800 to-slate-900' : 'from-emerald-600 to-indigo-600'}`} />
             
             <div className="px-8 pb-8 -mt-10 relative">
-              <div className="w-20 h-20 rounded-3xl bg-slate-900 text-white flex items-center justify-center font-black text-2xl uppercase border-4 border-white shadow-xl mb-4 ml-2">
-                {(selectedPartner.businessName || selectedPartner.userId?.name || "?").charAt(0)}
+              <div className="relative group w-20 h-20 mb-4 ml-2">
+                {selectedPartner.profilePhoto ? (
+                  <img 
+                    src={selectedPartner.profilePhoto} 
+                    alt="Partner" 
+                    className="w-20 h-20 rounded-3xl object-cover border-4 border-white shadow-xl"
+                  />
+                ) : (
+                  <div className="w-20 h-20 rounded-3xl bg-slate-900 text-white flex items-center justify-center font-black text-2xl uppercase border-4 border-white shadow-xl">
+                    {(selectedPartner.businessName || selectedPartner.userId?.name || "?").charAt(0)}
+                  </div>
+                )}
+                <label className="absolute inset-0 flex items-center justify-center bg-black/40 text-white opacity-0 group-hover:opacity-100 rounded-3xl cursor-pointer transition-opacity">
+                  <Camera size={20} />
+                  <input type="file" className="hidden" onChange={handlePhotoUpload} accept="image/*" />
+                </label>
+                {isUploading && (
+                  <div className="absolute inset-0 flex items-center justify-center bg-white/60 rounded-3xl">
+                    <div className="w-5 h-5 border-2 border-indigo-600 border-t-transparent rounded-full animate-spin" />
+                  </div>
+                )}
               </div>
               
               <div className="space-y-6">
                 <div>
-                  <h3 className="text-xl font-black text-slate-900 uppercase tracking-tighter leading-none mb-2">
-                    {selectedPartner.businessName || selectedPartner.userId?.name || "System Partner"}
-                  </h3>
-                  <div className="flex items-center gap-3">
-                    <span className="px-2 py-0.5 bg-emerald-50 text-emerald-600 rounded text-[10px] font-black uppercase tracking-widest">
-                      {selectedPartner.userId?.status || selectedPartner.status || "PENDING"}
-                    </span>
-                    <span className="text-sm text-slate-400 font-bold lowercase tracking-tight">
-                      {selectedPartner.userId?.email || "internal@system.mallx"}
-                    </span>
-                  </div>
+                  {isEditing ? (
+                    <div className="space-y-3">
+                      <div className="relative">
+                        <Building2 className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={14} />
+                        <input 
+                          type="text" 
+                          value={editForm.businessName}
+                          onChange={(e) => setEditForm({...editForm, businessName: e.target.value})}
+                          className="w-full pl-9 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm font-black text-slate-900 focus:outline-none focus:border-indigo-600 transition-all"
+                          placeholder="Business Name"
+                        />
+                      </div>
+                    </div>
+                  ) : (
+                    <>
+                      <h3 className="text-xl font-black text-slate-900 uppercase tracking-tighter leading-none mb-2 flex items-center gap-2">
+                        {selectedPartner.businessName || selectedPartner.userId?.name || "System Partner"}
+                        <button onClick={() => setIsEditing(true)} className="text-slate-300 hover:text-indigo-600 transition-colors">
+                          <Pencil size={14} />
+                        </button>
+                      </h3>
+                      <div className="flex items-center gap-3">
+                        <span className="px-2 py-0.5 bg-emerald-50 text-emerald-600 rounded text-[10px] font-black uppercase tracking-widest">
+                          {selectedPartner.userId?.status || selectedPartner.status || "PENDING"}
+                        </span>
+                        <span className="text-sm text-slate-400 font-bold lowercase tracking-tight flex items-center gap-1.5">
+                          <Mail size={12} className="opacity-40" />
+                          {selectedPartner.userId?.email || "internal@system.mallx"}
+                        </span>
+                      </div>
+                    </>
+                  )}
                 </div>
 
                 <div className="grid grid-cols-2 gap-4">
-                   <div className="bg-slate-50 rounded-2xl p-4 border border-slate-100">
-                      <p className="text-[10px] text-slate-400 font-black uppercase tracking-widest mb-1">Contact Priority</p>
-                      <p className="text-sm font-black text-slate-900">{selectedPartner.userId?.phone || "No direct line"}</p>
+                   <div className={`bg-slate-50 rounded-2xl p-4 border transition-all ${isEditing ? 'border-indigo-100 bg-indigo-50/30' : 'border-slate-100'}`}>
+                      <p className="text-[10px] text-slate-400 font-black uppercase tracking-widest mb-1 flex items-center gap-1.5">
+                        <Phone size={10} />
+                        Contact Line
+                      </p>
+                      {isEditing ? (
+                        <input 
+                          type="text" 
+                          value={editForm.phone}
+                          onChange={(e) => setEditForm({...editForm, phone: e.target.value})}
+                          className="w-full bg-transparent border-none text-sm font-black text-slate-900 p-0 focus:outline-none placeholder:text-slate-300"
+                          placeholder="88017..."
+                        />
+                      ) : (
+                        <p className="text-sm font-black text-slate-900">{selectedPartner.userId?.phone || "No direct line"}</p>
+                      )}
                    </div>
                    <div className="bg-slate-50 rounded-2xl p-4 border border-slate-100">
                       <p className="text-[10px] text-slate-400 font-black uppercase tracking-widest mb-1">Commission Tier</p>
@@ -58,29 +166,50 @@ export default function PartnersPage() {
                    </div>
                 </div>
 
-                <div>
-                   <p className="text-[10px] text-slate-400 font-black uppercase tracking-widest mb-3 flex items-center gap-2 pl-1">
-                      <LayoutGrid size={10} />
-                      Assigned Sectors
-                   </p>
-                   <div className="flex flex-wrap gap-2">
-                      {selectedPartner.assignedCategories?.length > 0 ? selectedPartner.assignedCategories.map((cat: any) => (
-                        <div key={cat._id || cat} className="px-3 py-1 bg-white border border-slate-200 rounded-xl text-xs font-black text-slate-700 uppercase tracking-tighter shadow-sm">
-                          {cat.name || "N/A"}
-                        </div>
-                      )) : (
-                        <div className="text-sm text-slate-300 font-bold uppercase py-2 tracking-widest">Universal Operations</div>
-                      )}
-                   </div>
-                </div>
+                {!isEditing && (
+                  <div>
+                    <p className="text-[10px] text-slate-400 font-black uppercase tracking-widest mb-3 flex items-center gap-2 pl-1">
+                        <LayoutGrid size={10} />
+                        Assigned Sectors
+                    </p>
+                    <div className="flex flex-wrap gap-2">
+                        {selectedPartner.assignedCategories?.length > 0 ? selectedPartner.assignedCategories.map((cat: any) => (
+                          <div key={cat._id || cat} className="px-3 py-1 bg-white border border-slate-200 rounded-xl text-xs font-black text-slate-700 uppercase tracking-tighter shadow-sm">
+                            {cat.name || "N/A"}
+                          </div>
+                        )) : (
+                          <div className="text-sm text-slate-300 font-bold uppercase py-2 tracking-widest">Universal Operations</div>
+                        )}
+                    </div>
+                  </div>
+                )}
 
-                <div className="pt-6 border-t border-slate-100">
-                   <button 
-                    onClick={() => setSelectedPartner(null)}
-                    className="w-full py-3.5 bg-slate-900 text-white rounded-2xl text-xs font-black uppercase tracking-[0.2em] shadow-lg shadow-slate-900/10 hover:bg-slate-800 transition-all active:scale-[0.98]"
-                   >
-                     Exit Oversight
-                   </button>
+                <div className="pt-6 border-t border-slate-100 flex gap-3">
+                   {isEditing ? (
+                     <>
+                      <button 
+                        onClick={() => setIsEditing(false)}
+                        className="flex-1 py-3.5 bg-slate-100 text-slate-400 rounded-2xl text-[10px] font-black uppercase tracking-widest hover:bg-slate-200 transition-all"
+                      >
+                        Cancel
+                      </button>
+                      <button 
+                        onClick={handleUpdate}
+                        disabled={isUpdating}
+                        className="flex-3 py-3.5 bg-indigo-600 text-white rounded-2xl text-[10px] font-black uppercase tracking-widest shadow-lg shadow-indigo-600/20 hover:bg-indigo-700 transition-all active:scale-[0.98] flex items-center justify-center gap-2"
+                      >
+                        {isUpdating ? <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" /> : <Save size={14} />}
+                        Confirm Changes
+                      </button>
+                     </>
+                   ) : (
+                    <button 
+                      onClick={() => setSelectedPartner(null)}
+                      className="w-full py-3.5 bg-slate-900 text-white rounded-2xl text-[10px] font-black uppercase tracking-[0.2em] shadow-lg shadow-slate-900/10 hover:bg-slate-800 transition-all active:scale-[0.98]"
+                    >
+                      Exit Oversight
+                    </button>
+                   )}
                 </div>
               </div>
             </div>

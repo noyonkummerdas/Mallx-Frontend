@@ -81,6 +81,14 @@ export const catalogApi = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ["Category"],
     }),
+    updateCategory: builder.mutation({
+      query: ({ id, categoryData }) => ({
+        url: `/api/v1/categories/${id}`,
+        method: "PATCH",
+        body: categoryData,
+      }),
+      invalidatesTags: ["Category"],
+    }),
   }),
 });
 
@@ -96,5 +104,6 @@ export const {
   usePostProductReviewMutation,
   useGetRecentlyViewedQuery,
   useGetAdminInventoryQuery,
-  useCreateCategoryMutation
+  useCreateCategoryMutation,
+  useUpdateCategoryMutation
 } = catalogApi;
