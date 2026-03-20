@@ -106,7 +106,7 @@ export default function VendorDashboard() {
 
        {/* Detailed Sections */}
        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
-           <section className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm">
+           <section id="inventory" className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm">
              <h4 className="text-base font-black mb-6 border-l-2 border-slate-900 pl-3 uppercase tracking-tighter">Inventory Overview</h4>
              <div className="space-y-3 max-h-[400px] overflow-y-auto pr-1 custom-scrollbar text-[10px]">
                 {vendorProducts.length > 0 ? vendorProducts.map((product: any) => (
@@ -128,7 +128,7 @@ export default function VendorDashboard() {
              </div>
           </section>
 
-          <section className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm">
+          <section id="orders" className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm">
              <h4 className="text-base font-black mb-6 border-l-2 border-slate-900 pl-3 uppercase tracking-tighter">Order Processing</h4>
              <div className="space-y-3 max-h-[400px] overflow-y-auto pr-1 custom-scrollbar text-[10px]">
                 {vendorOrders.length > 0 ? vendorOrders.map((order: any) => (
@@ -158,7 +158,7 @@ export default function VendorDashboard() {
              </div>
           </section>
 
-          <section className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm">
+          <section id="finance" className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm">
              <h4 className="text-base font-black mb-6 border-l-2 border-slate-900 pl-3 uppercase tracking-tighter">Settlement Ledger</h4>
              <div className="space-y-3 max-h-[400px] overflow-y-auto pr-1 custom-scrollbar text-[10px]">
                 {settlementHistory.map((item: any) => (

@@ -6,9 +6,11 @@ import { usePathname } from "next/navigation";
 export default function Footer() {
   const pathname = usePathname();
   const isAuthPage = pathname.startsWith("/auth");
+  const isDashboard = pathname.startsWith("/dashboard");
+  const isSupportMain = pathname === "/support";
 
-  // Hide footer on auth pages
-  if (isAuthPage) return null;
+  // Hide footer on auth, dashboard and main support pages
+  if (isAuthPage || isDashboard || isSupportMain) return null;
 
   return (
     <footer className="bg-white border-t border-slate-200 py-6 px-6">
@@ -54,9 +56,9 @@ export default function Footer() {
             <p className="text-[9px] text-slate-900 uppercase tracking-widest mb-3">Help</p>
 <div className="space-y-1.5">
   <Link href="/support" className="block text-[10px] text-slate-400 hover:text-slate-900 transition-colors">Support</Link>
-  <span className="block text-[10px] text-slate-400">Terms & Conditions</span>
-  <span className="block text-[10px] text-slate-400">Privacy Policy</span>
-  <span className="block text-[10px] text-slate-400">FAQ</span>
+  <Link href="/support/terms" className="block text-[10px] text-slate-400 hover:text-slate-900 transition-colors">Terms & Conditions</Link>
+  <Link href="/support/privacy" className="block text-[10px] text-slate-400 hover:text-slate-900 transition-colors">Privacy Policy</Link>
+  <Link href="/support/faq" className="block text-[10px] text-slate-400 hover:text-slate-900 transition-colors">FAQ</Link>
 </div>
           </div>
         </div>

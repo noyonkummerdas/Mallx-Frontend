@@ -74,7 +74,7 @@ export default function PartnerDashboard() {
 
       {/* Stats Grid */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8 text-slate-900">
-         <div className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm group">
+         <div id="growth" className="bg-white border border-slate-200 rounded-2xl p-6 shadow-sm group">
             <p className="text-sm font-black text-slate-400 uppercase tracking-widest mb-2">Partner Yield</p>
             <h3 className="text-base font-black mb-1 tracking-tighter">{stats.partnerEarnings?.toLocaleString() || 0} <span className="text-sm font-normal text-slate-400">TK</span></h3>
             <p className="text-slate-900 text-sm font-black uppercase tracking-wider bg-slate-100 px-2 py-0.5 rounded-full w-fit">Tier 1</p>
@@ -100,7 +100,7 @@ export default function PartnerDashboard() {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 text-slate-900">
          {/* Vendor Management */}
-         <section className="bg-white border border-slate-200 rounded-3xl p-8 shadow-sm">
+         <section id="vendors" className="bg-white border border-slate-200 rounded-3xl p-8 shadow-sm">
             <h2 className="text-base font-black mb-6 border-l-2 border-slate-900 pl-3 uppercase tracking-tighter">Governance</h2>
             <div className="space-y-4">
                {vendors.length > 0 ? vendors.map((vendor: any) => (
@@ -146,7 +146,7 @@ export default function PartnerDashboard() {
          </section>
 
          {/* Logistics Orchestration */}
-         <section className="bg-white border border-slate-200 rounded-3xl p-8 shadow-sm text-slate-900">
+         <section id="logistics" className="bg-white border border-slate-200 rounded-3xl p-8 shadow-sm text-slate-900">
             <h2 className="text-base font-black mb-6 border-l-2 border-slate-900 pl-3 uppercase tracking-tighter">Dispatch Queue</h2>
             <div className="space-y-4">
                {shipments.length > 0 ? shipments.map((ship: any) => (

@@ -10,6 +10,8 @@ export default function Navbar() {
   const { data: userData } = useGetMeQuery({});
   const [showPopup, setShowPopup] = useState(false);
   const isAuthPage = pathname.startsWith("/auth");
+  const isDashboard = pathname.startsWith("/dashboard");
+  const isSupportMain = pathname === "/support";
 
   useEffect(() => {
     // Show attraction popup for visitors after 5 seconds if not logged in
@@ -19,7 +21,7 @@ export default function Navbar() {
     }
   }, [userData, isAuthPage]);
 
-  if (isAuthPage) return null;
+  if (isAuthPage || isDashboard || isSupportMain) return null;
 
   const user = userData?.data?.user;
 
@@ -36,11 +38,11 @@ export default function Navbar() {
 <div className="hidden lg:flex items-center gap-4 text-[9px] uppercase tracking-widest text-slate-500">
   {user?.role?.toLowerCase() === "vendor" ? (
     <>
-      <Link href="/dashboard/vendor" className={`hover:text-slate-900 transition-colors ${pathname === "/dashboard/vendor" ? "text-slate-900 border-b border-slate-900" : ""}`}>Storefront</Link>
-      <div className="h-4 w-[1px] bg-slate-200 mx-1" />
-      <Link href="/dashboard/vendor" className="hover:text-slate-900 transition-colors">Active Orders</Link>
-      <Link href="/dashboard/vendor" className="hover:text-slate-900 transition-colors">Inventory</Link>
-      <Link href="/dashboard/vendor" className="hover:text-slate-900 transition-colors">Finance</Link>
+       <Link href="/dashboard/vendor" className={`hover:text-slate-900 transition-colors ${pathname === "/dashboard/vendor" ? "text-slate-900 border-b border-slate-900" : ""}`}>Storefront</Link>
+       <div className="h-4 w-[1px] bg-slate-200 mx-1" />
+       <Link href="/dashboard/vendor#orders" className="hover:text-slate-900 transition-colors">Active Orders</Link>
+       <Link href="/dashboard/vendor/products" className="hover:text-slate-900 transition-colors">Inventory</Link>
+       <Link href="/dashboard/vendor#finance" className="hover:text-slate-900 transition-colors">Finance</Link>
       <div className="h-4 w-[1px] bg-slate-200 mx-1" />
       <div className="flex items-center gap-2 px-3 py-1 bg-slate-100 rounded-lg text-slate-900">
          <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />

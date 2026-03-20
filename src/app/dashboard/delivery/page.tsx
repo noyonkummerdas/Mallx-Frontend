@@ -69,7 +69,7 @@ export default function DeliveryDashboard() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 text-slate-900">
          {/* Active Shipments / Queue */}
          <div className="lg:col-span-2">
-            <h2 className="text-base font-black px-1 border-l-2 border-slate-900 pl-3 text-slate-900 uppercase tracking-tighter">
+            <h2 id="loads" className="text-base font-black px-1 border-l-2 border-slate-900 pl-3 text-slate-900 uppercase tracking-tighter">
                Queue Dispatch
             </h2>
             
@@ -116,7 +116,7 @@ export default function DeliveryDashboard() {
          <div className="space-y-6">
             <div className="bg-white border-2 border-slate-900 rounded-2xl p-8 shadow-xl shadow-slate-900/5 relative overflow-hidden group">
                <div className="relative z-10 text-center">
-                  <p className="text-sm font-black text-slate-900 uppercase tracking-widest mb-3">Daily Yield</p>
+               <p id="earnings" className="text-sm font-black text-slate-900 uppercase tracking-widest mb-3">Daily Yield</p>
                   <h3 className="text-base font-black mb-1 text-slate-900 tracking-tighter">{balance.toLocaleString()} <span className="text-sm font-normal text-slate-400">TK</span></h3>
                   <p className="text-sm font-black text-slate-400 uppercase tracking-widest mt-3">Ref: 40 TK/Order</p>
                </div>
