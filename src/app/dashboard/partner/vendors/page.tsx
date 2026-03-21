@@ -14,8 +14,8 @@ export default function PartnerVendorsPage() {
 
   const vendors = vendorsData?.data?.vendors || [];
   const filteredVendors = vendors.filter((v: any) => 
-    v.shopName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    v.user?.name.toLowerCase().includes(searchQuery.toLowerCase())
+    v.shopName?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    v.userId?.name?.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   const handleUpdateCommission = async (vendorId: string) => {
@@ -101,14 +101,14 @@ export default function PartnerVendorsPage() {
                         <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest">Account Holder</p>
                         <div className="flex items-center gap-2">
                             <User size={12} className="text-slate-400" />
-                            <p className="text-[11px] font-bold text-slate-700">{vendor.user?.name || "Unknown User"}</p>
+                            <p className="text-[11px] font-bold text-slate-700">{vendor.userId?.name || "Unknown User"}</p>
                         </div>
                     </div>
                     <div className="space-y-1">
                         <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest">Communication</p>
                         <div className="flex items-center gap-3">
                             <Mail size={12} className="text-slate-400" />
-                            <p className="text-[11px] font-bold text-slate-700">{vendor.user?.email || "N/A"}</p>
+                            <p className="text-[11px] font-bold text-slate-700">{vendor.userId?.email || "N/A"}</p>
                         </div>
                     </div>
                     <div className="space-y-1 hidden md:block">
