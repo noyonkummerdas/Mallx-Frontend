@@ -4,7 +4,8 @@ import { useGetPartnerDashboardQuery, useGetPartnerVendorsQuery, useSetCommissio
 import { useAssignOrderMutation, useGetAvailableShipmentsQuery } from "@/modules/logistics/services/logisticsApi";
 import { useGetMeQuery } from "@/modules/identity/services/authApi";
 import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
+import Link from "next/link";
+import { ExternalLink } from "lucide-react";
 import Sidebar from "@/components/Sidebar";
 
 export default function PartnerDashboard() {
