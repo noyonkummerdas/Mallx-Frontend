@@ -170,12 +170,13 @@ export default function PartnerVendorsPage() {
                                 >
                                     <Settings2 size={16} />
                                 </button>
-                                 <button 
+                                 <Link 
+                                    href={`/dashboard/partner/vendors/${vendor._id}`}
                                     className="w-10 h-10 bg-white border border-slate-200 rounded-xl flex items-center justify-center hover:bg-slate-50 transition-all text-slate-500 hover:text-slate-900 shadow-sm"
                                     title="View Shop Profile"
                                 >
                                     <ExternalLink size={16} />
-                                </button>
+                                </Link>
                                 {(vendor.status === 'Pending' || vendor.status === 'Blocked') && (
                                     <button 
                                         onClick={() => handleUpdateStatus(vendor._id, 'Active')}

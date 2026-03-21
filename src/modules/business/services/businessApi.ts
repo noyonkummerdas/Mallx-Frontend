@@ -26,6 +26,10 @@ export const businessApi = apiSlice.injectEndpoints({
       query: () => "/api/v1/partners/vendors",
       providesTags: ["Partner"],
     }),
+    getPartnerVendorDetails: builder.query({
+      query: (id) => `/api/v1/partners/vendors/${id}`,
+      providesTags: ["Partner"],
+    }),
     getPartnerDashboard: builder.query({
       query: () => "/api/v1/partners/dashboard",
       providesTags: ["Partner"],
@@ -106,6 +110,7 @@ export const {
   useGetShopDetailsQuery, 
   useUploadDocumentsMutation, 
   useGetPartnerVendorsQuery,
+  useGetPartnerVendorDetailsQuery,
   useGetPartnerDashboardQuery,
   useAssignPartnerCategoryMutation,
   useSetCommissionMutation,
