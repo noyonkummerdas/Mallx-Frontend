@@ -105,7 +105,7 @@ export const businessApi = apiSlice.injectEndpoints({
     }),
     getPartnerVariants: builder.query({
       query: () => "/api/v1/partners/products/variants",
-      providesTags: ["Products"],
+      providesTags: ["Product"],
     }),
   }),
 });
