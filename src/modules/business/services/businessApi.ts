@@ -67,6 +67,14 @@ export const businessApi = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ["Partner"],
     }),
+    updateVendorStatus: builder.mutation({
+      query: ({ vendorId, status }) => ({
+        url: `/api/v1/partners/vendors/${vendorId}/status`,
+        method: "PATCH",
+        body: { status },
+      }),
+      invalidatesTags: ["Partner"],
+    }),
     getPartnerAgents: builder.query({
       query: () => "/api/v1/partners/agents",
       providesTags: ["Partner"],
@@ -106,6 +114,7 @@ export const {
   useGetAllDocumentsQuery,
   useGetPartnersQuery,
   useCreateVendorMutation,
+  useUpdateVendorStatusMutation,
   useGetPartnerAgentsQuery,
   useGetPartnerCommissionsQuery,
   useGetPartnerReturnsQuery,

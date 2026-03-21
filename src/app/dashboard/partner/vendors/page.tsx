@@ -1,6 +1,6 @@
 "use client";
 
-import { useGetPartnerVendorsQuery, useSetCommissionMutation } from "@/modules/business/services/businessApi";
+import { useGetPartnerVendorsQuery, useSetCommissionMutation, useUpdateVendorStatusMutation } from "@/modules/business/services/businessApi";
 import { Store, User, Mail, Phone, ShieldCheck, Clock, ExternalLink, Settings2, Search, ArrowLeft } from "lucide-react";
 import { useState } from "react";
 import Link from "next/link";
@@ -8,6 +8,7 @@ import Link from "next/link";
 export default function PartnerVendorsPage() {
   const { data: vendorsData, isLoading } = useGetPartnerVendorsQuery({});
   const [setCommission, { isLoading: isSettingCommission }] = useSetCommissionMutation();
+  const [updateVendorStatus, { isLoading: isUpdatingStatus }] = useUpdateVendorStatusMutation();
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedVendorId, setSelectedVendorId] = useState<string | null>(null);
   const [commissionVal, setCommissionVal] = useState("");
@@ -26,6 +27,15 @@ export default function PartnerVendorsPage() {
       setCommissionVal("");
     } catch (err) {
       alert("Failed to update commission");
+    }
+  };
+
+  const handleUpdateStatus = async (vendorId: string, status: string) => {
+    try {
+      await updateVendorStatus({ vendorId, status }).unwrap();
+      alert(`Vendor marked as ${status}`);
+    } catch (err) {
+      alert("Failed to update status");
     }
   };
 
@@ -160,12 +170,21 @@ export default function PartnerVendorsPage() {
                                 >
                                     <Settings2 size={16} />
                                 </button>
-                                <button 
+                                 <button 
                                     className="w-10 h-10 bg-white border border-slate-200 rounded-xl flex items-center justify-center hover:bg-slate-50 transition-all text-slate-500 hover:text-slate-900 shadow-sm"
                                     title="View Shop Profile"
                                 >
                                     <ExternalLink size={16} />
                                 </button>
+                                {vendor.status === 'Pending' && (
+                                    <button 
+                                        onClick={() => handleUpdateStatus(vendor._id, 'Active')}
+                                        disabled={isUpdatingStatus}
+                                        className="h-10 px-4 bg-green-600 text-white rounded-xl flex items-center justify-center hover:bg-green-700 transition-all text-[9px] font-black uppercase tracking-widest shadow-lg shadow-green-600/20 disabled:opacity-50"
+                                    >
+                                        Approve
+                                    </button>
+                                )}
                             </>
                         )}
                     </div>
