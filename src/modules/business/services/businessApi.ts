@@ -103,6 +103,10 @@ export const businessApi = apiSlice.injectEndpoints({
       query: () => "/api/v1/partners/campaigns",
       providesTags: ["Partner"],
     }),
+    getPartnerVariants: builder.query({
+      query: () => "/api/v1/partners/products/variants",
+      providesTags: ["Products"],
+    }),
   }),
 });
 
@@ -125,5 +129,6 @@ export const {
   useGetPartnerReturnsQuery,
   useGetPartnerInventoryQuery,
   useGetPartnerProductHistoryQuery,
-  useGetPartnerCampaignsQuery
+  useGetPartnerCampaignsQuery,
+  useGetPartnerVariantsQuery
 } = businessApi;
