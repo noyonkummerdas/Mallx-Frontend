@@ -185,6 +185,15 @@ export default function PartnerVendorsPage() {
                                         Approve
                                     </button>
                                 )}
+                                {vendor.status === 'Active' && (
+                                    <button 
+                                        onClick={() => handleUpdateStatus(vendor._id, 'Blocked')}
+                                        disabled={isUpdatingStatus}
+                                        className="h-10 px-4 bg-slate-100 text-slate-900 border border-slate-200 rounded-xl flex items-center justify-center hover:bg-red-50 hover:text-red-600 hover:border-red-100 transition-all text-[9px] font-black uppercase tracking-widest disabled:opacity-50"
+                                    >
+                                        Deactivate
+                                    </button>
+                                )}
                             </>
                         )}
                     </div>
