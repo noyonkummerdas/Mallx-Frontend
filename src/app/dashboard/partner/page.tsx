@@ -101,7 +101,12 @@ export default function PartnerDashboard() {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 text-slate-900">
          {/* Vendor Management */}
          <section id="vendors" className="bg-white border border-slate-200 rounded-3xl p-8 shadow-sm">
-            <h2 className="text-base font-black mb-6 border-l-2 border-slate-900 pl-3 uppercase tracking-tighter">Governance</h2>
+            <div className="flex justify-between items-center mb-6">
+                <h2 className="text-base font-black border-l-2 border-slate-900 pl-3 uppercase tracking-tighter">Governance</h2>
+                <Link href="/dashboard/partner/vendors" className="text-[10px] font-black uppercase tracking-widest text-slate-400 hover:text-slate-900 transition-all flex items-center gap-1">
+                    View All <ExternalLink size={10} />
+                </Link>
+            </div>
             <div className="space-y-4">
                {vendors.length > 0 ? vendors.map((vendor: any) => (
                   <div key={vendor._id} className="p-4 rounded-2xl bg-slate-50 border border-slate-100/50 hover:bg-white transition-all group">

@@ -13,7 +13,7 @@ export const businessApi = apiSlice.injectEndpoints({
     }),
     getPartners: builder.query({
       query: () => "/api/v1/partners",
-      providesTags: ["User"],
+      providesTags: ["Partner"],
     }),
     uploadDocuments: builder.mutation({
       query: (docData) => ({
@@ -24,9 +24,11 @@ export const businessApi = apiSlice.injectEndpoints({
     }),
     getPartnerVendors: builder.query({
       query: () => "/api/v1/partners/vendors",
+      providesTags: ["Partner"],
     }),
     getPartnerDashboard: builder.query({
       query: () => "/api/v1/partners/dashboard",
+      providesTags: ["Partner"],
     }),
     assignPartnerCategory: builder.mutation({
       query: (data) => ({
@@ -41,6 +43,7 @@ export const businessApi = apiSlice.injectEndpoints({
         method: "POST",
         body: data,
       }),
+      invalidatesTags: ["Partner"],
     }),
     configurePaymentMethods: builder.mutation({
       query: (data) => ({
@@ -62,7 +65,31 @@ export const businessApi = apiSlice.injectEndpoints({
         method: "POST",
         body: data,
       }),
-      invalidatesTags: ["User"],
+      invalidatesTags: ["Partner"],
+    }),
+    getPartnerAgents: builder.query({
+      query: () => "/api/v1/partners/agents",
+      providesTags: ["Partner"],
+    }),
+    getPartnerCommissions: builder.query({
+      query: () => "/api/v1/partners/commissions",
+      providesTags: ["Partner"],
+    }),
+    getPartnerReturns: builder.query({
+      query: () => "/api/v1/partners/returns",
+      providesTags: ["Partner"],
+    }),
+    getPartnerInventory: builder.query({
+      query: () => "/api/v1/partners/inventory",
+      providesTags: ["Partner"],
+    }),
+    getPartnerProductHistory: builder.query({
+      query: () => "/api/v1/partners/products/history",
+      providesTags: ["Partner"],
+    }),
+    getPartnerCampaigns: builder.query({
+      query: () => "/api/v1/partners/campaigns",
+      providesTags: ["Partner"],
     }),
   }),
 });
@@ -78,5 +105,11 @@ export const {
   useProcessRefundMutation,
   useGetAllDocumentsQuery,
   useGetPartnersQuery,
-  useCreateVendorMutation
+  useCreateVendorMutation,
+  useGetPartnerAgentsQuery,
+  useGetPartnerCommissionsQuery,
+  useGetPartnerReturnsQuery,
+  useGetPartnerInventoryQuery,
+  useGetPartnerProductHistoryQuery,
+  useGetPartnerCampaignsQuery
 } = businessApi;
