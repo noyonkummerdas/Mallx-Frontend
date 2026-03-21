@@ -176,13 +176,13 @@ export default function PartnerVendorsPage() {
                                 >
                                     <ExternalLink size={16} />
                                 </button>
-                                {vendor.status === 'Pending' && (
+                                {(vendor.status === 'Pending' || vendor.status === 'Blocked') && (
                                     <button 
                                         onClick={() => handleUpdateStatus(vendor._id, 'Active')}
                                         disabled={isUpdatingStatus}
                                         className="h-10 px-4 bg-green-600 text-white rounded-xl flex items-center justify-center hover:bg-green-700 transition-all text-[9px] font-black uppercase tracking-widest shadow-lg shadow-green-600/20 disabled:opacity-50"
                                     >
-                                        Approve
+                                        {vendor.status === 'Blocked' ? 'Reactivate' : 'Approve'}
                                     </button>
                                 )}
                                 {vendor.status === 'Active' && (
