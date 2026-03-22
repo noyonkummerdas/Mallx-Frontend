@@ -73,7 +73,11 @@ export default function ProductEditPage() {
   const extraFields = CATEGORY_FIELDS[selectedCategoryName] || [];
 
   const handleUpdate = async (e: React.FormEvent) => {
-    e.preventDefault();
+    if (!formData.name || !formData.price || !formData.categoryId) {
+      alert("Please fill in all required fields (Name, Price, Category).");
+      return;
+    }
+
     try {
       await updateProduct({
         id,
@@ -89,9 +93,10 @@ export default function ProductEditPage() {
       }).unwrap();
       
       alert("Product updated successfully!");
-    } catch (err) {
+    } catch (err: any) {
       console.error("Update failed:", err);
-      alert("Failed to update product.");
+      const errorMsg = err.data?.message || err.error || "Failed to update product.";
+      alert(`Error: ${errorMsg}`);
     }
   };
 

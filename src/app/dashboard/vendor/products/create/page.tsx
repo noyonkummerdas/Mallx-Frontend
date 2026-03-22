@@ -68,6 +68,11 @@ export default function CreateProductPage() {
         alert("Vendor identity not found. Please try again.");
         return;
     }
+    if (!newProduct.name || !newProduct.price || !newProduct.categoryId) {
+        alert("Please fill in all required fields: Name, Price, and Category.");
+        return;
+    }
+    
     try {
       const payload = {
         ...newProduct,
@@ -82,21 +87,32 @@ export default function CreateProductPage() {
       const result = await createProduct(payload).unwrap();
       const productId = result.data.product._id;
 
+      let uploadFailures = 0;
       // Sequentially upload all selected images
       if (selectedImages.length > 0) {
         for (let i = 0; i < selectedImages.length; i++) {
+          try {
             const formData = new FormData();
             formData.append("image", selectedImages[i]);
             formData.append("isPrimary", i === 0 ? "true" : "false"); // First image is primary
             await uploadProductImage({ productId, formData }).unwrap();
+          } catch (imgErr) {
+            console.error("Single image upload failed:", imgErr);
+            uploadFailures++;
+          }
         }
       }
 
-      alert(`Product created with ${selectedImages.length} images! Awaiting admin approval.`);
+      if (uploadFailures > 0) {
+        alert(`Product entry created, but ${uploadFailures} images failed to upload. Check if your Storage Server (MinIO) is running.`);
+      } else {
+        alert("Product created successfully! Awaiting admin approval.");
+      }
       router.push("/dashboard/vendor/products");
-    } catch (err) {
+    } catch (err: any) {
       console.error("Product creation failed:", err);
-      alert("Creation failed. Please try again.");
+      const errorMsg = err.data?.message || err.error || "Creation failed. Please try again.";
+      alert(`Error: ${errorMsg}`);
     }
   };
 
