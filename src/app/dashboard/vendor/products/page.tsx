@@ -16,7 +16,7 @@ export default function VendorProductsPage() {
     { skip: !vendorId }
   );
 
-  const products = productsData?.data || [];
+  const products = productsData?.data?.products || [];
   const [searchTerm, setSearchTerm] = useState("");
 
   const filteredProducts = products.filter((p: any) => 
