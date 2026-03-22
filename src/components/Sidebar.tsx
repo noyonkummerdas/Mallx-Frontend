@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import { useGetMeQuery } from "@/modules/identity/services/authApi";
+import { useGetShopDetailsQuery } from "@/modules/business/services/businessApi";
 import { 
   LayoutDashboard, 
   Package, 
@@ -27,7 +28,8 @@ import {
   Megaphone,
   ShoppingBag,
   Activity,
-  UserCog
+  UserCog,
+  Star
 } from "lucide-react";
 
 const menuItems = {
@@ -45,8 +47,11 @@ const menuItems = {
   vendor: [
     { name: "Shop Overview", href: "/dashboard/vendor", icon: LayoutDashboard },
     { name: "Inventory", href: "/dashboard/vendor/products", icon: Package },
-    { name: "Orders", href: "/dashboard/vendor#orders", icon: Store },
-    { name: "Settlements", href: "/dashboard/vendor#finance", icon: Wallet },
+    { name: "Orders", href: "/dashboard/vendor/orders", icon: Store },
+    { name: "Settlements", href: "/dashboard/vendor/finance", icon: Wallet },
+    { name: "Promotions", href: "/dashboard/vendor/marketing", icon: Megaphone },
+    { name: "Reviews", href: "/dashboard/vendor/reviews", icon: Star },
+    { name: "Sales Reports", href: "/dashboard/vendor/reports", icon: Activity },
   ],
   partner: [
     { name: "Dashboard", href: "/dashboard/partner", icon: LayoutDashboard },
@@ -112,8 +117,10 @@ export default function Sidebar({ role }: SidebarProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [hash, setHash] = useState("");
   const { data: userData } = useGetMeQuery({});
+  const { data: shopData } = useGetShopDetailsQuery({}, { skip: role !== "vendor" });
   
   const user = userData?.data?.user;
+  const shopName = shopData?.data?.shop?.name;
   
   useEffect(() => {
     // Current hash logic
@@ -171,10 +178,10 @@ export default function Sidebar({ role }: SidebarProps) {
           </div>
           <div className="min-w-0">
             <p className="text-sm text-slate-900 truncate uppercase tracking-tighter">
-              {user?.name || "Guest Account"}
+              {activeRole === "vendor" && shopName ? shopName : (user?.name || "Guest Account")}
             </p>
             <p className="text-sm text-slate-400 uppercase tracking-widest mt-0.5">
-              {user?.role || "Member"}
+              {activeRole === "vendor" && shopName ? (user?.name || "Vendor") : (user?.role || "Member")}
             </p>
           </div>
         </div>
@@ -187,7 +194,9 @@ export default function Sidebar({ role }: SidebarProps) {
           const [itemPath, itemHash] = item.href.split('#');
           const isActive = itemHash 
             ? (pathname === itemPath && hash === '#' + itemHash)
-            : (pathname === itemPath && (hash === "" || hash === "#"));
+            : (itemPath === getDashboardLink(activeRole) 
+                ? pathname === itemPath 
+                : pathname.startsWith(itemPath));
 
           console.log(`Sidebar Link [${item.name}] - isActive:`, isActive, { pathname, hash, itemPath, itemHash });
           
