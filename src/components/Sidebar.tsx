@@ -134,7 +134,7 @@ export default function Sidebar({ role }: SidebarProps) {
   const activeRole = user ? mapRoleToKey(user.role) : role;
   const items = menuItems[activeRole] || [];
 
-  console.log("Sidebar Debug - User:", user?.role, "Prop Role:", role, "Resolved:", activeRole);
+  //   console.log("Sidebar Debug - User:", user?.role, "Prop Role:", role, "Resolved:", activeRole);
 
   const handleLogout = () => {
     localStorage.removeItem("mallx_token");
@@ -196,9 +196,9 @@ export default function Sidebar({ role }: SidebarProps) {
             ? (pathname === itemPath && hash === '#' + itemHash)
             : (itemPath === getDashboardLink(activeRole) 
                 ? pathname === itemPath 
-                : pathname.startsWith(itemPath));
+                : (pathname === itemPath || pathname.startsWith(itemPath + '/')));
 
-          console.log(`Sidebar Link [${item.name}] - isActive:`, isActive, { pathname, hash, itemPath, itemHash });
+          // console.log(`Sidebar Link [${item.name}] - isActive:`, isActive, { pathname, hash, itemPath, itemHash });
           
           return (
             <Link 
@@ -207,7 +207,7 @@ export default function Sidebar({ role }: SidebarProps) {
               onClick={() => {
                 const [_, newHash] = item.href.split('#');
                 setHash(newHash ? '#' + newHash : "");
-                console.log(`Sidebar Click [${item.name}] - setting hash:`, newHash);
+                // console.log(`Sidebar Click [${item.name}] - setting hash:`, newHash);
               }}
               className={`flex items-center gap-2.5 px-3 py-2 rounded-xl transition-all group ${
                 isActive 
