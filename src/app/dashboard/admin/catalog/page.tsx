@@ -5,7 +5,7 @@ import {
   useGetCategoriesQuery, 
   useCreateCategoryMutation, 
   useUpdateCategoryMutation 
-} from "@/modules/catalog/services/catalogApi";
+} from "@/modules/shopping/services/productApi";
 import { useGetPartnersQuery, useAssignPartnerCategoryMutation } from "@/modules/business/services/businessApi";
 import { useEffect, useState } from "react";
 import { Zap, X, Truck, Box, Plus, Loader2, LayoutGrid } from "lucide-react";
@@ -45,10 +45,6 @@ export default function CatalogPage() {
   const categories = (() => {
     const raw = categoriesData?.data || categoriesData;
     if (Array.isArray(raw)) return raw;
-    if (raw && typeof raw === 'object') {
-      if (Array.isArray(raw.data)) return raw.data;
-      if (Array.isArray(raw.categories)) return raw.categories;
-    }
     return [];
   })();
 

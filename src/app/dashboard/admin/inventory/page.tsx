@@ -1,7 +1,7 @@
 "use client";
 
 import { Package, Search, Filter, AlertCircle, ShoppingCart } from "lucide-react";
-import { useGetAdminInventoryQuery } from "@/modules/catalog/services/catalogApi";
+import { useGetAdminInventoryQuery } from "@/modules/shopping/services/productApi";
 
 export default function AdminInventoryPage() {
   const { data: inventoryData, isLoading, error } = useGetAdminInventoryQuery({});

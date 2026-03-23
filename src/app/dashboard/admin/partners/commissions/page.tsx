@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { TrendingUp, ShieldCheck, DollarSign, Percent, AlertCircle } from "lucide-react";
 import { useGetPartnersQuery, useSetCommissionMutation } from "@/modules/business/services/businessApi";
-import { useGetCategoriesQuery } from "@/modules/catalog/services/catalogApi";
+import { useGetCategoriesQuery } from "@/modules/shopping/services/productApi";
 
 export default function AdminPartnerCommissionsPage() {
   const { data: partnersData } = useGetPartnersQuery({});
@@ -13,7 +13,7 @@ export default function AdminPartnerCommissionsPage() {
   const [form, setForm] = useState({ partnerId: "", categoryId: "", percentage: 0 });
 
   const partners = partnersData?.data?.partners || [];
-  const categories = categoriesData?.data?.categories || [];
+  const categories = categoriesData?.data || [];
 
   const handleCommit = async () => {
     try {

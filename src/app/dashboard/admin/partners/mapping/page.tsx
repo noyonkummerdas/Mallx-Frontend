@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Zap, Link as LinkIcon, ShoppingBag, Truck, ChevronRight } from "lucide-react";
 import { useGetPartnersQuery, useAssignPartnerCategoryMutation } from "@/modules/business/services/businessApi";
-import { useGetCategoriesQuery } from "@/modules/catalog/services/catalogApi";
+import { useGetCategoriesQuery } from "@/modules/shopping/services/productApi";
 
 export default function AdminPartnerMappingPage() {
   const { data: partnersData } = useGetPartnersQuery({});
@@ -13,7 +13,7 @@ export default function AdminPartnerMappingPage() {
   const [mapping, setMapping] = useState({ partnerId: "", categoryId: "" });
 
   const partners = partnersData?.data?.partners || [];
-  const categories = categoriesData?.data?.categories || [];
+  const categories = categoriesData?.data || [];
 
   const handleAssign = async () => {
     try {

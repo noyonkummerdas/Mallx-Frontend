@@ -22,7 +22,16 @@ export default function CreateProductPage() {
     description: "",
     price: "",
     stock: "",
-    categoryId: ""
+    categoryId: "",
+    brand: "",
+    sku: "",
+    weight: "",
+    warranty: "",
+    dimensions: {
+      length: "",
+      width: "",
+      height: ""
+    }
   });
   const [dynamicAttributes, setDynamicAttributes] = useState<Record<string, string>>({});
 
@@ -79,6 +88,15 @@ export default function CreateProductPage() {
         price: Number(newProduct.price),
         stock: Number(newProduct.stock),
         vendorId,
+        brand: newProduct.brand,
+        sku: newProduct.sku,
+        weight: Number(newProduct.weight),
+        warranty: newProduct.warranty,
+        dimensions: {
+          length: Number(newProduct.dimensions.length),
+          width: Number(newProduct.dimensions.width),
+          height: Number(newProduct.dimensions.height)
+        },
         attributes: Object.entries(dynamicAttributes).map(([key, value]) => ({
             key,
             value
@@ -264,6 +282,87 @@ export default function CreateProductPage() {
                                 onChange={(e) => setNewProduct({...newProduct, description: e.target.value})}
                                 className="w-full bg-[#fcfcfc] border-b-2 border-slate-200 px-0 py-4 outline-none text-sm text-black font-medium leading-[1.8] placeholder:text-slate-300 focus:border-black transition-all resize-none"
                                 placeholder="Describe the aesthetic, material properties, and functional utility..."
+                            />
+                        </div>
+
+                        {/* Brand & SKU */}
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                            <div className="group">
+                                <label className="text-[9px] text-slate-500 uppercase tracking-[0.25em] font-medium mb-4 block group-focus-within:text-black transition-all">Brand</label>
+                                <input 
+                                    type="text"
+                                    value={newProduct.brand}
+                                    onChange={(e) => setNewProduct({...newProduct, brand: e.target.value})}
+                                    className="w-full bg-[#fcfcfc] border-b-2 border-slate-200 px-0 py-4 outline-none text-base text-black font-semibold placeholder:text-slate-300 focus:border-black transition-all"
+                                    placeholder="e.g. Apple, Nike"
+                                />
+                            </div>
+                            <div className="group">
+                                <label className="text-[9px] text-slate-500 uppercase tracking-[0.25em] font-medium mb-4 block group-focus-within:text-black transition-all">Parent SKU</label>
+                                <input 
+                                    type="text"
+                                    value={newProduct.sku}
+                                    onChange={(e) => setNewProduct({...newProduct, sku: e.target.value})}
+                                    className="w-full bg-[#fcfcfc] border-b-2 border-slate-200 px-0 py-4 outline-none text-base text-black font-semibold placeholder:text-slate-300 focus:border-black transition-all"
+                                    placeholder="e.g. MH-100-BLK"
+                                />
+                            </div>
+                        </div>
+
+                        {/* Logistics: Weight & Dimensions */}
+                        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+                            <div className="group">
+                                <label className="text-[9px] text-slate-500 uppercase tracking-[0.25em] font-medium mb-4 block group-focus-within:text-black transition-all">Weight (KG)</label>
+                                <input 
+                                    type="number"
+                                    step="0.01"
+                                    value={newProduct.weight}
+                                    onChange={(e) => setNewProduct({...newProduct, weight: e.target.value})}
+                                    className="w-full bg-[#fcfcfc] border-b-2 border-slate-200 px-0 py-4 outline-none text-base text-black font-semibold placeholder:text-slate-300 focus:border-black transition-all"
+                                    placeholder="0.5"
+                                />
+                            </div>
+                            <div className="group">
+                                <label className="text-[9px] text-slate-500 uppercase tracking-[0.25em] font-medium mb-4 block group-focus-within:text-black transition-all">Length (CM)</label>
+                                <input 
+                                    type="number"
+                                    value={newProduct.dimensions.length}
+                                    onChange={(e) => setNewProduct({...newProduct, dimensions: {...newProduct.dimensions, length: e.target.value}})}
+                                    className="w-full bg-[#fcfcfc] border-b-2 border-slate-200 px-0 py-4 outline-none text-base text-black font-semibold placeholder:text-slate-300 focus:border-black transition-all"
+                                    placeholder="10"
+                                />
+                            </div>
+                            <div className="group">
+                                <label className="text-[9px] text-slate-500 uppercase tracking-[0.25em] font-medium mb-4 block group-focus-within:text-black transition-all">Width (CM)</label>
+                                <input 
+                                    type="number"
+                                    value={newProduct.dimensions.width}
+                                    onChange={(e) => setNewProduct({...newProduct, dimensions: {...newProduct.dimensions, width: e.target.value}})}
+                                    className="w-full bg-[#fcfcfc] border-b-2 border-slate-200 px-0 py-4 outline-none text-base text-black font-semibold placeholder:text-slate-300 focus:border-black transition-all"
+                                    placeholder="10"
+                                />
+                            </div>
+                            <div className="group">
+                                <label className="text-[9px] text-slate-500 uppercase tracking-[0.25em] font-medium mb-4 block group-focus-within:text-black transition-all">Height (CM)</label>
+                                <input 
+                                    type="number"
+                                    value={newProduct.dimensions.height}
+                                    onChange={(e) => setNewProduct({...newProduct, dimensions: {...newProduct.dimensions, height: e.target.value}})}
+                                    className="w-full bg-[#fcfcfc] border-b-2 border-slate-200 px-0 py-4 outline-none text-base text-black font-semibold placeholder:text-slate-300 focus:border-black transition-all"
+                                    placeholder="10"
+                                />
+                            </div>
+                        </div>
+
+                        {/* Warranty */}
+                        <div className="group">
+                            <label className="text-[9px] text-slate-500 uppercase tracking-[0.25em] font-medium mb-4 block group-focus-within:text-black transition-all">Warranty Terms</label>
+                            <input 
+                                type="text"
+                                value={newProduct.warranty}
+                                onChange={(e) => setNewProduct({...newProduct, warranty: e.target.value})}
+                                className="w-full bg-[#fcfcfc] border-b-2 border-slate-200 px-0 py-4 outline-none text-base text-black font-semibold placeholder:text-slate-300 focus:border-black transition-all"
+                                placeholder="e.g. 1 Year Local Warranty"
                             />
                         </div>
                     </div>

@@ -13,11 +13,30 @@ export const productApi = apiSlice.injectEndpoints({
       query: (id) => `/api/v1/products/${id}`,
       providesTags: (result, error, id) => [{ type: "Product", id }],
     }),
+    getCategories: builder.query({
+      query: () => "/api/v1/categories",
+      providesTags: ["Category"],
+    }),
     createProduct: builder.mutation({
       query: (productData) => ({
         url: "/api/v1/products",
         method: "POST",
         body: productData,
+      }),
+      invalidatesTags: ["Product"],
+    }),
+    updateProduct: builder.mutation({
+      query: ({ productId, productData }) => ({
+        url: `/api/v1/products/${productId}`,
+        method: "PATCH",
+        body: productData,
+      }),
+      invalidatesTags: (result, error, { productId }) => [{ type: "Product", id: productId }, "Product"],
+    }),
+    deleteProduct: builder.mutation({
+      query: (productId) => ({
+        url: `/api/v1/products/${productId}`,
+        method: "DELETE",
       }),
       invalidatesTags: ["Product"],
     }),
@@ -37,9 +56,21 @@ export const productApi = apiSlice.injectEndpoints({
       }),
       invalidatesTags: (result, error, { productId }) => [{ type: "Product", id: productId }],
     }),
-    getCategories: builder.query({
-      query: () => "/api/v1/categories",
-      providesTags: ["Category"],
+    postProductReview: builder.mutation({
+      query: ({ productId, reviewData }) => ({
+        url: `/api/v1/products/${productId}/reviews`,
+        method: "POST",
+        body: reviewData,
+      }),
+      invalidatesTags: (result, error, { productId }) => [{ type: "Product", id: productId }],
+    }),
+    getRecentlyViewed: builder.query({
+      query: () => "/api/v1/products/personal/recently-viewed",
+      providesTags: ["Product"],
+    }),
+    getAdminInventory: builder.query({
+      query: () => "/api/v1/products/admin/inventory",
+      providesTags: ["Product"],
     }),
   }),
 });
@@ -47,8 +78,13 @@ export const productApi = apiSlice.injectEndpoints({
 export const {
   useGetProductsQuery,
   useGetProductQuery,
+  useGetCategoriesQuery,
   useCreateProductMutation,
+  useUpdateProductMutation,
+  useDeleteProductMutation,
   useUploadProductImageMutation,
   useAddVariantMutation,
-  useGetCategoriesQuery,
+  usePostProductReviewMutation,
+  useGetRecentlyViewedQuery,
+  useGetAdminInventoryQuery,
 } = productApi;

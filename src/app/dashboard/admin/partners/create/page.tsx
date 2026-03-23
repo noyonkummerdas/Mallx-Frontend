@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Truck, User, Mail, Phone, Lock, ChevronRight, Loader2, Check, LayoutGrid } from "lucide-react";
 import { useRegisterMutation } from "@/modules/identity/services/authApi";
-import { useGetCategoriesQuery } from "@/modules/catalog/services/catalogApi";
+import { useGetCategoriesQuery } from "@/modules/shopping/services/productApi";
 
 export default function CreatePartnerPage() {
   const router = useRouter();

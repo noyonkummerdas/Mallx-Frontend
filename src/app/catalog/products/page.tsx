@@ -1,6 +1,6 @@
 "use client";
 
-import { useGetProductsQuery, useGetCategoriesQuery } from "@/modules/catalog/services/catalogApi";
+import { useGetProductsQuery, useGetCategoriesQuery } from "@/modules/shopping/services/productApi";
 import Link from "next/link";
 import { useState, useEffect } from "react";
 
@@ -33,7 +33,7 @@ export default function ProductListingPage() {
   );
 
   const products = productData?.data?.products || [];
-  const categories = categoryData?.data?.categories || [];
+  const categories = categoryData?.data || [];
 
   return (
     <main className="min-h-screen bg-slate-50 text-slate-900 p-8">

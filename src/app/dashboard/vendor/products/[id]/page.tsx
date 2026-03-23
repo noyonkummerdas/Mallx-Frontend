@@ -3,12 +3,12 @@
 import { useState, useEffect } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { 
-  useGetProductDetailsQuery, 
+  useGetProductQuery, 
   useUpdateProductMutation, 
   useDeleteProductMutation,
   useGetCategoriesQuery,
   useUploadProductImageMutation
-} from "@/modules/catalog/services/catalogApi";
+} from "@/modules/shopping/services/productApi";
 import { CATEGORY_FIELDS } from "@/modules/catalog/constants/categoryFields";
 import { 
   ArrowLeft, 
@@ -26,7 +26,7 @@ export default function ProductEditPage() {
   const { id } = useParams();
   const router = useRouter();
   
-  const { data: productData, isLoading: isProductLoading } = useGetProductDetailsQuery(id);
+  const { data: productData, isLoading: isProductLoading } = useGetProductQuery(id);
   const { data: categoriesData } = useGetCategoriesQuery({});
   const [updateProduct, { isLoading: isUpdating }] = useUpdateProductMutation();
   const [deleteProduct] = useDeleteProductMutation();
@@ -37,7 +37,16 @@ export default function ProductEditPage() {
     price: "",
     stock: "",
     categoryId: "",
-    status: ""
+    status: "",
+    brand: "",
+    sku: "",
+    weight: "",
+    warranty: "",
+    dimensions: {
+      length: "",
+      width: "",
+      height: ""
+    }
   });
   const [dynamicAttributes, setDynamicAttributes] = useState<Record<string, string>>({});
   const [imagePreviews, setImagePreviews] = useState<string[]>([]);
@@ -62,8 +71,20 @@ export default function ProductEditPage() {
       } else {
         setDynamicAttributes({});
       }
+      setFormData(prev => ({
+        ...prev,
+        brand: p.brand || "",
+        sku: p.sku || "",
+        weight: p.weight?.toString() || "",
+        warranty: p.warranty || "",
+        dimensions: {
+          length: p.dimensions?.length?.toString() || "",
+          width: p.dimensions?.width?.toString() || "",
+          height: p.dimensions?.height?.toString() || ""
+        }
+      }));
       if (p.images) {
-        setImagePreviews(p.images.map((img: any) => img.url));
+        setImagePreviews(p.images.map((img: any) => img.imageUrl || img.url));
       }
     }
   }, [productData]);
@@ -80,11 +101,20 @@ export default function ProductEditPage() {
 
     try {
       await updateProduct({
-        id,
+        productId: id,
         productData: {
           ...formData,
           price: Number(formData.price),
           stock: Number(formData.stock),
+          brand: formData.brand,
+          sku: formData.sku,
+          weight: Number(formData.weight),
+          warranty: formData.warranty,
+          dimensions: {
+            length: Number(formData.dimensions.length),
+            width: Number(formData.dimensions.width),
+            height: Number(formData.dimensions.height)
+          },
           attributes: Object.entries(dynamicAttributes).map(([key, value]) => ({
             key,
             value
@@ -191,6 +221,87 @@ export default function ProductEditPage() {
                         onChange={(e) => setFormData({...formData, description: e.target.value})}
                         className="w-full bg-[#fcfcfc] border-b-2 border-slate-200 px-0 py-4 outline-none text-sm text-black font-medium leading-relaxed placeholder:text-slate-300 focus:border-black transition-all resize-none"
                         placeholder="Detailed product information..."
+                    />
+                </div>
+
+                {/* Brand & SKU */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div className="group">
+                        <label className="text-[9px] text-slate-500 uppercase tracking-[0.25em] font-medium mb-4 block group-focus-within:text-black transition-all">Brand</label>
+                        <input 
+                            type="text"
+                            value={formData.brand}
+                            onChange={(e) => setFormData({...formData, brand: e.target.value})}
+                            className="w-full bg-[#fcfcfc] border-b-2 border-slate-200 px-0 py-4 outline-none text-base text-black font-semibold placeholder:text-slate-300 focus:border-black transition-all"
+                            placeholder="e.g. Apple, Nike"
+                        />
+                    </div>
+                    <div className="group">
+                        <label className="text-[9px] text-slate-500 uppercase tracking-[0.25em] font-medium mb-4 block group-focus-within:text-black transition-all">Parent SKU</label>
+                        <input 
+                            type="text"
+                            value={formData.sku}
+                            onChange={(e) => setFormData({...formData, sku: e.target.value})}
+                            className="w-full bg-[#fcfcfc] border-b-2 border-slate-200 px-0 py-4 outline-none text-base text-black font-semibold placeholder:text-slate-300 focus:border-black transition-all"
+                            placeholder="e.g. MH-100-BLK"
+                        />
+                    </div>
+                </div>
+
+                {/* Logistics: Weight & Dimensions */}
+                <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+                    <div className="group">
+                        <label className="text-[9px] text-slate-500 uppercase tracking-[0.25em] font-medium mb-4 block group-focus-within:text-black transition-all">Weight (KG)</label>
+                        <input 
+                            type="number"
+                            step="0.01"
+                            value={formData.weight}
+                            onChange={(e) => setFormData({...formData, weight: e.target.value})}
+                            className="w-full bg-[#fcfcfc] border-b-2 border-slate-200 px-0 py-4 outline-none text-base text-black font-semibold placeholder:text-slate-300 focus:border-black transition-all"
+                            placeholder="0.5"
+                        />
+                    </div>
+                    <div className="group">
+                        <label className="text-[9px] text-slate-500 uppercase tracking-[0.25em] font-medium mb-4 block group-focus-within:text-black transition-all">Length (CM)</label>
+                        <input 
+                            type="number"
+                            value={formData.dimensions.length}
+                            onChange={(e) => setFormData({...formData, dimensions: {...formData.dimensions, length: e.target.value}})}
+                            className="w-full bg-[#fcfcfc] border-b-2 border-slate-200 px-0 py-4 outline-none text-base text-black font-semibold placeholder:text-slate-300 focus:border-black transition-all"
+                            placeholder="10"
+                        />
+                    </div>
+                    <div className="group">
+                        <label className="text-[9px] text-slate-500 uppercase tracking-[0.25em] font-medium mb-4 block group-focus-within:text-black transition-all">Width (CM)</label>
+                        <input 
+                            type="number"
+                            value={formData.dimensions.width}
+                            onChange={(e) => setFormData({...formData, dimensions: {...formData.dimensions, width: e.target.value}})}
+                            className="w-full bg-[#fcfcfc] border-b-2 border-slate-200 px-0 py-4 outline-none text-base text-black font-semibold placeholder:text-slate-300 focus:border-black transition-all"
+                            placeholder="10"
+                        />
+                    </div>
+                    <div className="group">
+                        <label className="text-[9px] text-slate-500 uppercase tracking-[0.25em] font-medium mb-4 block group-focus-within:text-black transition-all">Height (CM)</label>
+                        <input 
+                            type="number"
+                            value={formData.dimensions.height}
+                            onChange={(e) => setFormData({...formData, dimensions: {...formData.dimensions, height: e.target.value}})}
+                            className="w-full bg-[#fcfcfc] border-b-2 border-slate-200 px-0 py-4 outline-none text-base text-black font-semibold placeholder:text-slate-300 focus:border-black transition-all"
+                            placeholder="10"
+                        />
+                    </div>
+                </div>
+
+                {/* Warranty */}
+                <div className="group">
+                    <label className="text-[9px] text-slate-500 uppercase tracking-[0.25em] font-medium mb-4 block group-focus-within:text-black transition-all">Warranty Terms</label>
+                    <input 
+                        type="text"
+                        value={formData.warranty}
+                        onChange={(e) => setFormData({...formData, warranty: e.target.value})}
+                        className="w-full bg-[#fcfcfc] border-b-2 border-slate-200 px-0 py-4 outline-none text-base text-black font-semibold placeholder:text-slate-300 focus:border-black transition-all"
+                        placeholder="e.g. 1 Year Local Warranty"
                     />
                 </div>
              </div>
