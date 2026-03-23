@@ -9,13 +9,18 @@ export default function RegisterPage() {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
+    phone: "",
     password: "",
     confirmPassword: "",
     role: "Customer",
-    nid: "",
-    photo: "",
+    nidNumber: "",
+    profilePhoto: "",
+    nidFrontImage: "",
+    nidBackImage: "",
     nomineeName: "",
-    nomineeNid: ""
+    nomineeNid: "",
+    nomineeNidFrontImage: "",
+    nomineeNidBackImage: ""
   });
   const [register, { isLoading, error }] = useRegisterMutation();
   const router = useRouter();
@@ -31,17 +36,19 @@ export default function RegisterPage() {
       const result = await register({
         name: formData.name,
         email: formData.email,
+        phone: formData.phone,
         password: formData.password,
-        role: formData.role,
         roleName: formData.role,
-        kyc: formData.role === "DeliveryBoy" ? {
-          nid: formData.nid,
-          photo: formData.photo,
-          nominee: {
-            name: formData.nomineeName,
-            nid: formData.nomineeNid
-          }
-        } : undefined
+        ...(formData.role === "DeliveryBoy" ? {
+          nidNumber: formData.nidNumber,
+          profilePhoto: formData.profilePhoto,
+          nidFrontImage: formData.nidFrontImage,
+          nidBackImage: formData.nidBackImage,
+          nomineeName: formData.nomineeName,
+          nomineeNid: formData.nomineeNid,
+          nomineeNidFrontImage: formData.nomineeNidFrontImage,
+          nomineeNidBackImage: formData.nomineeNidBackImage
+        } : {})
       }).unwrap();
       console.log("Registration successful returned data:", result);
       router.push("/auth/login");
@@ -107,19 +114,41 @@ export default function RegisterPage() {
                     <input
                       type="text"
                       required
-                      value={formData.nid}
-                      onChange={(e) => setFormData({...formData, nid: e.target.value})}
+                      value={formData.nidNumber}
+                      onChange={(e) => setFormData({...formData, nidNumber: e.target.value})}
                       className="w-full bg-white border border-slate-200 rounded-lg px-4 py-2.5 text-xs outline-none focus:border-slate-900"
                       placeholder="NID-XXXX-XXXX"
                     />
                   </div>
                   <div className="col-span-2 sm:col-span-1">
-                    <label className="block text-[8px] text-slate-400 uppercase tracking-widest mb-1">Photo URL</label>
+                    <label className="block text-[8px] text-slate-400 uppercase tracking-widest mb-1">Profile Photo URL</label>
                     <input
                       type="text"
                       required
-                      value={formData.photo}
-                      onChange={(e) => setFormData({...formData, photo: e.target.value})}
+                      value={formData.profilePhoto}
+                      onChange={(e) => setFormData({...formData, profilePhoto: e.target.value})}
+                      className="w-full bg-white border border-slate-200 rounded-lg px-4 py-2.5 text-xs outline-none focus:border-slate-900"
+                      placeholder="https://..."
+                    />
+                  </div>
+                  <div className="col-span-2 sm:col-span-1">
+                    <label className="block text-[8px] text-slate-400 uppercase tracking-widest mb-1">NID Front Image URL</label>
+                    <input
+                      type="text"
+                      required
+                      value={formData.nidFrontImage}
+                      onChange={(e) => setFormData({...formData, nidFrontImage: e.target.value})}
+                      className="w-full bg-white border border-slate-200 rounded-lg px-4 py-2.5 text-xs outline-none focus:border-slate-900"
+                      placeholder="https://..."
+                    />
+                  </div>
+                  <div className="col-span-2 sm:col-span-1">
+                    <label className="block text-[8px] text-slate-400 uppercase tracking-widest mb-1">NID Back Image URL</label>
+                    <input
+                      type="text"
+                      required
+                      value={formData.nidBackImage}
+                      onChange={(e) => setFormData({...formData, nidBackImage: e.target.value})}
                       className="w-full bg-white border border-slate-200 rounded-lg px-4 py-2.5 text-xs outline-none focus:border-slate-900"
                       placeholder="https://..."
                     />
@@ -146,20 +175,56 @@ export default function RegisterPage() {
                       placeholder="NID-XXXX-XXXX"
                     />
                   </div>
+                  <div className="col-span-2 sm:col-span-1">
+                    <label className="block text-[8px] text-slate-400 uppercase tracking-widest mb-1">Nominee NID Front</label>
+                    <input
+                      type="text"
+                      required
+                      value={formData.nomineeNidFrontImage}
+                      onChange={(e) => setFormData({...formData, nomineeNidFrontImage: e.target.value})}
+                      className="w-full bg-white border border-slate-200 rounded-lg px-4 py-2.5 text-xs outline-none focus:border-slate-900"
+                      placeholder="https://..."
+                    />
+                  </div>
+                  <div className="col-span-2 sm:col-span-1">
+                    <label className="block text-[8px] text-slate-400 uppercase tracking-widest mb-1">Nominee NID Back</label>
+                    <input
+                      type="text"
+                      required
+                      value={formData.nomineeNidBackImage}
+                      onChange={(e) => setFormData({...formData, nomineeNidBackImage: e.target.value})}
+                      className="w-full bg-white border border-slate-200 rounded-lg px-4 py-2.5 text-xs outline-none focus:border-slate-900"
+                      placeholder="https://..."
+                    />
+                  </div>
                 </div>
               </div>
             )}
 
-            <div>
-              <label className="block text-[9px] text-slate-400 uppercase tracking-widest mb-2 px-1">Email Address</label>
-              <input
-                type="email"
-                required
-                value={formData.email}
-                onChange={(e) => setFormData({...formData, email: e.target.value})}
-                className="w-full bg-slate-50 border border-slate-200 rounded-xl px-5 py-3.5 text-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-900/5 focus:border-slate-900 transition-all text-xs"
-                placeholder="email@example.com"
-              />
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className="block text-[9px] text-slate-400 uppercase tracking-widest mb-2 px-1">Email Address</label>
+                <input
+                  type="email"
+                  required
+                  value={formData.email}
+                  onChange={(e) => setFormData({...formData, email: e.target.value})}
+                  className="w-full bg-slate-50 border border-slate-200 rounded-xl px-5 py-3.5 text-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-900/5 focus:border-slate-900 transition-all text-xs"
+                  placeholder="email@example.com"
+                />
+              </div>
+              <div>
+                <label className="block text-[9px] text-slate-400 uppercase tracking-widest mb-2 px-1">Phone Number</label>
+                <input
+                  type="tel"
+                  required
+                  pattern="^\+?[0-9]{10,15}$"
+                  value={formData.phone}
+                  onChange={(e) => setFormData({...formData, phone: e.target.value})}
+                  className="w-full bg-slate-50 border border-slate-200 rounded-xl px-5 py-3.5 text-slate-900 focus:outline-none focus:ring-2 focus:ring-slate-900/5 focus:border-slate-900 transition-all text-xs"
+                  placeholder="+8801XXXXXXXXX"
+                />
+              </div>
             </div>
 
             <div className="grid grid-cols-2 gap-4">

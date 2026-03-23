@@ -14,17 +14,11 @@
 }
 
 @layer base {
-  * {
-    @apply border-slate-200;
-    box-sizing: border-box;
-    padding: 0;
-    margin: 0;
-  }
   body {
-    @apply bg-background text-foreground font-sans antialiased;
+    background-color: #ffffff !important;
+    color: #010816 !important;
+    @apply font-sans antialiased;
     font-size: 14px;
-    background-color: #ffffff;
-    color: #0f172a;
   }
 }
 
@@ -55,9 +49,10 @@
 
   /* Standardized Typography */
   .text-gradient {
-    background: linear-gradient(135deg, #0f172a 0%, #475569 100%);
+    background: linear-gradient(135deg, #010816 0%, #334155 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
+    background-clip: text;
   }
 
   /* Unified Action Highlighting */

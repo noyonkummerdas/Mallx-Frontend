@@ -31,13 +31,13 @@ export default function Home() {
   }, [campaigns]);
 
   return (
-    <main className="min-h-screen bg-background text-foreground selection:bg-action/30">
+    <main className="min-h-screen bg-white text-slate-900 selection:bg-action/30">
       <div className="glow-bg" />
       
       {/* 1. HERO CAMPAIGN SLIDER */}
       <section className="relative pt-8 pb-20 px-4 max-w-7xl mx-auto overflow-hidden">
         {campaignsLoading ? (
-          <div className="h-[450px] bg-white/5 rounded-[2.5rem] animate-pulse border border-white/5" />
+          <div className="h-[450px] bg-slate-50 rounded-[2.5rem] animate-pulse border border-slate-200" />
         ) : campaigns.length > 0 ? (
           <div className="relative h-[450px] rounded-[2.5rem] overflow-hidden group shadow-2xl transition-all duration-700">
             {campaigns.map((camp: any, idx: number) => (
@@ -46,9 +46,9 @@ export default function Home() {
                 className={`absolute inset-0 transition-all duration-1000 ease-in-out ${idx === activeCampaignIdx ? 'opacity-100 scale-100' : 'opacity-0 scale-105 pointer-events-none'}`}
               >
                 <img 
-                  src={camp.bannerUrl || "https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?q=80&w=2000"} 
-                  className="w-full h-full object-cover" 
-                  alt={camp.name} 
+                   src={camp.bannerUrl || "https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?q=80&w=2000"} 
+                   className="w-full h-full object-cover" 
+                   alt={camp.name} 
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-slate-900/60 via-transparent to-transparent" />
                 <div className="absolute bottom-16 left-16 max-w-xl text-left">
@@ -71,8 +71,8 @@ export default function Home() {
             </div>
           </div>
         ) : (
-          <div className="h-[450px] glass-panel rounded-[2.5rem] items-center justify-center flex">
-             <h2 className="text-2xl font-black text-white/10 uppercase tracking-[0.5em]">MallX Showcase</h2>
+          <div className="h-[450px] glass-panel rounded-[2.5rem] items-center justify-center flex border border-slate-200">
+             <h2 className="text-2xl font-black text-slate-200 uppercase tracking-[0.5em]">MallX Showcase</h2>
           </div>
         )}
       </section>
@@ -100,7 +100,8 @@ export default function Home() {
               <h2 className="text-4xl font-black text-slate-900 tracking-tighter uppercase italic">Flash Sales</h2>
             </div>
             <Link href="/deals" className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 hover:text-slate-900 transition-all">View All Sales →</Link>
-        </div>           <div className="flex gap-8 overflow-x-auto pb-12 scrollbar-hide snap-x -mx-4 px-4">
+        </div>
+        <div className="flex gap-8 overflow-x-auto pb-12 scrollbar-hide snap-x -mx-4 px-4">
           {flashSales.map((sale: any) => {
             const discountPercent = Math.round(((sale.productId?.price - sale.discountPrice) / sale.productId?.price) * 100);
             return (
@@ -113,7 +114,7 @@ export default function Home() {
                   <img src={sale.productId?.images?.[0]?.imageUrl || "https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=1000"} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="Flash Sale" />
                   <div className="absolute top-3 left-3 bg-red-600 text-[8px] font-black text-white px-3 py-1.5 rounded-full uppercase tracking-tighter shadow-xl">-{discountPercent}% OFF</div>
                   {sale.stock <= 10 && (
-                     <div className="absolute bottom-3 right-3 bg-black/60 backdrop-blur-md text-[8px] font-black text-white px-3 py-1.5 rounded-lg uppercase tracking-widest border border-white/10">{sale.stock} Left</div>
+                     <div className="absolute bottom-3 right-3 bg-slate-900/60 backdrop-blur-md text-[8px] font-black text-white px-3 py-1.5 rounded-lg uppercase tracking-widest border border-white/10">{sale.stock} Left</div>
                   )}
                 </div>
                 <div className="px-4 pb-4 text-left">
@@ -218,8 +219,9 @@ function CategoryShowcase({ category }: { category: any }) {
                {categoryFlash.map((flash: any) => {
                   const discountPercent = Math.round(((flash.productId?.price - flash.discountPrice) / flash.productId?.price) * 100);
                   return (
-                     <div key={flash._id} className="min-w-[340px] h-48 bg-red-600/10 border border-red-600/20 rounded-[2rem] p-8 flex flex-col justify-between relative overflow-hidden group snap-start shadow-xl">
-                        <div className="absolute top-0 right-0 w-32 h-32 bg-red-600/10 blur-3xl rounded-full translate-x-10 -translate-y-10 group-hover:scale-150 transition-transform"                         <div className="relative z-10 flex justify-between items-start">
+                     <div key={flash._id} className="min-w-[340px] h-48 bg-red-600/5 border border-red-600/10 rounded-[2rem] p-8 flex flex-col justify-between relative overflow-hidden group snap-start shadow-sm">
+                        <div className="absolute top-0 right-0 w-32 h-32 bg-red-600/5 blur-3xl rounded-full translate-x-10 -translate-y-10 group-hover:scale-150 transition-transform" />
+                        <div className="relative z-10 flex justify-between items-start">
                            <div>
                               <span className="text-[9px] font-black text-red-600 uppercase tracking-[0.2em]">Flash Surge</span>
                               <h4 className="text-xl font-black text-slate-900 uppercase italic tracking-tighter mt-1 truncate max-w-[180px]">{flash.productId?.name}</h4>
@@ -229,11 +231,10 @@ function CategoryShowcase({ category }: { category: any }) {
                         <div className="flex items-end justify-between relative z-10">
                            <div className="flex flex-col">
                               <p className="text-2xl font-black text-slate-900 tracking-tighter">{flash.discountPrice.toLocaleString()} TK</p>
-                              <span className="text-[10px] font-black text-slate-900/40 uppercase tracking-widest">{flash.stock} Units Left</span>
+                              <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest">{flash.stock} Units Left</span>
                            </div>
                            <Link href={`/catalog/products/${flash.productId?._id}`} className="px-6 py-2 bg-red-600 text-white text-[10px] font-black uppercase rounded-xl tracking-widest hover:scale-105 active:scale-95 transition-all shadow-lg shadow-red-600/20">Grab Now</Link>
                         </div>
-iv>
                      </div>
                   );
                })}
@@ -249,7 +250,8 @@ iv>
                         <button className="px-6 py-2 bg-white text-black text-[10px] font-black uppercase rounded-xl tracking-widest hover:scale-105 active:scale-95 transition-all">Claim Pack</button>
                      </div>
                   </div>
-                               {vouchers.map((voucher: any) => (
+               ))}
+               {vouchers.map((voucher: any) => (
                   <div key={voucher._id} className="min-w-[320px] h-48 bg-white border-2 border-dashed border-action/40 rounded-[2rem] p-8 flex flex-col justify-between snap-start group relative">
                      <div className="absolute -right-4 top-1/2 -translate-y-1/2 w-8 h-8 bg-background rounded-full border-2 border-slate-100" />
                      <div>
@@ -262,7 +264,6 @@ iv>
                      </div>
                   </div>
                ))}
-))}
             </div>
          )}
 
@@ -277,17 +278,18 @@ iv>
                   <Link 
                      href={`/catalog/products/${product._id}`} 
                      key={product._id} 
-                     className="glass-card group p-3 rounded-[2rem] overflow-hidden flex flex-col shadow-sm w-[300px] snap-start"
+                     className="glass-card group p-3 rounded-[2rem] overflow-hidden flex flex-col w-[300px] snap-start"
                   >
                      <div className="w-full aspect-square rounded-[1.5rem] overflow-hidden bg-slate-50 mb-6 relative">
                         <img 
                            src={product.images?.[0]?.imageUrl || "https://images.unsplash.com/photo-1523275335684-37898b6baf30?q=80&w=1000"} 
-                           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" 
+                           className="w-full h-full object-contain p-4 group-hover:scale-105 transition-transform duration-700" 
                         />
-                        <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                           <span className="text-[10px] font-black text-white uppercase tracking-[0.2em] border-2 border-white px-6 py-2 rounded-xl">Details</span>
+                        <div className="absolute inset-0 bg-slate-900/10 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                           <span className="text-[10px] font-black text-slate-900 uppercase tracking-[0.2em] border-2 border-slate-900 px-6 py-2 rounded-xl bg-white/80">Details</span>
                         </div>
-                     </d                      <div className="px-4 pb-4 text-left">
+                     </div>
+                     <div className="px-4 pb-4 text-left">
                         <h4 className="text-sm font-black text-slate-400 mb-2 uppercase line-clamp-1 group-hover:text-slate-900 transition-colors tracking-tight">{product.name}</h4>
                         <div className="flex items-center gap-3">
                            {product.discountPrice ? (
@@ -300,7 +302,6 @@ iv>
                            )}
                         </div>
                      </div>
-iv>
                   </Link>
                ))
             )}
