@@ -4,10 +4,11 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useGetMeQuery } from "@/modules/identity/services/authApi";
 import { useState, useEffect } from "react";
+import { ShoppingBag, User as UserIcon } from "lucide-react";
 
 export default function Navbar() {
   const pathname = usePathname();
-  const { data: userData } = useGetMeQuery({});
+  const { data: userData, isLoading } = useGetMeQuery({});
   const [showPopup, setShowPopup] = useState(false);
   const isAuthPage = pathname.startsWith("/auth");
   const isDashboard = pathname.startsWith("/dashboard");
@@ -15,7 +16,7 @@ export default function Navbar() {
 
   useEffect(() => {
     if (!userData && !isAuthPage) {
-      const timer = setTimeout(() => setShowPopup(true), 5000);
+      const timer = setTimeout(() => setShowPopup(true), 15000);
       return () => clearTimeout(timer);
     }
   }, [userData, isAuthPage]);
@@ -25,56 +26,50 @@ export default function Navbar() {
   const user = userData?.data?.user;
 
   return (
-    <nav className="sticky top-0 z-[100] bg-background/60 backdrop-blur-xl border-b border-white/5 px-8 py-4">
-      <div className="max-w-7xl mx-auto flex items-center justify-between">
+    <nav className="sticky top-0 z-50 w-full glass-panel border-b border-white/5 transition-all duration-300">
+      <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+        {/* Brand Logo */}
         <Link href="/" className="flex items-center gap-3 group">
-          <div className="w-8 h-8 accent-gradient rounded-xl flex items-center justify-center shadow-lg shadow-indigo-500/20 group-hover:scale-110 transition-all duration-300">
-            <span className="text-sm font-black text-white">X</span>
+          <div className="w-10 h-10 accent-gradient rounded-xl shadow-lg shadow-indigo-500/20 flex items-center justify-center transform group-hover:rotate-12 transition-all">
+            <span className="text-white font-black text-xl">X</span>
           </div>
-          <span className="text-lg font-bold tracking-tight text-white uppercase bg-clip-text">
-            Mall<span className="text-accent">X</span>
+          <span className="text-xl font-black tracking-tighter text-white uppercase italic">
+            Mall<span className="text-action font-black">X</span>
           </span>
         </Link>
-        
-        <div className="hidden lg:flex items-center gap-8 text-[10px] font-bold uppercase tracking-[0.2em] text-slate-400">
-          {user?.role?.toLowerCase() === "vendor" ? (
-            <>
-              <Link href="/dashboard/vendor" className="hover:text-white transition-colors">Storefront</Link>
-              <Link href="/dashboard/vendor/products" className="hover:text-white transition-colors">Inventory</Link>
-              <div className="flex items-center gap-2 px-3 py-1 bg-white/5 rounded-full text-accent border border-white/5">
-                <span className="w-1.5 h-1.5 rounded-full bg-accent animate-pulse" />
-                Vendor Mode
-              </div>
-            </>
-          ) : (
-            <>
-              <Link href="/catalog/products" className={`hover:text-white transition-colors ${pathname === "/catalog/products" ? "text-accent" : ""}`}>Marketplace</Link>
-              <Link href="/catalog/products?category=mens" className="hover:text-white transition-colors">Men</Link>
-              <Link href="/catalog/products?category=womens" className="hover:text-white transition-colors">Women</Link>
-              <Link href="/deals" className="text-accent hover:brightness-125 transition-all">Deals</Link>
-              <Link href="/shopping/cart" className="relative hover:text-white transition-colors flex items-center gap-2">
-                <div className="w-6 h-6 flex items-center justify-center bg-white/5 rounded-lg border border-white/5">
-                  <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" /></svg>
-                </div>
-                Bag
-              </Link>
-            </>
-          )}
+
+        {/* Navigation Links */}
+        <div className="hidden md:flex items-center gap-10">
+          <Link href="/catalog/products" className="text-[10px] font-black uppercase tracking-[0.2em] text-muted hover:text-white transition-all">Marketplace</Link>
+          <Link href="/catalog/products?type=men" className="text-[10px] font-black uppercase tracking-[0.2em] text-muted hover:text-white transition-all">Men</Link>
+          <Link href="/catalog/products?type=women" className="text-[10px] font-black uppercase tracking-[0.2em] text-muted hover:text-white transition-all">Women</Link>
+          <Link href="/catalog/products?type=deals" className="text-[10px] font-black uppercase tracking-[0.2em] text-action hover:brightness-110 transition-all font-black bg-action/5 px-4 py-1.5 rounded-full">Deals</Link>
         </div>
 
-        <div className="flex items-center gap-4">
-          {user ? (
-            <Link href="/profile" className="flex items-center gap-2 px-3 py-1.5 bg-white/5 rounded-full border border-white/5 hover:border-white/20 transition-all">
-              <div className="w-6 h-6 accent-gradient rounded-full flex items-center justify-center text-[10px] text-white font-bold">
-                {user.name.charAt(0)}
+        {/* User Actions */}
+        <div className="flex items-center gap-6">
+          <Link href="/shopping/bag" className="relative group">
+            <ShoppingBag className="w-5 h-5 text-muted group-hover:text-white transition-all" />
+            <span className="absolute -top-1 -right-1 w-4 h-4 bg-action text-[8px] font-black text-white flex items-center justify-center rounded-full shadow-lg shadow-blue-500/20">0</span>
+          </Link>
+          
+          {isLoading ? (
+            <div className="w-8 h-8 rounded-full bg-white/5 animate-pulse" />
+          ) : user ? (
+            <Link href={user.role === 'Admin' ? '/dashboard/admin' : user.role === 'Vendor' ? '/dashboard/vendor' : '/dashboard/customer'}>
+              <div className="w-9 h-9 rounded-xl accent-gradient p-[1px] flex items-center justify-center group">
+                <div className="w-full h-full bg-background rounded-xl flex items-center justify-center group-hover:bg-transparent transition-all overflow-hidden">
+                  <UserIcon className="w-4 h-4 text-white" />
+                </div>
               </div>
-              <span className="text-[10px] font-bold uppercase tracking-widest text-slate-200">{user.name.split(' ')[0]}</span>
             </Link>
           ) : (
-            <div className="flex items-center gap-2">
-              <Link href="/auth/login" className="px-4 py-2 text-[10px] font-bold uppercase tracking-widest text-slate-400 hover:text-white transition-colors">Login</Link>
+            <div className="flex items-center gap-4">
+              <Link href="/auth/login" className="text-[10px] font-black uppercase tracking-[0.2em] text-white hover:text-action transition-all">Login</Link>
               <Link href="/auth/register">
-                <button className="px-5 py-2 accent-gradient text-white rounded-full text-[10px] font-black uppercase tracking-widest hover:brightness-110 transition-all hover:scale-105 active:scale-95 shadow-lg shadow-indigo-500/20">Sign Up</button>
+                <button className="px-6 py-2.5 accent-gradient text-white rounded-xl text-[10px] font-black uppercase tracking-[0.2em] shadow-lg shadow-indigo-500/20 active:scale-95 transition-all">
+                  Sign Up
+                </button>
               </Link>
             </div>
           )}

@@ -12,64 +12,58 @@ export default function Footer() {
   if (isAuthPage || isDashboard || isSupportMain) return null;
 
   return (
-    <footer className="bg-background border-t border-white/5 py-16 px-8 mt-20">
-      <div className="max-w-7xl mx-auto">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
-          <div className="col-span-1 md:col-span-1">
-            <Link href="/" className="flex items-center gap-3 mb-6 group">
-              <div className="w-8 h-8 accent-gradient rounded-xl flex items-center justify-center shadow-lg shadow-indigo-500/20 group-hover:scale-110 transition-all">
-                <span className="text-sm font-black text-white">X</span>
+    <footer className="w-full bg-surface border-t border-white/5 py-24 relative overflow-hidden">
+      <div className="glow-bg opacity-30" />
+      <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-4 gap-16 relative z-10">
+        <div className="col-span-1 md:col-span-1">
+          <Link href="/" className="flex items-center gap-3 mb-8 group">
+            <div className="w-10 h-10 accent-gradient rounded-xl flex items-center justify-center transform group-hover:rotate-12 transition-all shadow-lg shadow-indigo-500/20">
+              <span className="text-white font-black text-xl">X</span>
+            </div>
+            <span className="text-xl font-black tracking-tighter text-white uppercase italic">
+              Mall<span className="text-action font-black">X</span>
+            </span>
+          </Link>
+          <p className="text-muted text-xs font-bold leading-relaxed mb-8 uppercase tracking-widest opacity-60">
+            Defining the future of high-performance commerce with obsidian precision.
+          </p>
+          <div className="flex gap-4">
+            {['Twitter', 'Instagram', 'Github'].map((social) => (
+              <div key={social} className="w-10 h-10 rounded-xl bg-white/5 border border-white/5 flex items-center justify-center hover:border-action transition-all cursor-pointer group">
+                <span className="text-[10px] font-black text-muted group-hover:text-white uppercase tracking-tighter">{social[0]}</span>
               </div>
-              <span className="text-lg font-bold tracking-tight text-white uppercase">Mall<span className="text-accent">X</span></span>
-            </Link>
-            <p className="text-sm text-slate-400 leading-relaxed max-w-xs italic">
-              Redefining the digital marketplace with premium aesthetics and rock-solid engineering.
-            </p>
-          </div>
-
-          <div>
-            <h4 className="text-[10px] font-black text-white uppercase tracking-[0.2em] mb-6">Discovery</h4>
-            <div className="flex flex-col gap-4">
-              <Link href="/catalog/products" className="text-xs text-slate-500 hover:text-white transition-colors">Marketplace</Link>
-              <Link href="/deals" className="text-xs text-slate-500 hover:text-white transition-colors">Exclusive Deals</Link>
-              <Link href="/new-arrivals" className="text-xs text-slate-500 hover:text-white transition-colors">New Arrivals</Link>
-            </div>
-          </div>
-
-          <div>
-            <h4 className="text-[10px] font-black text-white uppercase tracking-[0.2em] mb-6">Company</h4>
-            <div className="flex flex-col gap-4">
-              <Link href="/about" className="text-xs text-slate-500 hover:text-white transition-colors">Our Vision</Link>
-              <Link href="/support" className="text-xs text-slate-500 hover:text-white transition-colors">Support Hub</Link>
-              <Link href="/privacy" className="text-xs text-slate-500 hover:text-white transition-colors">Privacy Policy</Link>
-            </div>
-          </div>
-
-          <div>
-            <h4 className="text-[10px] font-black text-white uppercase tracking-[0.2em] mb-6">Stay Connected</h4>
-            <div className="flex gap-4">
-              <div className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center border border-white/5 hover:border-accent transition-all cursor-pointer">
-                <svg className="w-4 h-4 text-slate-400" fill="currentColor" viewBox="0 0 24 24"><path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"/></svg>
-              </div>
-              {/* Add more icons as needed */}
-            </div>
+            ))}
           </div>
         </div>
 
-        <div className="pt-8 border-t border-white/5 flex flex-col md:flex-row items-center justify-between gap-6">
-          <p className="text-[10px] text-slate-500 font-bold uppercase tracking-widest">
-            &copy; 2026 MallX Marketplace. Crafted with 💎 in Next.js
-          </p>
-          <div className="flex items-center gap-6">
-            <span className="text-[10px] text-slate-600 font-bold uppercase tracking-widest">v2.4.0-premium</span>
-            <div className="flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-green-500 shadow-[0_0_8px_rgba(34,197,94,0.4)]" />
-              <span className="text-[10px] text-slate-500 font-bold uppercase tracking-widest">Systems Online</span>
-            </div>
+        {[
+          { title: 'Shop', links: ['Marketplace', 'Campaigns', 'Bundles', 'Flash Sales'] },
+          { title: 'Partners', links: ['Vendors', 'Delivery', 'Affiliates', 'Rewards'] },
+          { title: 'Support', links: ['Help Center', 'API Docs', 'Status', 'Security'] }
+        ].map((column) => (
+          <div key={column.title}>
+            <h4 className="text-[10px] font-black uppercase tracking-[0.3em] text-white mb-8 border-l-2 border-action pl-3">{column.title}</h4>
+            <ul className="space-y-4">
+              {column.links.map((link) => (
+                <li key={link}>
+                  <Link href="#" className="text-xs font-bold text-muted hover:text-white transition-all uppercase tracking-widest">{link}</Link>
+                </li>
+              ))}
+            </ul>
           </div>
+        ))}
+      </div>
+
+      <div className="max-w-7xl mx-auto px-6 mt-24 pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-6 relative z-10">
+        <p className="text-[10px] font-black text-muted uppercase tracking-[0.2em] opacity-40">
+          © 2026 MallX Technologies. All rights reserved.
+        </p>
+        <div className="flex gap-8">
+          <Link href="#" className="text-[10px] font-black text-muted hover:text-white uppercase tracking-[0.2em] transition-all">Privacy</Link>
+          <Link href="#" className="text-[10px] font-black text-muted hover:text-white uppercase tracking-[0.2em] transition-all">Terms</Link>
+          <Link href="#" className="text-[10px] font-black text-muted hover:text-white uppercase tracking-[0.2em] transition-all">Cookies</Link>
         </div>
       </div>
     </footer>
   );
 }
-

@@ -72,7 +72,7 @@ export default function ProductDetailClient({ id }: { id: string }) {
         productId: product._id, 
         variantId: selectedVariant?._id, 
         quantity,
-        price: product.price 
+        price: product.discountPrice || product.price 
       }).unwrap();
       alert("Added to cart!");
     } catch (err) {
@@ -394,10 +394,23 @@ export default function ProductDetailClient({ id }: { id: string }) {
                     <ChevronRight size={14} className="group-hover:translate-x-1 transition-transform" />
                   </div>
                   <div className="pl-6 text-right">
-                    <div className="flex items-end justify-end gap-1">
-                      <span className="text-sm font-black text-slate-400 tracking-widest uppercase pb-1.5">TK</span>
-                      <span className="text-5xl font-black text-slate-900 tracking-tighter leading-none">{product.price.toLocaleString()}</span>
-                    </div>
+                    {product.discountPrice ? (
+                      <div className="flex flex-col items-end">
+                        <div className="flex items-end justify-end gap-1">
+                           <span className="text-sm font-black text-slate-400 tracking-widest uppercase pb-1.5">TK</span>
+                           <span className="text-5xl font-black text-slate-900 tracking-tighter leading-none">{product.discountPrice.toLocaleString()}</span>
+                        </div>
+                        <div className="flex items-center gap-2 mt-2">
+                           <span className="text-xs font-bold text-slate-400 line-through">{product.price.toLocaleString()} TK</span>
+                           <span className="text-[10px] font-black text-rose-500 uppercase bg-rose-50 px-2 py-0.5 rounded-md">Save {Math.round(((product.price - product.discountPrice)/product.price)*100)}%</span>
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="flex items-end justify-end gap-1">
+                        <span className="text-sm font-black text-slate-400 tracking-widest uppercase pb-1.5">TK</span>
+                        <span className="text-5xl font-black text-slate-900 tracking-tighter leading-none">{product.price.toLocaleString()}</span>
+                      </div>
+                    )}
                   </div>
                 </div>
 

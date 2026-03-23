@@ -7,7 +7,10 @@ export const marketingApi = apiSlice.injectEndpoints({
       providesTags: ["Marketing"],
     }),
     getFlashSales: builder.query({
-      query: () => "/api/v1/marketing/flash-sales",
+      query: (params?: { categoryId?: string }) => ({
+        url: "/api/v1/marketing/flash-sales",
+        params,
+      }),
       providesTags: ["Marketing"],
     }),
     getCombos: builder.query({
@@ -15,7 +18,17 @@ export const marketingApi = apiSlice.injectEndpoints({
       providesTags: ["Marketing"],
     }),
     getBundles: builder.query({
-      query: () => "/api/v1/promotions/bundles",
+      query: (params?: { categoryId?: string }) => ({
+        url: "/api/v1/promotions/bundles",
+        params,
+      }),
+      providesTags: ["Marketing"],
+    }),
+    getVouchers: builder.query({
+      query: (params?: { categoryId?: string }) => ({
+        url: "/api/v1/promotions/vouchers",
+        params,
+      }),
       providesTags: ["Marketing"],
     }),
   }),
@@ -26,4 +39,5 @@ export const {
   useGetFlashSalesQuery,
   useGetCombosQuery,
   useGetBundlesQuery,
+  useGetVouchersQuery,
 } = marketingApi;
