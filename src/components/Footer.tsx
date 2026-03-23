@@ -9,72 +9,67 @@ export default function Footer() {
   const isDashboard = pathname.startsWith("/dashboard");
   const isSupportMain = pathname === "/support";
 
-  // Hide footer on auth, dashboard and main support pages
   if (isAuthPage || isDashboard || isSupportMain) return null;
 
   return (
-    <footer className="bg-white border-t border-slate-200 py-6 px-6">
+    <footer className="bg-background border-t border-white/5 py-16 px-8 mt-20">
       <div className="max-w-7xl mx-auto">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-6">
-          {/* Brand */}
-<div>
-  <div className="flex items-center gap-2 mb-3">
-    <div className="w-5 h-5 bg-slate-900 rounded flex items-center justify-center">
-      <span className="text-[8px] text-white">M</span>
-    </div>
-    <span className="text-xs tracking-tighter text-slate-900 uppercase">Mall<span className="text-slate-900">X</span></span>
-  </div>
-  <p className="text-[10px] text-slate-400 leading-relaxed">
-    Next-generation marketplace ecosystem for merchants and shoppers.
-  </p>
-</div>
-
-          {/* Quick Links */}
-          <div>
-            <p className="text-[9px] text-slate-900 uppercase tracking-widest mb-3">Shop</p>
-<div className="space-y-1.5">
-  <Link href="/catalog/products" className="block text-[10px] text-slate-400 hover:text-slate-900 transition-colors">Products</Link>
-  <Link href="/deals" className="block text-[10px] text-slate-400 hover:text-slate-900 transition-colors">Deals</Link>
-  <Link href="/shopping/cart" className="block text-[10px] text-slate-400 hover:text-slate-900 transition-colors">Cart</Link>
-  <Link href="/orders" className="block text-[10px] text-slate-400 hover:text-slate-900 transition-colors">Orders</Link>
-</div>
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
+          <div className="col-span-1 md:col-span-1">
+            <Link href="/" className="flex items-center gap-3 mb-6 group">
+              <div className="w-8 h-8 accent-gradient rounded-xl flex items-center justify-center shadow-lg shadow-indigo-500/20 group-hover:scale-110 transition-all">
+                <span className="text-sm font-black text-white">X</span>
+              </div>
+              <span className="text-lg font-bold tracking-tight text-white uppercase">Mall<span className="text-accent">X</span></span>
+            </Link>
+            <p className="text-sm text-slate-400 leading-relaxed max-w-xs italic">
+              Redefining the digital marketplace with premium aesthetics and rock-solid engineering.
+            </p>
           </div>
 
-          {/* Account */}
           <div>
-            <p className="text-[9px] text-slate-900 uppercase tracking-widest mb-3">Account</p>
-<div className="space-y-1.5">
-  <Link href="/profile" className="block text-[10px] text-slate-400 hover:text-slate-900 transition-colors">Profile</Link>
-  <Link href="/auth/login" className="block text-[10px] text-slate-400 hover:text-slate-900 transition-colors">Login</Link>
-  <Link href="/auth/register" className="block text-[10px] text-slate-400 hover:text-slate-900 transition-colors">Register</Link>
-  <Link href="/rewards" className="block text-[10px] text-slate-400 hover:text-slate-900 transition-colors">Rewards</Link>
-</div>
+            <h4 className="text-[10px] font-black text-white uppercase tracking-[0.2em] mb-6">Discovery</h4>
+            <div className="flex flex-col gap-4">
+              <Link href="/catalog/products" className="text-xs text-slate-500 hover:text-white transition-colors">Marketplace</Link>
+              <Link href="/deals" className="text-xs text-slate-500 hover:text-white transition-colors">Exclusive Deals</Link>
+              <Link href="/new-arrivals" className="text-xs text-slate-500 hover:text-white transition-colors">New Arrivals</Link>
+            </div>
           </div>
 
-          {/* Support */}
           <div>
-            <p className="text-[9px] text-slate-900 uppercase tracking-widest mb-3">Help</p>
-<div className="space-y-1.5">
-  <Link href="/support" className="block text-[10px] text-slate-400 hover:text-slate-900 transition-colors">Support</Link>
-  <Link href="/support/terms" className="block text-[10px] text-slate-400 hover:text-slate-900 transition-colors">Terms & Conditions</Link>
-  <Link href="/support/privacy" className="block text-[10px] text-slate-400 hover:text-slate-900 transition-colors">Privacy Policy</Link>
-  <Link href="/support/faq" className="block text-[10px] text-slate-400 hover:text-slate-900 transition-colors">FAQ</Link>
-</div>
+            <h4 className="text-[10px] font-black text-white uppercase tracking-[0.2em] mb-6">Company</h4>
+            <div className="flex flex-col gap-4">
+              <Link href="/about" className="text-xs text-slate-500 hover:text-white transition-colors">Our Vision</Link>
+              <Link href="/support" className="text-xs text-slate-500 hover:text-white transition-colors">Support Hub</Link>
+              <Link href="/privacy" className="text-xs text-slate-500 hover:text-white transition-colors">Privacy Policy</Link>
+            </div>
+          </div>
+
+          <div>
+            <h4 className="text-[10px] font-black text-white uppercase tracking-[0.2em] mb-6">Stay Connected</h4>
+            <div className="flex gap-4">
+              <div className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center border border-white/5 hover:border-accent transition-all cursor-pointer">
+                <svg className="w-4 h-4 text-slate-400" fill="currentColor" viewBox="0 0 24 24"><path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"/></svg>
+              </div>
+              {/* Add more icons as needed */}
+            </div>
           </div>
         </div>
 
-        {/* Bottom Bar */}
-        <div className="border-t border-slate-100 pt-4 flex flex-col sm:flex-row items-center justify-between gap-2">
-          <p className="text-[10px] text-slate-400 font-medium">
-            &copy; 2026 MallX Marketplace. All rights reserved.
+        <div className="pt-8 border-t border-white/5 flex flex-col md:flex-row items-center justify-between gap-6">
+          <p className="text-[10px] text-slate-500 font-bold uppercase tracking-widest">
+            &copy; 2026 MallX Marketplace. Crafted with 💎 in Next.js
           </p>
-          <div className="flex items-center gap-3">
-            <span className="text-[9px] text-slate-300 font-medium">Built with 💎 Next.js</span>
-            <span className="w-1 h-1 bg-slate-200 rounded-full" />
-            <span className="text-[9px] text-slate-300 font-medium">v2.0</span>
+          <div className="flex items-center gap-6">
+            <span className="text-[10px] text-slate-600 font-bold uppercase tracking-widest">v2.4.0-premium</span>
+            <div className="flex items-center gap-2">
+              <span className="w-2 h-2 rounded-full bg-green-500 shadow-[0_0_8px_rgba(34,197,94,0.4)]" />
+              <span className="text-[10px] text-slate-500 font-bold uppercase tracking-widest">Systems Online</span>
+            </div>
           </div>
         </div>
       </div>
     </footer>
   );
 }
+
