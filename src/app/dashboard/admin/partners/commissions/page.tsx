@@ -2,7 +2,8 @@
 
 import { useState } from "react";
 import { TrendingUp, ShieldCheck, DollarSign, Percent, AlertCircle } from "lucide-react";
-import { useGetPartnersQuery, useSetCommissionMutation } from "@/modules/business/services/businessApi";
+import { useGetPartnersQuery } from "@/store/api/partnerApi";
+import { useSetCommissionMutation } from "@/modules/business/services/businessApi";
 import { useGetCategoriesQuery } from "@/modules/shopping/services/productApi";
 
 export default function AdminPartnerCommissionsPage() {

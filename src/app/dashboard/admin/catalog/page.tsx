@@ -6,7 +6,8 @@ import {
   useCreateCategoryMutation, 
   useUpdateCategoryMutation 
 } from "@/modules/shopping/services/productApi";
-import { useGetPartnersQuery, useAssignPartnerCategoryMutation } from "@/modules/business/services/businessApi";
+import { useGetPartnersQuery } from "@/store/api/partnerApi";
+import { useAssignPartnerCategoryMutation } from "@/modules/business/services/businessApi";
 import { useEffect, useState } from "react";
 import { Zap, X, Truck, Box, Plus, Loader2, LayoutGrid } from "lucide-react";
 

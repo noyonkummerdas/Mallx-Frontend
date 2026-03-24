@@ -11,10 +11,6 @@ export const businessApi = apiSlice.injectEndpoints({
       query: () => "/api/v1/vendors/all-documents",
       providesTags: ["User"],
     }),
-    getPartners: builder.query({
-      query: () => "/api/v1/partners",
-      providesTags: ["Partner"],
-    }),
     uploadDocuments: builder.mutation({
       query: (docData) => ({
         url: "/api/v1/vendors/documents",
@@ -121,7 +117,6 @@ export const {
   useConfigurePaymentMethodsMutation,
   useProcessRefundMutation,
   useGetAllDocumentsQuery,
-  useGetPartnersQuery,
   useCreateVendorMutation,
   useUpdateVendorStatusMutation,
   useGetPartnerAgentsQuery,

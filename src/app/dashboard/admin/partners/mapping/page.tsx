@@ -2,7 +2,8 @@
 
 import { useState } from "react";
 import { Zap, Link as LinkIcon, ShoppingBag, Truck, ChevronRight } from "lucide-react";
-import { useGetPartnersQuery, useAssignPartnerCategoryMutation } from "@/modules/business/services/businessApi";
+import { useGetPartnersQuery } from "@/store/api/partnerApi";
+import { useAssignPartnerCategoryMutation } from "@/modules/business/services/businessApi";
 import { useGetCategoriesQuery } from "@/modules/shopping/services/productApi";
 
 export default function AdminPartnerMappingPage() {

@@ -1,9 +1,9 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Users, Search, Filter, ChevronRight, LayoutGrid, ShieldAlert, Plus, Zap } from "lucide-react";
-import { useGetPartnersQuery, useUpdatePartnerMutation, useUploadPartnerPhotoMutation } from "@/store/api/partnerApi";
-import { Camera, Save, Phone, Mail, Building2, Pencil } from "lucide-react";
+import { Users, Search, Filter, ChevronRight, LayoutGrid, ShieldAlert, Plus, Zap, Store } from "lucide-react";
+import { useGetPartnersQuery, useUpdatePartnerMutation, useUploadPartnerPhotoMutation, useGetPartnerByIdQuery } from "@/store/api/partnerApi";
+import { Camera, Save, Phone, Mail, Building2, Pencil, X } from "lucide-react";
 
 export default function PartnersPage() {
   const { data: partnersData, isLoading, isFetching, isSuccess, refetch } = useGetPartnersQuery({});
@@ -11,9 +11,18 @@ export default function PartnersPage() {
   const [uploadPhoto, { isLoading: isUploading }] = useUploadPartnerPhotoMutation();
   
   const [selectedPartner, setSelectedPartner] = useState<any>(null);
+  const [selectedPartnerId, setSelectedPartnerId] = useState<string | null>(null);
+  const { data: detailData, isLoading: isDetailLoading } = useGetPartnerByIdQuery(selectedPartnerId, { skip: !selectedPartnerId });
+
   const [isEditing, setIsEditing] = useState(false);
   const [editForm, setEditForm] = useState({ businessName: "", phone: "" });
   const [statusMessage, setStatusMessage] = useState<{ type: 'success' | 'error', text: string } | null>(null);
+
+  useEffect(() => {
+    if (detailData?.data) {
+      setSelectedPartner(detailData.data);
+    }
+  }, [detailData]);
 
   useEffect(() => {
     if (selectedPartner) {
@@ -184,6 +193,47 @@ export default function PartnersPage() {
                   </div>
                 )}
 
+                {/* Vendors Section */}
+                {!isEditing && (
+                  <div className="pt-6 border-t border-slate-100">
+                    <p className="text-[10px] text-slate-400 font-black uppercase tracking-widest mb-3 flex items-center gap-2 pl-1">
+                        <Store size={10} />
+                        Connected Merchants ({selectedPartner.vendors?.length || selectedPartner.vendorCount || 0})
+                    </p>
+                    {isDetailLoading ? (
+                        <div className="py-4 text-center opacity-40 font-black uppercase tracking-widest text-[10px] animate-pulse">
+                            Retrieving Merchant Data...
+                        </div>
+                    ) : selectedPartner.vendors?.length > 0 ? (
+                        <div className="space-y-2 max-h-40 overflow-y-auto pr-2 custom-scrollbar">
+                            {selectedPartner.vendors.map((vendor: any) => (
+                                <div key={vendor._id} className="flex items-center justify-between p-3 bg-slate-50 rounded-2xl border border-slate-100 hover:border-indigo-100 transition-all">
+                                    <div className="flex items-center gap-3">
+                                        <div className="w-8 h-8 rounded-xl bg-white flex items-center justify-center text-slate-400 border border-slate-200">
+                                            <Store size={14} />
+                                        </div>
+                                        <div>
+                                            <p className="text-xs font-black text-slate-900 uppercase tracking-tight">{vendor.shopName}</p>
+                                            <p className="text-[9px] font-bold text-slate-400 uppercase tracking-widest leading-none">{vendor.userId?.name || "No Owner"}</p>
+                                        </div>
+                                    </div>
+                                    <span className={`px-2 py-0.5 rounded text-[8px] font-black uppercase tracking-widest ${
+                                        vendor.status === 'Active' ? 'bg-emerald-50 text-emerald-600' : 'bg-slate-100 text-slate-400'
+                                    }`}>
+                                        {vendor.status}
+                                    </span>
+                                </div>
+                            ))}
+                        </div>
+                    ) : (
+                        <div className="py-6 bg-slate-50 rounded-3xl border border-slate-100 border-dashed text-center">
+                            <Store size={24} className="mx-auto text-slate-200 mb-2" />
+                            <p className="text-[10px] font-black text-slate-300 uppercase tracking-widest">No active merchants detected</p>
+                        </div>
+                    )}
+                  </div>
+                )}
+
                 <div className="pt-6 border-t border-slate-100 flex gap-3">
                    {isEditing ? (
                      <>
@@ -310,11 +360,17 @@ export default function PartnersPage() {
                           <span className="text-[10px] text-slate-400 font-black uppercase">+{partner.assignedCategories.length - 3}</span>
                         )}
                       </div>
+                      <div className="flex items-center gap-1.5 mt-3 pt-3 border-t border-slate-50">
+                          <Store size={10} className="text-slate-400" />
+                          <span className="text-[10px] text-slate-400 font-black uppercase tracking-widest">
+                              {partner.vendorCount || 0} Connected Merchants
+                          </span>
+                      </div>
                     </div>
 
                     <div className="pt-4 border-t border-slate-50 flex justify-between items-center mt-auto">
                         <button 
-                          onClick={() => setSelectedPartner(partner)}
+                          onClick={() => { setSelectedPartner(partner); setSelectedPartnerId(partner._id); }}
                           className="text-[10px] font-black text-indigo-600 uppercase tracking-widest hover:underline flex items-center gap-1"
                         >
                            Inspect Partner <ChevronRight size={10} />
