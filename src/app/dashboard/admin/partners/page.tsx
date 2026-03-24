@@ -193,44 +193,76 @@ export default function PartnersPage() {
                   </div>
                 )}
 
-                {/* Vendors Section */}
                 {!isEditing && (
-                  <div className="pt-6 border-t border-slate-100">
-                    <p className="text-[10px] text-slate-400 font-black uppercase tracking-widest mb-3 flex items-center gap-2 pl-1">
-                        <Store size={10} />
-                        Connected Merchants ({selectedPartner.vendors?.length || selectedPartner.vendorCount || 0})
-                    </p>
-                    {isDetailLoading ? (
-                        <div className="py-4 text-center opacity-40 font-black uppercase tracking-widest text-[10px] animate-pulse">
-                            Retrieving Merchant Data...
+                  <div className="pt-6 border-t border-slate-100 space-y-6">
+                    <div>
+                      <p className="text-[10px] text-slate-400 font-black uppercase tracking-widest mb-4 flex items-center gap-2 pl-1">
+                        <Zap size={10} className="text-amber-500" />
+                        Business Performance
+                      </p>
+                      <div className="grid grid-cols-2 gap-4">
+                        <div className="p-4 bg-emerald-50/50 rounded-2xl border border-emerald-100 shadow-sm relative overflow-hidden group">
+                           <div className="absolute top-0 right-0 p-2 opacity-5 scale-150 rotate-12 group-hover:scale-110 transition-transform">
+                              <Store size={40} className="text-emerald-900" />
+                           </div>
+                           <p className="text-[9px] font-black text-emerald-700 uppercase tracking-widest mb-1">Active Merchants</p>
+                           <p className="text-2xl font-black text-emerald-900 tracking-tighter leading-none">
+                              {selectedPartner.stats?.totalVendors || selectedPartner.vendors?.length || 0}
+                           </p>
                         </div>
-                    ) : selectedPartner.vendors?.length > 0 ? (
-                        <div className="space-y-2 max-h-40 overflow-y-auto pr-2 custom-scrollbar">
-                            {selectedPartner.vendors.map((vendor: any) => (
-                                <div key={vendor._id} className="flex items-center justify-between p-3 bg-slate-50 rounded-2xl border border-slate-100 hover:border-indigo-100 transition-all">
-                                    <div className="flex items-center gap-3">
-                                        <div className="w-8 h-8 rounded-xl bg-white flex items-center justify-center text-slate-400 border border-slate-200">
-                                            <Store size={14} />
-                                        </div>
-                                        <div>
-                                            <p className="text-xs font-black text-slate-900 uppercase tracking-tight">{vendor.shopName}</p>
-                                            <p className="text-[9px] font-bold text-slate-400 uppercase tracking-widest leading-none">{vendor.userId?.name || "No Owner"}</p>
-                                        </div>
-                                    </div>
-                                    <span className={`px-2 py-0.5 rounded text-[8px] font-black uppercase tracking-widest ${
-                                        vendor.status === 'Active' ? 'bg-emerald-50 text-emerald-600' : 'bg-slate-100 text-slate-400'
-                                    }`}>
-                                        {vendor.status}
-                                    </span>
-                                </div>
-                            ))}
+                        <div className="p-4 bg-indigo-50/50 rounded-2xl border border-indigo-100 shadow-sm relative overflow-hidden group">
+                           <div className="absolute top-0 right-0 p-2 opacity-5 scale-150 -rotate-12 group-hover:scale-110 transition-transform">
+                              <Zap size={40} className="text-indigo-900" />
+                           </div>
+                           <p className="text-[9px] font-black text-indigo-700 uppercase tracking-widest mb-1">Order Volume</p>
+                           <p className="text-2xl font-black text-indigo-900 tracking-tighter leading-none">
+                              {selectedPartner.stats?.totalOrders || 0}
+                           </p>
                         </div>
-                    ) : (
-                        <div className="py-6 bg-slate-50 rounded-3xl border border-slate-100 border-dashed text-center">
-                            <Store size={24} className="mx-auto text-slate-200 mb-2" />
-                            <p className="text-[10px] font-black text-slate-300 uppercase tracking-widest">No active merchants detected</p>
-                        </div>
-                    )}
+                      </div>
+                    </div>
+
+                    <div>
+                      <p className="text-[10px] text-slate-400 font-black uppercase tracking-widest mb-3 flex items-center gap-2 pl-1">
+                          <Store size={10} />
+                          Merchant Directory
+                      </p>
+                      {isDetailLoading ? (
+                          <div className="py-4 text-center opacity-40 font-black uppercase tracking-widest text-[10px] animate-pulse">
+                              Syncing Merchant Registry...
+                          </div>
+                      ) : selectedPartner.vendors?.length > 0 ? (
+                          <div className="space-y-2 max-h-48 overflow-y-auto pr-2 custom-scrollbar">
+                              {selectedPartner.vendors.map((vendor: any) => (
+                                  <div key={vendor._id} className="group flex items-center justify-between p-3.5 bg-white rounded-2xl border border-slate-100 hover:border-emerald-200 hover:shadow-md hover:shadow-emerald-500/5 transition-all">
+                                      <div className="flex items-center gap-3">
+                                          <div className="w-10 h-10 rounded-xl bg-slate-50 flex items-center justify-center text-slate-400 border border-slate-100 group-hover:bg-emerald-50 group-hover:text-emerald-600 transition-colors">
+                                              <Store size={16} />
+                                          </div>
+                                          <div>
+                                              <p className="text-[11px] font-black text-slate-900 uppercase tracking-tight">{vendor.shopName}</p>
+                                              <div className="flex items-center gap-2">
+                                                <p className="text-[9px] font-bold text-slate-400 uppercase tracking-widest leading-none truncate max-w-[100px]">{vendor.userId?.name || "System Record"}</p>
+                                                <span className="w-1 h-1 rounded-full bg-slate-200" />
+                                                <p className="text-[9px] font-bold text-slate-400 tracking-tight leading-none">{vendor.userId?.phone || "No direct line"}</p>
+                                              </div>
+                                          </div>
+                                      </div>
+                                      <span className={`px-2 py-0.5 rounded text-[8px] font-black uppercase tracking-widest ${
+                                          vendor.status === 'Active' ? 'bg-emerald-50 text-emerald-600' : 'bg-slate-100 text-slate-400'
+                                      }`}>
+                                          {vendor.status}
+                                      </span>
+                                  </div>
+                              ))}
+                          </div>
+                      ) : (
+                          <div className="py-8 bg-slate-50/50 rounded-3xl border border-slate-100 border-dashed text-center">
+                              <Store size={24} className="mx-auto text-slate-200 mb-2" />
+                              <p className="text-[10px] font-black text-slate-300 uppercase tracking-widest">No verified merchants on file</p>
+                          </div>
+                      )}
+                    </div>
                   </div>
                 )}
 

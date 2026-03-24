@@ -34,7 +34,7 @@ export default function RoleGuard({ children, allowedRole }: RoleGuardProps) {
     }
 
     if (!isLoading && !userData && isError) {
-      console.error("RoleGuard - [AUTH] Token invalid or expired, redirecting to login.");
+      console.error("RoleGuard - [AUTH] Token invalid or expired, redirecting to login. Details:", isError);
       localStorage.removeItem("mallx_token");
       router.push("/auth/login");
       return;
