@@ -69,27 +69,27 @@ export default function PartnersPage() {
   return (
     <>
       {statusMessage && (
-        <div className={`fixed top-8 right-8 z-[200] animate-in slide-in-from-right-10 duration-300 p-4 rounded-2xl shadow-2xl border-2 flex items-center gap-3 max-w-sm ${
-          statusMessage.type === 'success' ? 'bg-emerald-50 border-emerald-100 text-emerald-800' : 'bg-rose-50 border-rose-100 text-rose-800'
-        }`}>
-          <div className={`p-2 rounded-xl ${statusMessage.type === 'success' ? 'bg-emerald-100' : 'bg-rose-100'}`}>
+        <div className={`fixed top-8 right-8 z-[200] animate-in slide-in-from-right-10 duration-300 p-4 rounded-24 border-none flex items-center gap-3 max-w-sm ${
+          statusMessage.type === 'success' ? 'bg-success/10 text-success' : 'bg-danger/10 text-danger'
+        } shadow-2xl backdrop-blur-md`}>
+          <div className={`p-2 rounded-xl ${statusMessage.type === 'success' ? 'bg-success/20' : 'bg-danger/20'}`}>
             <Zap size={16} />
           </div>
-          <p className="text-xs font-black uppercase tracking-widest leading-tight">{statusMessage.text}</p>
+          <p className="text-[10px] font-black uppercase tracking-widest leading-tight">{statusMessage.text}</p>
         </div>
       )}
       {/* Detail Oversight Modal */}
       {selectedPartner && (
-        <div className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-[100] flex items-center justify-center p-4 transition-all duration-300 animate-in fade-in">
-          <div className="bg-white border border-slate-200 rounded-[32px] w-full max-w-xl shadow-2xl overflow-hidden relative animate-in zoom-in-95 duration-200">
+        <div className="fixed inset-0 bg-text-primary/40 backdrop-blur-sm z-[100] flex items-center justify-center p-4 transition-all duration-300 animate-in fade-in">
+          <div className="bg-card border-none rounded-[32px] w-full max-w-xl shadow-2xl overflow-hidden relative animate-in zoom-in-95 duration-200">
             <button 
               onClick={() => { setSelectedPartner(null); setIsEditing(false); }}
-              className="absolute top-6 right-6 p-2 hover:bg-slate-100 rounded-xl text-slate-400 hover:text-slate-900 transition-all z-10"
+              className="absolute top-6 right-6 p-2 hover:bg-section rounded-xl text-text-light hover:text-text-primary transition-all z-10"
             >
               <Plus size={20} className="rotate-45" />
             </button>
             
-            <div className={`h-24 bg-gradient-to-r ${selectedPartner.profilePhoto ? 'from-slate-800 to-slate-900' : 'from-emerald-600 to-indigo-600'}`} />
+            <div className={`h-24 gradient-hero`} />
             
             <div className="px-8 pb-8 -mt-10 relative">
               <div className="relative group w-20 h-20 mb-4 ml-2">
@@ -97,20 +97,20 @@ export default function PartnersPage() {
                   <img 
                     src={selectedPartner.profilePhoto} 
                     alt="Partner" 
-                    className="w-20 h-20 rounded-3xl object-cover border-4 border-white shadow-xl"
+                    className="w-20 h-20 rounded-3xl object-cover border-4 border-card shadow-xl"
                   />
                 ) : (
-                  <div className="w-20 h-20 rounded-3xl bg-slate-900 text-white flex items-center justify-center font-black text-2xl uppercase border-4 border-white shadow-xl">
+                  <div className="w-20 h-20 rounded-3xl bg-partner text-white flex items-center justify-center font-black text-2xl uppercase border-4 border-card shadow-xl">
                     {(selectedPartner.businessName || selectedPartner.userId?.name || "?").charAt(0)}
                   </div>
                 )}
-                <label className="absolute inset-0 flex items-center justify-center bg-black/40 text-white opacity-0 group-hover:opacity-100 rounded-3xl cursor-pointer transition-opacity">
+                <label className="absolute inset-0 flex items-center justify-center bg-text-primary/40 text-white opacity-0 group-hover:opacity-100 rounded-3xl cursor-pointer transition-opacity">
                   <Camera size={20} />
                   <input type="file" className="hidden" onChange={handlePhotoUpload} accept="image/*" />
                 </label>
                 {isUploading && (
-                  <div className="absolute inset-0 flex items-center justify-center bg-white/60 rounded-3xl">
-                    <div className="w-5 h-5 border-2 border-indigo-600 border-t-transparent rounded-full animate-spin" />
+                  <div className="absolute inset-0 flex items-center justify-center bg-card/60 rounded-3xl">
+                    <div className="w-5 h-5 border-2 border-primary border-t-transparent rounded-full animate-spin" />
                   </div>
                 )}
               </div>
@@ -132,14 +132,14 @@ export default function PartnersPage() {
                     </div>
                   ) : (
                     <>
-                      <h3 className="text-xl font-black text-slate-900 uppercase tracking-tighter leading-none mb-2 flex items-center gap-2">
+                      <h3 className="text-xl font-black text-text-primary uppercase tracking-tighter leading-none mb-2 flex items-center gap-2">
                         {selectedPartner.businessName || selectedPartner.userId?.name || "System Partner"}
-                        <button onClick={() => setIsEditing(true)} className="text-slate-300 hover:text-indigo-600 transition-colors">
+                        <button onClick={() => setIsEditing(true)} className="text-text-light hover:text-partner transition-colors">
                           <Pencil size={14} />
                         </button>
                       </h3>
                       <div className="flex items-center gap-3">
-                        <span className="px-2 py-0.5 bg-emerald-50 text-emerald-600 rounded text-[10px] font-black uppercase tracking-widest">
+                        <span className="px-2 py-0.5 bg-success/10 text-success rounded text-[10px] font-black uppercase tracking-widest">
                           {selectedPartner.userId?.status || selectedPartner.status || "PENDING"}
                         </span>
                         <span className="text-sm text-slate-400 font-bold lowercase tracking-tight flex items-center gap-1.5">
@@ -151,9 +151,9 @@ export default function PartnersPage() {
                   )}
                 </div>
 
-                <div className="grid grid-cols-2 gap-4">
-                   <div className={`bg-slate-50 rounded-2xl p-4 border transition-all ${isEditing ? 'border-indigo-100 bg-indigo-50/30' : 'border-slate-100'}`}>
-                      <p className="text-[10px] text-slate-400 font-black uppercase tracking-widest mb-1 flex items-center gap-1.5">
+                 <div className="grid grid-cols-2 gap-4">
+                   <div className={`bg-section rounded-2xl p-4 border transition-all ${isEditing ? 'border-primary/20 bg-primary/5' : 'border-none'}`}>
+                      <p className="text-[10px] text-text-secondary font-black uppercase tracking-widest mb-1 flex items-center gap-1.5">
                         <Phone size={10} />
                         Contact Line
                       </p>
@@ -162,16 +162,16 @@ export default function PartnersPage() {
                           type="text" 
                           value={editForm.phone}
                           onChange={(e) => setEditForm({...editForm, phone: e.target.value})}
-                          className="w-full bg-transparent border-none text-sm font-black text-slate-900 p-0 focus:outline-none placeholder:text-slate-300"
+                          className="w-full bg-transparent border-none text-sm font-black text-text-primary p-0 focus:outline-none placeholder:text-text-light"
                           placeholder="88017..."
                         />
                       ) : (
-                        <p className="text-sm font-black text-slate-900">{selectedPartner.userId?.phone || "No direct line"}</p>
+                        <p className="text-sm font-black text-text-primary">{selectedPartner.userId?.phone || "No direct line"}</p>
                       )}
                    </div>
-                   <div className="bg-slate-50 rounded-2xl p-4 border border-slate-100">
-                      <p className="text-[10px] text-slate-400 font-black uppercase tracking-widest mb-1">Commission Tier</p>
-                      <p className="text-sm font-black text-emerald-600">Standard 15%</p>
+                   <div className="bg-section rounded-2xl p-4 border-none">
+                      <p className="text-[10px] text-text-secondary font-black uppercase tracking-widest mb-1">Commission Tier</p>
+                      <p className="text-sm font-black text-success underline decoration-success/20">Standard 15%</p>
                    </div>
                 </div>
 
@@ -183,11 +183,11 @@ export default function PartnersPage() {
                     </p>
                     <div className="flex flex-wrap gap-2">
                         {selectedPartner.assignedCategories?.length > 0 ? selectedPartner.assignedCategories.map((cat: any) => (
-                          <div key={cat._id || cat} className="px-3 py-1 bg-white border border-slate-200 rounded-xl text-xs font-black text-slate-700 uppercase tracking-tighter shadow-sm">
+                          <div key={cat._id || cat} className="px-3 py-1 bg-card border border-section rounded-xl text-[10px] font-black text-text-secondary uppercase tracking-tighter shadow-sm hover:border-primary/20 transition-all">
                             {cat.name || "N/A"}
                           </div>
                         )) : (
-                          <div className="text-sm text-slate-300 font-bold uppercase py-2 tracking-widest">Universal Operations</div>
+                          <div className="text-[10px] text-text-light font-black uppercase py-2 tracking-widest">Universal Operations</div>
                         )}
                     </div>
                   </div>
@@ -196,26 +196,26 @@ export default function PartnersPage() {
                 {!isEditing && (
                   <div className="pt-6 border-t border-slate-100 space-y-6">
                     <div>
-                      <p className="text-[10px] text-slate-400 font-black uppercase tracking-widest mb-4 flex items-center gap-2 pl-1">
-                        <Zap size={10} className="text-amber-500" />
+                      <p className="text-[10px] text-text-light font-black uppercase tracking-widest mb-4 flex items-center gap-2 pl-1">
+                        <Zap size={10} className="text-highlight" />
                         Business Performance
                       </p>
                       <div className="grid grid-cols-2 gap-4">
-                        <div className="p-4 bg-emerald-50/50 rounded-2xl border border-emerald-100 shadow-sm relative overflow-hidden group">
+                        <div className="p-4 bg-success/5 rounded-24 border border-success/10 shadow-sm relative overflow-hidden group">
                            <div className="absolute top-0 right-0 p-2 opacity-5 scale-150 rotate-12 group-hover:scale-110 transition-transform">
-                              <Store size={40} className="text-emerald-900" />
+                              <Store size={40} className="text-success" />
                            </div>
-                           <p className="text-[9px] font-black text-emerald-700 uppercase tracking-widest mb-1">Active Merchants</p>
-                           <p className="text-2xl font-black text-emerald-900 tracking-tighter leading-none">
+                           <p className="text-[9px] font-black text-success uppercase tracking-widest mb-1">Active Merchants</p>
+                           <p className="text-2xl font-black text-text-primary tracking-tighter leading-none">
                               {selectedPartner.stats?.totalVendors || selectedPartner.vendors?.length || 0}
                            </p>
                         </div>
-                        <div className="p-4 bg-indigo-50/50 rounded-2xl border border-indigo-100 shadow-sm relative overflow-hidden group">
+                        <div className="p-4 bg-primary/5 rounded-24 border border-primary/10 shadow-sm relative overflow-hidden group">
                            <div className="absolute top-0 right-0 p-2 opacity-5 scale-150 -rotate-12 group-hover:scale-110 transition-transform">
-                              <Zap size={40} className="text-indigo-900" />
+                              <Zap size={40} className="text-primary" />
                            </div>
-                           <p className="text-[9px] font-black text-indigo-700 uppercase tracking-widest mb-1">Order Volume</p>
-                           <p className="text-2xl font-black text-indigo-900 tracking-tighter leading-none">
+                           <p className="text-[9px] font-black text-primary uppercase tracking-widest mb-1">Order Volume</p>
+                           <p className="text-2xl font-black text-text-primary tracking-tighter leading-none">
                               {selectedPartner.stats?.totalOrders || 0}
                            </p>
                         </div>
@@ -234,22 +234,22 @@ export default function PartnersPage() {
                       ) : selectedPartner.vendors?.length > 0 ? (
                           <div className="space-y-2 max-h-48 overflow-y-auto pr-2 custom-scrollbar">
                               {selectedPartner.vendors.map((vendor: any) => (
-                                  <div key={vendor._id} className="group flex items-center justify-between p-3.5 bg-white rounded-2xl border border-slate-100 hover:border-emerald-200 hover:shadow-md hover:shadow-emerald-500/5 transition-all">
+                                  <div key={vendor._id} className="group flex items-center justify-between p-3.5 bg-card rounded-24 border border-section hover:border-primary/20 hover:shadow-lg hover:shadow-primary/5 transition-all">
                                       <div className="flex items-center gap-3">
-                                          <div className="w-10 h-10 rounded-xl bg-slate-50 flex items-center justify-center text-slate-400 border border-slate-100 group-hover:bg-emerald-50 group-hover:text-emerald-600 transition-colors">
+                                          <div className="w-10 h-10 rounded-xl bg-section flex items-center justify-center text-text-light border-none group-hover:bg-primary/10 group-hover:text-primary transition-colors">
                                               <Store size={16} />
                                           </div>
                                           <div>
-                                              <p className="text-[11px] font-black text-slate-900 uppercase tracking-tight">{vendor.shopName}</p>
+                                              <p className="text-[11px] font-black text-text-primary uppercase tracking-tight">{vendor.shopName}</p>
                                               <div className="flex items-center gap-2">
-                                                <p className="text-[9px] font-bold text-slate-400 uppercase tracking-widest leading-none truncate max-w-[100px]">{vendor.userId?.name || "System Record"}</p>
-                                                <span className="w-1 h-1 rounded-full bg-slate-200" />
-                                                <p className="text-[9px] font-bold text-slate-400 tracking-tight leading-none">{vendor.userId?.phone || "No direct line"}</p>
+                                                <p className="text-[9px] font-bold text-text-secondary uppercase tracking-widest leading-none truncate max-w-[100px]">{vendor.userId?.name || "System Record"}</p>
+                                                <span className="w-1 h-1 rounded-full bg-section" />
+                                                <p className="text-[9px] font-bold text-text-light tracking-tight leading-none">{vendor.userId?.phone || "No direct line"}</p>
                                               </div>
                                           </div>
                                       </div>
-                                      <span className={`px-2 py-0.5 rounded text-[8px] font-black uppercase tracking-widest ${
-                                          vendor.status === 'Active' ? 'bg-emerald-50 text-emerald-600' : 'bg-slate-100 text-slate-400'
+                                      <span className={`px-2 py-1 rounded-lg text-[8px] font-black uppercase tracking-widest ${
+                                          vendor.status === 'Active' ? 'bg-success/10 text-success' : 'bg-section text-text-light'
                                       }`}>
                                           {vendor.status}
                                       </span>
@@ -266,19 +266,19 @@ export default function PartnersPage() {
                   </div>
                 )}
 
-                <div className="pt-6 border-t border-slate-100 flex gap-3">
+                <div className="pt-6 border-t border-section flex gap-3">
                    {isEditing ? (
                      <>
                       <button 
                         onClick={() => setIsEditing(false)}
-                        className="flex-1 py-3.5 bg-slate-100 text-slate-400 rounded-2xl text-[10px] font-black uppercase tracking-widest hover:bg-slate-200 transition-all"
+                        className="flex-1 py-3.5 bg-section text-text-light rounded-24 text-[10px] font-black uppercase tracking-widest hover:bg-slate-200 transition-all"
                       >
                         Cancel
                       </button>
                       <button 
                         onClick={handleUpdate}
                         disabled={isUpdating}
-                        className="flex-3 py-3.5 bg-indigo-600 text-white rounded-2xl text-[10px] font-black uppercase tracking-widest shadow-lg shadow-indigo-600/20 hover:bg-indigo-700 transition-all active:scale-[0.98] flex items-center justify-center gap-2"
+                        className="flex-3 py-3.5 gradient-hero text-white rounded-24 text-[10px] font-black uppercase tracking-widest shadow-lg shadow-primary/20 hover:brightness-110 transition-all active:scale-[0.98] flex items-center justify-center gap-2"
                       >
                         {isUpdating ? <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" /> : <Save size={14} />}
                         Confirm Changes
@@ -287,7 +287,7 @@ export default function PartnersPage() {
                    ) : (
                     <button 
                       onClick={() => setSelectedPartner(null)}
-                      className="w-full py-3.5 bg-slate-900 text-white rounded-2xl text-[10px] font-black uppercase tracking-[0.2em] shadow-lg shadow-slate-900/10 hover:bg-slate-800 transition-all active:scale-[0.98]"
+                      className="w-full py-3.5 bg-partner text-white rounded-24 text-[10px] font-black uppercase tracking-[0.2em] shadow-lg shadow-partner/20 hover:brightness-110 transition-all active:scale-[0.98]"
                     >
                       Exit Oversight
                     </button>
@@ -301,19 +301,19 @@ export default function PartnersPage() {
 
       <header className="mb-8 flex justify-between items-center">
         <div>
-          <h1 className="text-base font-black tracking-tight mb-1 text-slate-900 uppercase leading-none">Global Partner Network</h1>
-          <p className="text-slate-500 font-bold text-sm tracking-wide">Strategic regional operational entities and category ownership.</p>
+          <h1 className="text-xl font-black tracking-tighter mb-1 text-text-primary uppercase leading-none">Global Partner Network</h1>
+          <p className="text-text-secondary font-bold text-sm tracking-wide">Strategic regional operational entities and category ownership.</p>
         </div>
         <div className="flex items-center gap-3">
           <button 
             onClick={() => refetch()}
-            className="p-3 bg-white border border-slate-200 text-slate-400 rounded-2xl hover:text-emerald-600 transition-all active:rotate-180 duration-500 shadow-sm"
+            className="p-3 bg-card border border-section text-text-light rounded-24 hover:text-primary transition-all active:rotate-180 duration-500 shadow-sm"
           >
             <Plus size={16} className="rotate-45" />
           </button>
           <button 
             onClick={() => window.location.href='/dashboard/admin/partners/create'}
-            className="flex items-center gap-2 px-5 py-2.5 bg-slate-900 text-white rounded-2xl text-sm font-black uppercase tracking-widest hover:bg-slate-800 transition-all shadow-lg hover:shadow-emerald-500/20 active:scale-95"
+            className="flex items-center gap-2 px-6 py-3 gradient-hero text-white rounded-24 text-[11px] font-black uppercase tracking-widest hover:brightness-110 transition-all shadow-lg shadow-primary/20 active:scale-95"
           >
             <Plus size={14} />
             Register Partner
@@ -321,11 +321,11 @@ export default function PartnersPage() {
         </div>
       </header>
 
-      <section className="text-slate-900">
+      <section className="text-text-primary">
          <div className="flex items-center justify-between mb-8">
             <div>
-              <h2 className="text-base font-black border-l-2 border-emerald-600 pl-3 uppercase tracking-tighter mb-1">Partner Directory</h2>
-              <p className="text-sm text-slate-400 uppercase tracking-widest font-black ml-3">Ecosystem-wide partner surveillance</p>
+              <h2 className="text-base font-black border-l-4 border-primary pl-4 uppercase tracking-tighter mb-1">Partner Directory</h2>
+              <p className="text-[10px] text-text-light uppercase tracking-widest font-black ml-4">Ecosystem-wide partner surveillance</p>
             </div>
          </div>
          
@@ -357,57 +357,57 @@ export default function PartnersPage() {
               const email = partner.userId?.email || partner.email || "No Email";
               const status = partner.userId?.status || partner.status || "Unknown";
               
-              return (
-                <div key={partner._id || i} className="group bg-white border border-slate-200 rounded-[32px] p-6 shadow-sm hover:shadow-xl hover:shadow-emerald-500/5 hover:-translate-y-1 transition-all duration-300">
+               return (
+                <div key={partner._id || i} className="group mall-card p-6 border-none">
                   <div className="flex justify-between items-start mb-6">
                     <div className="flex items-center gap-3">
-                       <div className="w-12 h-12 rounded-2xl bg-slate-900 text-white flex items-center justify-center font-black text-sm uppercase shadow-lg shadow-slate-900/10 shrink-0">
+                       <div className="w-12 h-12 rounded-2xl bg-partner text-white flex items-center justify-center font-black text-sm uppercase shadow-lg shadow-partner/20 shrink-0 group-hover:scale-110 transition-transform">
                         {name.charAt(0)}
                       </div>
                       <div className="min-w-0">
-                        <p className="text-sm font-black text-slate-900 uppercase tracking-tighter leading-none mb-1 truncate">{name}</p>
-                        <p className="text-sm text-slate-400 font-black tracking-tight lowercase truncate">{email}</p>
+                        <p className="text-sm font-black text-text-primary uppercase tracking-tighter leading-none mb-1 truncate">{name}</p>
+                        <p className="text-[10px] text-text-light font-black tracking-[0.1em] lowercase truncate">{email}</p>
                       </div>
                     </div>
-                    <span className={`px-2 py-0.5 rounded text-[10px] font-black uppercase tracking-widest shrink-0 ${status === 'Active' || status === 'Pending' ? 'bg-emerald-50 text-emerald-600' : 'bg-slate-100 text-slate-400'}`}>
+                    <span className={`px-2 py-1 rounded-lg text-[8px] font-black uppercase tracking-widest shrink-0 ${status === 'Active' ? 'bg-success/10 text-success' : 'bg-section text-text-light'}`}>
                        {status}
                     </span>
                   </div>
 
-                  <div className="space-y-4">
+                   <div className="space-y-4">
                     <div>
-                      <p className="text-sm font-black text-slate-400 uppercase tracking-widest mb-2 flex items-center gap-1.5 opacity-60">
+                      <p className="text-[10px] font-black text-text-light uppercase tracking-widest mb-3 flex items-center gap-1.5 opacity-60">
                         <LayoutGrid size={10} />
                         Assigned Sectors
                       </p>
                       <div className="flex flex-wrap gap-1.5">
                          {partner.assignedCategories?.length > 0 ? partner.assignedCategories.slice(0, 3).map((cat: any) => (
-                          <span key={cat._id || cat} className="px-2 py-0.5 rounded-lg bg-emerald-50/50 border border-emerald-100 text-emerald-700 text-[10px] font-black uppercase tracking-tighter">
+                          <span key={cat._id || cat} className="px-2 py-1 rounded-lg bg-section border border-card text-text-secondary text-[9px] font-black uppercase tracking-tighter">
                             {cat.name || "Sector"}
                           </span>
                         )) : (
-                          <span className="text-[10px] text-slate-300 font-black uppercase tracking-widest">General Ops</span>
+                          <span className="text-[9px] text-text-light font-black uppercase tracking-widest">General Ops</span>
                         )}
                         {partner.assignedCategories?.length > 3 && (
-                          <span className="text-[10px] text-slate-400 font-black uppercase">+{partner.assignedCategories.length - 3}</span>
+                          <span className="text-[9px] text-text-light font-black uppercase">+{partner.assignedCategories.length - 3}</span>
                         )}
                       </div>
-                      <div className="flex items-center gap-1.5 mt-3 pt-3 border-t border-slate-50">
-                          <Store size={10} className="text-slate-400" />
-                          <span className="text-[10px] text-slate-400 font-black uppercase tracking-widest">
+                      <div className="flex items-center gap-1.5 mt-4 pt-4 border-t border-section">
+                          <Store size={10} className="text-text-light" />
+                          <span className="text-[9px] text-text-light font-black uppercase tracking-widest">
                               {partner.vendorCount || 0} Connected Merchants
                           </span>
                       </div>
                     </div>
 
-                    <div className="pt-4 border-t border-slate-50 flex justify-between items-center mt-auto">
+                    <div className="pt-4 border-t border-section flex justify-between items-center mt-auto">
                         <button 
                           onClick={() => { setSelectedPartner(partner); setSelectedPartnerId(partner._id); }}
-                          className="text-[10px] font-black text-indigo-600 uppercase tracking-widest hover:underline flex items-center gap-1"
+                          className="text-[10px] font-black text-primary uppercase tracking-widest hover:underline flex items-center gap-1"
                         >
                            Inspect Partner <ChevronRight size={10} />
                         </button>
-                        <button className="text-[10px] font-black text-slate-400 uppercase tracking-widest hover:text-slate-900 flex items-center gap-1">
+                        <button className="text-[10px] font-black text-text-light uppercase tracking-widest hover:text-text-primary flex items-center gap-1">
                            Logs <ChevronRight size={10} />
                         </button>
                     </div>
@@ -415,9 +415,10 @@ export default function PartnersPage() {
                 </div>
               );
              }) : isSuccess && partners.length === 0 ? (
-               <div className="col-span-full py-16 text-center">
-                <p className="text-sm uppercase font-black text-slate-400 mb-4">No regional partners detected in registry.</p>
-                <button onClick={() => window.location.href='/dashboard/admin/partners/create'} className="px-6 py-2.5 bg-slate-900 text-white rounded-xl text-sm font-black uppercase tracking-widest hover:bg-slate-800 transition-all shadow-lg shadow-slate-900/10">
+               <div className="col-span-full py-24 text-center">
+                <Store size={48} className="mx-auto text-section mb-4" />
+                <p className="text-[10px] uppercase font-black text-text-light mb-6 tracking-[0.2em]">No regional partners detected in registry.</p>
+                <button onClick={() => window.location.href='/dashboard/admin/partners/create'} className="px-8 py-3 gradient-hero text-white rounded-24 text-[11px] font-black uppercase tracking-widest hover:brightness-110 shadow-xl shadow-primary/20 transition-all">
                   Onboard Initial Partner
                 </button>
               </div>

@@ -146,7 +146,7 @@ export default function Sidebar({ role }: SidebarProps) {
       {/* Mobile Toggle */}
       <button 
         onClick={() => setIsOpen(!isOpen)}
-        className="lg:hidden fixed bottom-6 right-6 z-[60] w-12 h-12 bg-slate-900 text-white rounded-xl flex items-center justify-center shadow-xl shadow-slate-900/20"
+        className="lg:hidden fixed bottom-6 right-6 z-[60] w-12 h-12 gradient-hero text-white rounded-2xl flex items-center justify-center shadow-xl shadow-primary/20"
       >
         {isOpen ? <X size={20} /> : <Menu size={20} />}
       </button>
@@ -177,11 +177,11 @@ export default function Sidebar({ role }: SidebarProps) {
             )}
           </div>
           <div className="min-w-0">
-            <p className="text-sm text-slate-900 truncate uppercase tracking-tighter">
+            <p className="text-sm font-black text-slate-900 truncate uppercase tracking-tighter">
               {activeRole === "vendor" && shopName ? shopName : (user?.name || "Guest Account")}
             </p>
-            <p className="text-sm text-slate-400 uppercase tracking-widest mt-0.5">
-              {activeRole === "vendor" && shopName ? (user?.name || "Vendor") : (user?.role || "Member")}
+            <p className="text-[10px] text-slate-400 font-bold uppercase tracking-[0.2em] mt-0.5">
+              {activeRole === "vendor" && shopName ? (user?.name || "Vendor Profile") : (user?.role || "Nexus Member")}
             </p>
           </div>
         </div>
@@ -200,6 +200,14 @@ export default function Sidebar({ role }: SidebarProps) {
 
           // console.log(`Sidebar Link [${item.name}] - isActive:`, isActive, { pathname, hash, itemPath, itemHash });
           
+          const activeBgMap: Record<string, string> = {
+            admin: "bg-admin shadow-admin/20",
+            vendor: "bg-vendor shadow-vendor/20",
+            partner: "bg-partner shadow-partner/20",
+            delivery: "bg-slate-900 shadow-slate-900/10",
+            customer: "bg-customer shadow-customer/20"
+          };
+
           return (
             <Link 
               key={item.href}
@@ -207,16 +215,15 @@ export default function Sidebar({ role }: SidebarProps) {
               onClick={() => {
                 const [_, newHash] = item.href.split('#');
                 setHash(newHash ? '#' + newHash : "");
-                // console.log(`Sidebar Click [${item.name}] - setting hash:`, newHash);
               }}
-              className={`flex items-center gap-2.5 px-3 py-2 rounded-xl transition-all group ${
+              className={`flex items-center gap-2.5 px-4 py-2.5 rounded-2xl transition-all group ${
                 isActive 
-                ? "bg-slate-900 text-white shadow-md shadow-slate-900/10" 
-                : "text-slate-500 hover:bg-slate-50 hover:text-slate-900"
+                ? `${activeBgMap[activeRole] || 'bg-primary'} text-white shadow-lg` 
+                : "text-slate-500 hover:bg-section hover:text-primary"
               }`}
             >
-              <Icon size={14} className={isActive ? "text-white" : "group-hover:scale-110 transition-transform"} />
-              <span className="text-sm uppercase tracking-wider">{item.name}</span>
+              <Icon size={14} className={isActive ? "text-white" : "group-hover:scale-110 group-hover:text-primary transition-all"} />
+              <span className={`text-[11px] font-black uppercase tracking-wider ${isActive ? "text-white" : "text-slate-500"}`}>{item.name}</span>
             </Link>
           );
         })}
@@ -229,13 +236,13 @@ export default function Sidebar({ role }: SidebarProps) {
               <span className="text-sm uppercase tracking-wider">Support</span>
            </Link>
            
-           <Link href="/profile" className={`flex items-center gap-2.5 px-3 py-2 rounded-xl transition-all group ${
+           <Link href="/profile" className={`flex items-center gap-2.5 px-4 py-2.5 rounded-2xl transition-all group ${
              pathname === "/profile" 
-             ? "bg-slate-900 text-white shadow-md shadow-slate-900/10" 
-             : "text-slate-500 hover:bg-slate-50 hover:text-slate-900"
+             ? "gradient-hero text-white shadow-lg shadow-primary/20" 
+             : "text-slate-500 hover:bg-section hover:text-primary"
            }`}>
               <Settings size={14} />
-              <span className="text-sm uppercase tracking-wider">Profile</span>
+              <span className={`text-[11px] font-black uppercase tracking-wider ${pathname === "/profile" ? "text-white" : "text-slate-500"}`}>Profile</span>
            </Link>
 
            {user ? (

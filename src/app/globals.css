@@ -1,63 +1,70 @@
 @import "tailwindcss";
 
 @theme {
-  /* Core Palette - Clean Liquid */
-  --color-background: #ffffff;        /* Pure White */
-  --color-surface: #f8fafc;           /* Slate 50 */
-  --color-foreground: #0f172a;        /* Slate 900 */
-  --color-accent: #4f46e5;            /* Indigo 600 */
-  --color-action: #2563eb;            /* Blue 600 */
-  --color-muted: #64748b;             /* Slate 500 */
-  --color-glass-border: rgba(0, 0, 0, 0.05);
+  /* Mall Vibe Core Palette */
+  --color-primary: #3B82F6;            /* Bright Blue - Friendly */
+  --color-secondary: #8B5CF6;          /* Purple - Premium */
+  --color-accent: #EC4899;             /* Pink - Exciting */
+  --color-highlight: #F59E0B;          /* Orange - CTA */
   
+  --color-background: #F8FAFC;         /* Soft White */
+  --color-section: #EEF2FF;            /* Light Bluish */
+  --color-card: #FFFFFF;
+  
+  --color-text-primary: #0F172A;       /* Deep Slate */
+  --color-text-secondary: #64748B;     /* Slate 500 */
+  --color-text-light: #94A3B8;        /* Slate 400 */
+  
+  --color-success: #22C55E;
+  --color-danger: #EF4444;
+  
+  --color-admin: #111827;
+  --color-partner: #8B5CF6;
+  --color-vendor: #22C55E;
+  --color-customer: #3B82F6;
+
   --font-sans: var(--font-poppins), ui-sans-serif, system-ui, sans-serif;
 }
 
 @layer base {
   body {
-    background-color: #ffffff !important;
-    color: #010816 !important;
+    background-color: var(--color-background) !important;
+    color: var(--color-text-primary) !important;
     @apply font-sans antialiased;
     font-size: 14px;
   }
 }
 
 @layer components {
-  /* Unified Glass Panels - Adapted for Light Mode */
-  .glass-panel {
-    background: rgba(255, 255, 255, 0.7);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    border: 1px solid var(--color-glass-border);
-    box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.05);
+  /* Mall Vibe Cards */
+  .mall-card {
+    background: var(--color-card);
+    border-radius: 24px;
+    border: 1px solid rgba(0, 0, 0, 0.04);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   }
 
-  /* Professional Product Cards - Light Mode */
-  .glass-card {
-    background: #ffffff;
-    border: 1px solid rgba(0, 0, 0, 0.03);
-    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-    box-shadow: 0 4px 20px -5px rgba(0, 0, 0, 0.05);
+  .mall-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+    border-color: rgba(59, 130, 246, 0.2);
   }
 
-  .glass-card:hover {
-    background: #ffffff;
-    border-color: rgba(79, 70, 229, 0.2);
-    transform: translateY(-8px) scale(1.02);
-    box-shadow: 0 20px 50px -10px rgba(79, 70, 229, 0.1), 0 0 15px rgba(79, 70, 229, 0.05);
+  /* Mall Gradients */
+  .gradient-hero {
+    background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
   }
 
-  /* Standardized Typography */
-  .text-gradient {
-    background: linear-gradient(135deg, #010816 0%, #334155 100%);
+  .gradient-offer {
+    background: linear-gradient(135deg, var(--color-accent), var(--color-highlight));
+  }
+
+  .text-gradient-primary {
+    background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
-  }
-
-  /* Unified Action Highlighting */
-  .accent-gradient {
-    background: linear-gradient(135deg, #4f46e5 0%, #2563eb 100%);
   }
 }
 
