@@ -144,9 +144,9 @@ export default function ProductListingPage() {
                     <Link 
                         href={`/catalog/products/${product._id}`} 
                         key={product._id} 
-                        className="glass-card group p-3 rounded-[2rem] overflow-hidden flex flex-col group/card shadow-sm hover:shadow-2xl hover:shadow-indigo-600/5"
+                        className="glass-card group p-3 overflow-hidden flex flex-col group/card shadow-sm hover:shadow-2xl hover:shadow-indigo-600/5"
                     >
-                        <div className="w-full aspect-[4/5] rounded-[1.5rem] overflow-hidden bg-slate-50 mb-6 relative">
+                        <div className="w-full aspect-[4/5] rounded-[4px] overflow-hidden bg-slate-50 mb-6 relative">
                           <img 
                               src={product.images?.[0]?.imageUrl || "https://images.unsplash.com/photo-1523275335684-37898b6baf30?q=80&w=1000"} 
                               className="w-full h-full object-contain p-6 group-hover/card:scale-105 transition-transform duration-700" 

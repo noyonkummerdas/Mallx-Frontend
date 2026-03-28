@@ -108,9 +108,9 @@ export default function Home() {
               <Link 
                 href={`/catalog/products/${sale.productId?._id}`} 
                 key={sale._id} 
-                className="glass-card min-w-[280px] p-3 rounded-[2rem] flex flex-col group snap-start"
+                className="glass-card min-w-[280px] p-3 flex flex-col group snap-start"
               >
-                <div className="w-full h-48 rounded-[1.5rem] overflow-hidden bg-slate-50 relative mb-6">
+                <div className="w-full h-48 rounded-[4px] overflow-hidden bg-slate-50 relative mb-6">
                   <img src={sale.productId?.images?.[0]?.imageUrl || "https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=1000"} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt="Flash Sale" />
                   <div className="absolute top-3 left-3 bg-red-600 text-[8px] font-black text-white px-3 py-1.5 rounded-full uppercase tracking-tighter shadow-xl">-{discountPercent}% OFF</div>
                   {sale.stock <= 10 && (
@@ -278,9 +278,9 @@ function CategoryShowcase({ category }: { category: any }) {
                   <Link 
                      href={`/catalog/products/${product._id}`} 
                      key={product._id} 
-                     className="glass-card group p-3 rounded-[2rem] overflow-hidden flex flex-col w-[300px] snap-start"
+                     className="glass-card group p-3 overflow-hidden flex flex-col w-[300px] snap-start"
                   >
-                     <div className="w-full aspect-square rounded-[1.5rem] overflow-hidden bg-slate-50 mb-6 relative">
+                     <div className="w-full aspect-square rounded-[4px] overflow-hidden bg-slate-50 mb-6 relative">
                         <img 
                            src={product.images?.[0]?.imageUrl || "https://images.unsplash.com/photo-1523275335684-37898b6baf30?q=80&w=1000"} 
                            className="w-full h-full object-contain p-4 group-hover:scale-105 transition-transform duration-700" 

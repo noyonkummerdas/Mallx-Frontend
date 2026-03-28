@@ -2,22 +2,31 @@
 
 @theme {
   /* Mall Vibe Core Palette */
-  --color-primary: #3B82F6;            /* Bright Blue - Friendly */
-  --color-secondary: #8B5CF6;          /* Purple - Premium */
-  --color-accent: #EC4899;             /* Pink - Exciting */
-  --color-highlight: #F59E0B;          /* Orange - CTA */
-  
-  --color-background: #F8FAFC;         /* Soft White */
-  --color-section: #EEF2FF;            /* Light Bluish */
+  --color-primary: #3B82F6;
+  /* Bright Blue - Friendly */
+  --color-secondary: #8B5CF6;
+  /* Purple - Premium */
+  --color-accent: #EC4899;
+  /* Pink - Exciting */
+  --color-highlight: #F59E0B;
+  /* Orange - CTA */
+
+  --color-background: #F8FAFC;
+  /* Soft White */
+  --color-section: #EEF2FF;
+  /* Light Bluish */
   --color-card: #FFFFFF;
-  
-  --color-text-primary: #0F172A;       /* Deep Slate */
-  --color-text-secondary: #64748B;     /* Slate 500 */
-  --color-text-light: #94A3B8;        /* Slate 400 */
-  
+
+  --color-text-primary: #0F172A;
+  /* Deep Slate */
+  --color-text-secondary: #64748B;
+  /* Slate 500 */
+  --color-text-light: #94A3B8;
+  /* Slate 400 */
+
   --color-success: #22C55E;
   --color-danger: #EF4444;
-  
+
   --color-admin: #111827;
   --color-partner: #8B5CF6;
   --color-vendor: #22C55E;
@@ -36,6 +45,7 @@
 }
 
 @layer components {
+
   /* Mall Vibe Cards */
   .mall-card {
     background: var(--color-card);
@@ -55,7 +65,10 @@
   .glass-card {
     background: rgba(255, 255, 255, 0.8);
     backdrop-filter: blur(10px);
-    border: 5px solid rgba(148, 163, 184, 0.1); /* 5px Border as requested */
+    border: 1px solid rgba(148, 163, 184, 0.2);
+    /* Updated to 1px */
+    border-radius: 10px;
+    /* Updated to 5px */
     transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
@@ -87,11 +100,12 @@
   .scrollbar-hide::-webkit-scrollbar {
     display: none;
   }
+
   .scrollbar-hide {
     -ms-overflow-style: none;
     scrollbar-width: none;
   }
-  
+
   .glow-bg {
     position: fixed;
     top: 0;
@@ -99,7 +113,7 @@
     right: 0;
     bottom: 0;
     z-index: -1;
-    background: 
+    background:
       radial-gradient(circle at 15% 15%, rgba(99, 102, 241, 0.08) 0%, transparent 40%),
       radial-gradient(circle at 85% 85%, rgba(59, 130, 246, 0.08) 0%, transparent 40%);
     filter: blur(100px);
@@ -110,13 +124,16 @@
 ::-webkit-scrollbar {
   width: 4px;
 }
+
 ::-webkit-scrollbar-track {
   background: transparent;
 }
+
 ::-webkit-scrollbar-thumb {
   background: rgba(255, 255, 255, 0.08);
   border-radius: 10px;
 }
+
 ::-webkit-scrollbar-thumb:hover {
   background: var(--color-accent);
 }
