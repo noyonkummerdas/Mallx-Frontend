@@ -51,6 +51,21 @@
     border-color: rgba(59, 130, 246, 0.2);
   }
 
+  /* Premium Glass Card for Products */
+  .glass-card {
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(10px);
+    border: 5px solid rgba(148, 163, 184, 0.1); /* 5px Border as requested */
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .glass-card:hover {
+    border-color: rgba(59, 130, 246, 0.3);
+    background: white;
+    transform: translateY(-8px);
+    box-shadow: 0 30px 60px -12px rgba(59, 130, 246, 0.15);
+  }
+
   /* Mall Gradients */
   .gradient-hero {
     background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
