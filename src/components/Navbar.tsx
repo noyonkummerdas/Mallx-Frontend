@@ -45,7 +45,7 @@ export default function Navbar() {
             <Link href="/catalog/products?type=deals" className="text-[10px] font-black uppercase tracking-[0.2em] text-primary hover:brightness-110 transition-all font-black bg-primary/5 px-4 py-1.5 rounded-full">Deals</Link>
           </div>
           <div className="flex items-center gap-6">
-            <Link href="/shopping/bag" className="relative group">
+            <Link href="/shopping/cart" className="relative group">
               <ShoppingBag className="w-5 h-5 text-text-secondary group-hover:text-text-primary transition-all" />
               <span className="absolute -top-1 -right-1 w-4 h-4 bg-primary text-[8px] font-black text-white flex items-center justify-center rounded-full shadow-lg shadow-primary/20">0</span>
             </Link>

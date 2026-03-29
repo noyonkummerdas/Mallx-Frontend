@@ -123,7 +123,7 @@ export default function ProductListingPage() {
                        <span className="text-action font-black tracking-[0.4em] text-[10px] uppercase">Elite Marketplace</span>
                        <div className="h-px w-8 bg-action/20" />
                     </div>
-                    <h1 className="text-5xl md:text-6xl font-black text-slate-900 tracking-tighter uppercase italic text-gradient leading-tight">
+                    <h1 className="text-5xl md:text-6xl font-black text-slate-900 tracking-tighter uppercase text-gradient leading-tight">
                       {selectedCategory ? categories.find((c: any) => c._id === selectedCategory)?.name : 'Global Collection'}
                     </h1>
                   </div>
@@ -141,7 +141,7 @@ export default function ProductListingPage() {
             {isLoading ? (
                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-10">
                   {[...Array(10)].map((_, i) => (
-                    <div key={i} className="aspect-[4/5] rounded-[3rem] bg-slate-50 animate-pulse border border-slate-100" />
+                    <div key={i} className="aspect-[4/5] rounded-[2.5rem] bg-slate-50 animate-pulse border border-slate-100" />
                   ))}
                </div>
             ) : products.length > 0 ? (
@@ -151,12 +151,12 @@ export default function ProductListingPage() {
                   ))}
                </div>
             ) : (
-               <div className="py-40 text-center glass-panel rounded-[4rem] border border-dashed border-slate-200 shadow-inner">
+               <div className="py-40 text-center glass-panel rounded-[3rem] border border-dashed border-slate-200 shadow-inner">
                   <div className="w-24 h-24 bg-slate-50 rounded-full flex items-center justify-center mx-auto mb-8 border border-slate-100">
                      <Filter className="w-10 h-10 text-slate-200" />
                   </div>
                   <h3 className="text-xl font-black text-slate-900 uppercase tracking-tighter mb-2">Sector Depleted</h3>
-                  <p className="text-slate-400 font-black uppercase tracking-[0.3em] text-[10px] italic">No active products detected with current parameters</p>
+                  <p className="text-slate-400 font-black uppercase tracking-[0.3em] text-[10px]">No active products detected with current parameters</p>
                   <button 
                     onClick={() => { setSelectedCategory(""); setSearch(""); }}
                     className="mt-8 px-8 py-3 bg-slate-900 text-white rounded-2xl text-[10px] font-black uppercase tracking-widest hover:bg-action transition-all active:scale-95 shadow-xl shadow-slate-900/20"

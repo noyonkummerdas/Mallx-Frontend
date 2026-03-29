@@ -74,7 +74,7 @@ export default function ProductDetailClient({ id }: { id: string }) {
         quantity,
         price: product.discountPrice || product.price 
       }).unwrap();
-      alert("Added to cart!");
+      router.push("/shopping/cart");
     } catch (err) {
       console.error("Failed to add to cart:", err);
     }
@@ -398,17 +398,20 @@ export default function ProductDetailClient({ id }: { id: string }) {
                       <div className="flex flex-col items-end">
                         <div className="flex items-end justify-end gap-1">
                            <span className="text-sm font-black text-slate-400 tracking-widest uppercase pb-1.5">TK</span>
-                           <span className="text-5xl font-black text-slate-900 tracking-tighter leading-none">{product.discountPrice.toLocaleString()}</span>
+                           <span className="text-5xl font-black text-slate-900 tracking-tighter leading-none">{(product.discountPrice * quantity).toLocaleString()}</span>
                         </div>
                         <div className="flex items-center gap-2 mt-2">
-                           <span className="text-xs font-bold text-slate-400 line-through">{product.price.toLocaleString()} TK</span>
+                           <span className="text-xs font-medium text-slate-400">Total for {quantity} {quantity === 1 ? 'unit' : 'units'}</span>
                            <span className="text-[10px] font-black text-rose-500 uppercase bg-rose-50 px-2 py-0.5 rounded-md">Save {Math.round(((product.price - product.discountPrice)/product.price)*100)}%</span>
                         </div>
                       </div>
                     ) : (
-                      <div className="flex items-end justify-end gap-1">
-                        <span className="text-sm font-black text-slate-400 tracking-widest uppercase pb-1.5">TK</span>
-                        <span className="text-5xl font-black text-slate-900 tracking-tighter leading-none">{product.price.toLocaleString()}</span>
+                      <div className="flex flex-col items-end">
+                        <div className="flex items-end justify-end gap-1">
+                           <span className="text-sm font-black text-slate-400 tracking-widest uppercase pb-1.5">TK</span>
+                           <span className="text-5xl font-black text-slate-900 tracking-tighter leading-none">{(product.price * quantity).toLocaleString()}</span>
+                        </div>
+                        <span className="text-xs font-medium text-slate-400 mt-2">Total for {quantity} {quantity === 1 ? 'unit' : 'units'}</span>
                       </div>
                     )}
                   </div>
