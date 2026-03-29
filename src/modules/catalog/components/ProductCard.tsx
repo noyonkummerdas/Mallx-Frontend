@@ -100,19 +100,36 @@ export default function ProductCard({ product }: ProductCardProps) {
           )}
         </div>
 
-        {/* Stock Urgency */}
-        {product.stock !== undefined && product.stock <= 10 && product.stock > 0 && (
+        {/* Stock Status */}
+        {product.stock !== undefined && (
           <div className="mt-4 pt-4 border-t border-slate-100">
-             <div className="flex justify-between items-center mb-1.5">
-                <span className="text-[9px] font-black text-red-600 uppercase tracking-widest animate-pulse">Running Out!</span>
-                <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest">{product.stock} Left</span>
-             </div>
-             <div className="w-full h-1 bg-slate-100 rounded-full overflow-hidden">
-                <div 
-                   className="h-full bg-red-600 rounded-full" 
-                   style={{ width: `${(product.stock / 10) * 100}%` }}
-                />
-             </div>
+            {product.stock <= 0 ? (
+              <div className="flex items-center gap-2 text-slate-400">
+                <div className="w-1.5 h-1.5 rounded-full bg-slate-300" />
+                <span className="text-[9px] font-black uppercase tracking-widest">Sold Out</span>
+              </div>
+            ) : product.stock <= 10 ? (
+              <>
+                <div className="flex justify-between items-center mb-1.5">
+                  <span className="text-[9px] font-black text-red-600 uppercase tracking-widest animate-pulse">Running Out!</span>
+                  <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest">{product.stock} Left</span>
+                </div>
+                <div className="w-full h-1 bg-slate-100 rounded-full overflow-hidden">
+                  <div 
+                     className="h-full bg-red-600 rounded-full" 
+                     style={{ width: `${(product.stock / 10) * 100}%` }}
+                  />
+                </div>
+              </>
+            ) : (
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2 text-emerald-500">
+                  <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.5)]" />
+                  <span className="text-[9px] font-black uppercase tracking-widest">In Stock</span>
+                </div>
+                <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest">{product.stock} Units</span>
+              </div>
+            )}
           </div>
         )}
       </div>

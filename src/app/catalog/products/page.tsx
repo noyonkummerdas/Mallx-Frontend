@@ -24,31 +24,29 @@ export default function ProductListingPage() {
     <main className="min-h-screen bg-white text-slate-900 relative selection:bg-action/30">
       <div className="glow-bg" />
       
-      {/* Sidebar Overlay (Mobile) */}
-      {!isSidebarOpen && (
-        <button 
-          onClick={() => setIsSidebarOpen(true)}
-          className="fixed left-6 bottom-6 z-50 w-14 h-14 bg-slate-900 text-white rounded-full shadow-2xl flex items-center justify-center lg:hidden hover:scale-110 active:scale-95 transition-all"
-        >
-          <Filter className="w-6 h-6" />
-        </button>
-      )}
+      <div className="relative min-h-screen bg-background">
+        {/* 1. SIDEBAR BACKDROP */}
+        {isSidebarOpen && (
+          <div 
+            className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-40 transition-opacity"
+            onClick={() => setIsSidebarOpen(false)}
+          />
+        )}
 
-      <div className="flex">
-        {/* LEFT SIDEBAR */}
+        {/* 2. FLOATING SIDEBAR DRAWER */}
         <aside className={`
-          fixed inset-y-0 left-0 z-40 w-72 bg-white border-r border-slate-100 transform transition-transform duration-500 ease-in-out lg:sticky lg:top-20 lg:h-[calc(100vh-80px)] lg:translate-x-0
+          fixed inset-y-0 left-0 z-50 w-80 bg-white border-r border-slate-100 transform transition-transform duration-500 ease-in-out shadow-2xl
           ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'}
         `}>
           <div className="h-full flex flex-col p-8">
              <div className="flex items-center justify-between mb-12">
                 <div className="flex items-center gap-3">
-                   <div className="w-8 h-8 accent-gradient rounded-lg flex items-center justify-center">
+                   <div className="w-8 h-8 gradient-hero rounded-lg flex items-center justify-center">
                       <SlidersHorizontal className="w-4 h-4 text-white" />
                    </div>
                    <h2 className="text-sm font-black uppercase tracking-[0.2em] text-slate-900">Explorer</h2>
                 </div>
-                <button onClick={() => setIsSidebarOpen(false)} className="lg:hidden text-slate-400 hover:text-slate-900 transition-colors">
+                <button onClick={() => setIsSidebarOpen(false)} className="text-slate-400 hover:text-slate-900 transition-colors">
                    <X className="w-5 h-5" />
                 </button>
              </div>
@@ -74,7 +72,7 @@ export default function ProductListingPage() {
                     <h3 className="text-[9px] font-black uppercase tracking-[0.3em] text-slate-400 mb-5 border-l-2 border-action pl-3 self-start">Categories</h3>
                     <div className="space-y-1.5 px-0.5">
                        <button 
-                         onClick={() => setSelectedCategory("")}
+                         onClick={() => { setSelectedCategory(""); setIsSidebarOpen(false); }}
                          className={`w-full flex items-center justify-between p-3.5 rounded-2xl transition-all group ${selectedCategory === "" ? 'bg-slate-900 text-white shadow-xl shadow-slate-900/20' : 'hover:bg-slate-50 text-slate-500'}`}
                        >
                           <span className="text-[10px] font-black uppercase tracking-widest">All Collection</span>
@@ -83,7 +81,7 @@ export default function ProductListingPage() {
                        {categories.map((cat: any) => (
                          <button 
                             key={cat._id}
-                            onClick={() => setSelectedCategory(cat._id)}
+                            onClick={() => { setSelectedCategory(cat._id); setIsSidebarOpen(false); }}
                             className={`w-full flex items-center justify-between p-3.5 rounded-2xl transition-all group ${selectedCategory === cat._id ? 'bg-slate-900 text-white shadow-xl shadow-slate-900/20' : 'hover:bg-slate-50 text-slate-500'}`}
                          >
                             <span className="text-[10px] font-black uppercase tracking-widest">{cat.name}</span>
@@ -104,53 +102,67 @@ export default function ProductListingPage() {
           </div>
         </aside>
 
-        {/* MAIN CONTENT AREA */}
-        <div className="flex-1 min-w-0">
-          {/* Header/Banner Area */}
-          <div className="p-8 lg:p-12">
-            <header className="mb-16 flex items-start justify-between">
-               <div>
-                  <div className="flex items-center gap-4 mb-4">
-                     <button 
-                        onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-                        className="p-3 bg-slate-50 rounded-xl hover:bg-slate-100 transition-colors hidden lg:block"
-                     >
-                        {isSidebarOpen ? <X className="w-5 h-5 text-slate-900" /> : <Filter className="w-5 h-5 text-slate-900" />}
-                     </button>
-                     <span className="text-action font-black tracking-[0.3em] text-[10px] uppercase">Elite Marketplace</span>
+        {/* 3. MAIN CONTENT AREA - FULL WIDTH BY DEFAULT */}
+        <div className="min-w-0">
+          <div className="p-8 lg:p-16 max-w-[1800px] mx-auto">
+            <header className="mb-16 flex flex-col md:flex-row md:items-end justify-between gap-8">
+               <div className="flex items-start gap-6">
+                  <button 
+                    onClick={() => setIsSidebarOpen(true)}
+                    className="p-4 bg-white border border-slate-100 rounded-2xl shadow-xl shadow-slate-200/50 hover:border-action transition-all active:scale-95 group"
+                    title="Toggle Filters"
+                  >
+                     <div className="flex flex-col gap-1 w-5">
+                        <div className="h-0.5 bg-slate-900 rounded-full w-full group-hover:bg-action transition-colors" />
+                        <div className="h-0.5 bg-slate-900 rounded-full w-2/3 group-hover:w-full group-hover:bg-action transition-all" />
+                        <div className="h-0.5 bg-slate-900 rounded-full w-full group-hover:bg-action transition-colors" />
+                     </div>
+                  </button>
+                  <div>
+                    <div className="flex items-center gap-3 mb-3">
+                       <span className="text-action font-black tracking-[0.4em] text-[10px] uppercase">Elite Marketplace</span>
+                       <div className="h-px w-8 bg-action/20" />
+                    </div>
+                    <h1 className="text-5xl md:text-6xl font-black text-slate-900 tracking-tighter uppercase italic text-gradient leading-tight">
+                      {selectedCategory ? categories.find((c: any) => c._id === selectedCategory)?.name : 'Global Collection'}
+                    </h1>
                   </div>
-                  <h1 className="text-5xl font-black text-slate-900 tracking-tighter uppercase italic text-gradient leading-tight">
-                    {selectedCategory ? categories.find((c: any) => c._id === selectedCategory)?.name : 'Global Collection'}
-                  </h1>
                </div>
                
-               <div className="hidden sm:flex gap-4">
-                  <div className="px-6 py-3 bg-slate-50 border border-slate-100 rounded-xl flex items-center gap-3">
-                     <LayoutGrid className="w-4 h-4 text-slate-400" />
-                     <span className="text-[10px] font-black text-slate-900 uppercase tracking-widest">{products.length} Products</span>
+               <div className="flex items-center gap-4 self-end md:self-auto">
+                  <div className="px-6 py-3 bg-white border border-slate-100 rounded-2xl flex items-center gap-3 shadow-sm hover:shadow-md transition-shadow">
+                     <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse shadow-[0_0_8px_rgba(16,185,129,0.5)]" />
+                     <span className="text-[10px] font-black text-slate-900 uppercase tracking-widest">{products.length} Discovery Found</span>
                   </div>
                </div>
             </header>
 
-            {/* Product Grid */}
+            {/* 4. PRODUCT GRID - EXPANDED COLUMNS */}
             {isLoading ? (
-               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-                  {[...Array(8)].map((_, i) => (
-                    <div key={i} className="aspect-[4/5] rounded-[2rem] bg-slate-50 animate-pulse border border-slate-100" />
+               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-10">
+                  {[...Array(10)].map((_, i) => (
+                    <div key={i} className="aspect-[4/5] rounded-[3rem] bg-slate-50 animate-pulse border border-slate-100" />
                   ))}
                </div>
             ) : products.length > 0 ? (
-               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-8">
+               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 3xl:grid-cols-6 gap-10">
                   {products.map((product: any) => (
                     <ProductCard key={product._id} product={product} />
                   ))}
                </div>
             ) : (
-               <div className="py-40 text-center glass-panel rounded-[3rem] border border-dashed border-slate-200 shadow-inner">
-                  <div className="w-20 h-20 bg-slate-50 rounded-full flex items-center justify-center mx-auto mb-8 border border-slate-100">
-                     <Filter className="w-8 h-8 text-slate-200" />
+               <div className="py-40 text-center glass-panel rounded-[4rem] border border-dashed border-slate-200 shadow-inner">
+                  <div className="w-24 h-24 bg-slate-50 rounded-full flex items-center justify-center mx-auto mb-8 border border-slate-100">
+                     <Filter className="w-10 h-10 text-slate-200" />
                   </div>
-                  <p className="text-slate-400 font-black uppercase tracking-[0.3em] text-[10px] italic">No discovery in this sector</p>
+                  <h3 className="text-xl font-black text-slate-900 uppercase tracking-tighter mb-2">Sector Depleted</h3>
+                  <p className="text-slate-400 font-black uppercase tracking-[0.3em] text-[10px] italic">No active products detected with current parameters</p>
+                  <button 
+                    onClick={() => { setSelectedCategory(""); setSearch(""); }}
+                    className="mt-8 px-8 py-3 bg-slate-900 text-white rounded-2xl text-[10px] font-black uppercase tracking-widest hover:bg-action transition-all active:scale-95 shadow-xl shadow-slate-900/20"
+                  >
+                     Reset Explorer
+                  </button>
                </div>
             )}
           </div>
