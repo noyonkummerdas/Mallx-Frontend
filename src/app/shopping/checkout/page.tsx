@@ -17,9 +17,9 @@ export default function CheckoutPage() {
   const [phone, setPhone] = useState("");
   const [showAddressForm, setShowAddressForm] = useState(false);
   const [newAddress, setNewAddress] = useState({
-    street: "",
+    addressLine: "",
     city: "Dhaka",
-    zipCode: "",
+    zip: "",
     country: "Bangladesh"
   });
 
@@ -27,20 +27,29 @@ export default function CheckoutPage() {
     if (cartData) console.log("Checkout - Cart Data:", cartData);
     if (addressData) {
       console.log("Checkout - Addresses:", addressData);
-      if (addressData.data?.addresses?.length > 0 && !selectedAddress) {
-        setSelectedAddress(addressData.data.addresses[0]._id);
+      const addresses = addressData.data?.addresses || [];
+      if (addresses.length > 0) {
+        if (!selectedAddress) {
+          setSelectedAddress(addresses[0]._id);
+          // Auto-detect area for preferred address
+          setArea(addresses[0].city === "Dhaka" ? "Dhaka" : "Outside");
+        } else {
+          // Update area if selected address changes
+          const current = addresses.find((a: any) => a._id === selectedAddress);
+          if (current) {
+            setArea(current.city === "Dhaka" ? "Dhaka" : "Outside");
+          }
+        }
       }
     }
-  }, [cartData, addressData]);
+  }, [cartData, addressData, selectedAddress]);
 
   const subtotal = cartData?.data?.total || 0;
   
-  // Dynamic Delivery Logic
+  // Dynamic Delivery Logic (Matching cart/backend)
   const calculateDelivery = () => {
-    if (subtotal > 5000) return 0;
-    let base = area === "Dhaka" ? 60 : 120;
-    if (subtotal > 2000) base -= 20;
-    return base;
+    if (subtotal >= 2000) return 0;
+    return area === "Dhaka" ? 60 : 120;
   };
 
   const deliveryCharge = calculateDelivery();
@@ -110,8 +119,8 @@ export default function CheckoutPage() {
                           : "border-white bg-white hover:border-slate-200"
                         }`}
                       >
-                         <p className="font-black text-sm text-slate-900 mb-1 uppercase tracking-tight">{addr.street}</p>
-                         <p className="text-sm text-slate-500 font-black uppercase tracking-widest">{addr.city}, {addr.zipCode}</p>
+                         <p className="font-black text-sm text-slate-900 mb-1 uppercase tracking-tight">{addr.addressLine}</p>
+                         <p className="text-sm text-slate-500 font-black uppercase tracking-widest">{addr.city}, {addr.zip}</p>
                       </div>
                     ))}
                     <button 
@@ -130,8 +139,8 @@ export default function CheckoutPage() {
                           <input 
                             required
                             placeholder="Street / House Info"
-                            value={newAddress.street}
-                            onChange={(e) => setNewAddress({...newAddress, street: e.target.value})}
+                            value={newAddress.addressLine}
+                            onChange={(e) => setNewAddress({...newAddress, addressLine: e.target.value})}
                             className="w-full bg-slate-50 border border-slate-100 rounded-xl px-4 py-3 text-sm focus:border-indigo-500 outline-none"
                           />
                           <div className="grid grid-cols-2 gap-4">
@@ -145,8 +154,8 @@ export default function CheckoutPage() {
                              <input 
                                required
                                placeholder="Zip Code"
-                               value={newAddress.zipCode}
-                               onChange={(e) => setNewAddress({...newAddress, zipCode: e.target.value})}
+                               value={newAddress.zip}
+                               onChange={(e) => setNewAddress({...newAddress, zip: e.target.value})}
                                className="w-full bg-slate-50 border border-slate-100 rounded-xl px-4 py-3 text-sm focus:border-indigo-500 outline-none"
                              />
                           </div>
@@ -164,11 +173,13 @@ export default function CheckoutPage() {
                         <select 
                           value={area}
                           onChange={(e) => setArea(e.target.value)}
-                          className="w-full bg-white border border-slate-200 rounded-2xl px-6 py-4 focus:border-indigo-500 outline-none font-black text-slate-700 shadow-sm cursor-pointer"
+                          className="w-full bg-slate-100 border border-slate-200 rounded-2xl px-6 py-4 outline-none font-black text-slate-700 shadow-sm cursor-not-allowed"
+                          disabled
                         >
                            <option value="Dhaka">Inside Dhaka</option>
                            <option value="Outside">Outside Dhaka</option>
                         </select>
+                        <p className="text-[10px] text-indigo-600 font-bold mt-1 uppercase tracking-tighter">Detected from address</p>
                      </div>
                      <div>
                         <label className="block text-sm font-black text-slate-400 uppercase tracking-widest mb-2 ml-1">Contact Handset</label>
@@ -232,12 +243,14 @@ export default function CheckoutPage() {
                 </div>
                 <div className="flex justify-between text-slate-500 font-black uppercase tracking-widest text-sm">
                   <span>Logistics Fee</span>
-                  <span className="text-green-600 font-black">{deliveryCharge.toLocaleString()} TK</span>
+                  <span className={deliveryCharge === 0 ? "text-green-600 font-black" : "text-slate-900 font-black"}>
+                    {deliveryCharge === 0 ? "FREE" : `${deliveryCharge.toLocaleString()} TK`}
+                  </span>
                 </div>
-                {subtotal > 2000 && (
-                   <div className="flex justify-between text-indigo-600 font-black uppercase tracking-widest text-sm bg-indigo-50 px-3 py-1 rounded-lg">
-                      <span>Tiered Discount</span>
-                      <span className="font-black">-20 TK</span>
+                {subtotal >= 2000 && (
+                   <div className="flex justify-between text-green-600 font-black uppercase tracking-widest text-sm bg-green-50 px-3 py-1 rounded-lg">
+                      <span>Loyal Delivery Discount</span>
+                      <span className="font-black">-{area === "Dhaka" ? "60" : "120"} TK</span>
                    </div>
                 )}
                 <div className="flex justify-between text-base font-black pt-6 border-t font-black border-slate-100 tracking-tighter">

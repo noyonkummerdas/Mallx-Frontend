@@ -2,18 +2,30 @@
 
 import { useGetCartQuery, useUpdateCartQuantityMutation, useDeleteCartItemMutation } from "@/modules/shopping/services/shoppingApi";
 import Link from "next/link";
-import { useEffect } from "react";
+import { useState, useEffect } from "react";
 
 export default function CartPage() {
   const { data: cartData, isLoading } = useGetCartQuery({});
   const [updateQuantity, { isLoading: isUpdating }] = useUpdateCartQuantityMutation();
   const [deleteItem, { isLoading: isDeleting }] = useDeleteCartItemMutation();
 
+  const [showDeliveryPopup, setShowDeliveryPopup] = useState(false);
+
   useEffect(() => {
     if (cartData) {
       console.log("Cart data loaded in console:", cartData);
     }
   }, [cartData]);
+
+  // Handle premium notification popup
+  const cartItemsCount = cartData?.data?.items?.length || 0;
+  useEffect(() => {
+    if (cartItemsCount > 0) {
+      setShowDeliveryPopup(true);
+      const timer = setTimeout(() => setShowDeliveryPopup(false), 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [cartItemsCount]);
   
   if (isLoading) return (
     <div className="min-h-screen bg-gray-200 flex items-center justify-center">
@@ -23,8 +35,9 @@ export default function CartPage() {
 
   const cartItems = cartData?.data?.items || [];
   const subtotal = cartData?.data?.total || 0;
-  const deliveryCharge = cartData?.data?.deliveryCharge || 0;
-  const totalPay = subtotal + deliveryCharge;
+  const totalItemsCount = cartData?.data?.totalItems || 0;
+  const promotional = cartData?.data?.promotional || { discountCount: 0, hasCombo: false };
+
 
   const handleUpdateQuantity = async (cartItemId: string, newQty: number) => {
     if (newQty < 1) return;
@@ -101,26 +114,44 @@ export default function CartPage() {
           <div className="relative">
              <div className="sticky top-8 bg-indigo-600 rounded-xl p-6 shadow-lg shadow-indigo-600/30 text-white">
                <h2 className="text-base font-black mb-6 tracking-tighter uppercase">Cart Summary</h2>
-              <div className="space-y-4 mb-10">
-                 <div className="flex justify-between text-indigo-100 font-black tracking-wide">
-                   <span className="uppercase text-sm font-black tracking-widest">Bag Subtotal</span>
-                   <span className="font-black text-sm">{subtotal.toLocaleString()} TK</span>
-                 </div>
-                 <div className="flex justify-between text-indigo-100 font-black tracking-wide">
-                   <span className="uppercase text-sm font-black tracking-widest">Delivery Charge</span>
-                   <span className="font-black text-sm">{deliveryCharge === 0 ? "FREE" : `${deliveryCharge.toLocaleString()} TK`}</span>
-                 </div>
-                 <div className="border-t border-white/20 pt-4 flex justify-between text-sm font-black tracking-tighter">
-                   <span className="uppercase">Total Pay</span>
-                   <span className="text-sm">{totalPay.toLocaleString()} TK</span>
+              <div className="space-y-4 mb-8 pt-2">
+                 <h3 className="text-[10px] font-black uppercase tracking-[0.2em] text-indigo-300 mb-4 border-b border-white/10 pb-2">Order Review</h3>
+                 <div className="space-y-3 max-h-[160px] overflow-y-auto pr-2 custom-scrollbar">
+                    {cartItems.map((item: any) => (
+                      <div key={item._id} className="flex justify-between items-center gap-4">
+                         <span className="text-[11px] font-black uppercase tracking-tight text-white/80 truncate flex-1">{item.productId?.name} <span className="text-indigo-300 ml-1">x{item.quantity}</span></span>
+                         <span className="text-[11px] font-black text-white whitespace-nowrap">{(item.price * item.quantity).toLocaleString()} TK</span>
+                      </div>
+                    ))}
                  </div>
               </div>
 
-               <div className="bg-white/10 rounded-lg p-3 mb-6">
-                  <p className="text-sm font-black uppercase tracking-widest mb-1">Dynamic Delivery</p>
-                  <p className="text-sm text-indigo-100 opacity-80 leading-relaxed font-black">Shipping costs are calculated at checkout based on location and weight.</p>
-               </div>
-                            <Link href="/shopping/checkout">
+              <div className="space-y-4 mb-8 border-t border-white/10 pt-6">
+                 <div className="flex justify-between text-white font-black tracking-tighter">
+                   <span className="uppercase text-sm">Subtotal</span>
+                   <span className="font-black text-sm">{subtotal.toLocaleString()} TK</span>
+                 </div>
+                 <div className="flex justify-between text-indigo-100 font-black tracking-wide">
+                   <span className="uppercase text-sm font-black tracking-widest">Total Items</span>
+                   <span className="font-black text-sm">{totalItemsCount} Units</span>
+                 </div>
+                 
+                 {promotional.discountCount > 0 && (
+                    <div className="flex justify-between text-green-300 font-black tracking-wide bg-green-900/20 px-3 py-2 rounded-lg border border-green-500/20">
+                      <span className="uppercase text-[10px] tracking-widest">Discount Items</span>
+                      <span className="text-[10px]">{promotional.discountCount} Items</span>
+                    </div>
+                 )}
+                 
+                 {promotional.hasCombo && (
+                    <div className="flex justify-between text-amber-300 font-black tracking-wide bg-amber-900/20 px-3 py-2 rounded-lg border border-amber-500/20">
+                      <span className="uppercase text-[10px] tracking-widest">Combo Pack</span>
+                      <span className="text-[10px]">Included</span>
+                    </div>
+                 )}
+              </div>
+
+               <Link href="/shopping/checkout">
                   <button disabled={cartItems.length === 0} className="w-full bg-white text-indigo-600 font-black py-3 rounded-lg shadow-md hover:bg-slate-50 transition-all active:scale-95 disabled:opacity-50 uppercase tracking-widest text-sm">
                      Ship Items Now
                   </button>
@@ -129,6 +160,24 @@ export default function CartPage() {
           </div>
         </div>
       </div>
+
+      {/* Premium Glass Delivery Popup */}
+      {showDeliveryPopup && (
+        <div className="fixed top-24 right-8 z-50 animate-in slide-in-from-right-10 fade-in duration-500">
+          <div className="glass-panel p-6 rounded-[2rem] border border-white/20 shadow-2xl backdrop-blur-xl bg-indigo-600/10 max-w-[320px] relative overflow-hidden group">
+            <div className="absolute top-0 left-0 w-1 h-full bg-indigo-600" />
+            <div className="flex items-start gap-4">
+              <div className="w-10 h-10 rounded-xl bg-indigo-600 flex items-center justify-center shrink-0 shadow-lg shadow-indigo-600/20">
+                <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+              </div>
+              <div>
+                <p className="text-[10px] font-black uppercase tracking-[0.2em] text-indigo-600 mb-1">Logistics Note</p>
+                <p className="text-[11px] font-black text-slate-900 leading-relaxed uppercase tracking-tight">Delivery fees are calculated during checkout based on your destination.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </main>
   );
 }
