@@ -23,8 +23,8 @@ export default function CartPage() {
 
   const cartItems = cartData?.data?.items || [];
   const subtotal = cartData?.data?.total || 0;
-  const platformFee = cartData?.data?.platformFee || 0;
-  const totalPay = subtotal + platformFee;
+  const deliveryCharge = cartData?.data?.deliveryCharge || 0;
+  const totalPay = subtotal + deliveryCharge;
 
   const handleUpdateQuantity = async (cartItemId: string, newQty: number) => {
     if (newQty < 1) return;
@@ -107,8 +107,8 @@ export default function CartPage() {
                    <span className="font-black text-sm">{subtotal.toLocaleString()} TK</span>
                  </div>
                  <div className="flex justify-between text-indigo-100 font-black tracking-wide">
-                   <span className="uppercase text-sm font-black tracking-widest">Platform Fee</span>
-                   <span className="font-black text-sm">{platformFee.toLocaleString()} TK</span>
+                   <span className="uppercase text-sm font-black tracking-widest">Delivery Charge</span>
+                   <span className="font-black text-sm">{deliveryCharge === 0 ? "FREE" : `${deliveryCharge.toLocaleString()} TK`}</span>
                  </div>
                  <div className="border-t border-white/20 pt-4 flex justify-between text-sm font-black tracking-tighter">
                    <span className="uppercase">Total Pay</span>
