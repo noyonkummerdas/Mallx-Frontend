@@ -38,37 +38,41 @@ export default function Navbar() {
               Mall<span className="text-primary font-black">X</span>
             </span>
           </Link>
-          <div className="hidden md:flex items-center gap-10">
-            <Link href="/catalog/products" className="text-[10px] font-black uppercase tracking-[0.2em] text-text-secondary hover:text-text-primary transition-all">Marketplace</Link>
-            <Link href="/catalog/products?type=men" className="text-[10px] font-black uppercase tracking-[0.2em] text-text-secondary hover:text-text-primary transition-all">Men</Link>
-            <Link href="/catalog/products?type=women" className="text-[10px] font-black uppercase tracking-[0.2em] text-text-secondary hover:text-text-primary transition-all">Women</Link>
-            <Link href="/catalog/products?type=deals" className="text-[10px] font-black uppercase tracking-[0.2em] text-primary hover:brightness-110 transition-all font-black bg-primary/5 px-4 py-1.5 rounded-full">Deals</Link>
-          </div>
-          <div className="flex items-center gap-6">
-            <Link href="/shopping/cart" className="relative group">
-              <ShoppingBag className="w-5 h-5 text-text-secondary group-hover:text-text-primary transition-all" />
-              <span className="absolute -top-1 -right-1 w-4 h-4 bg-primary text-[8px] font-black text-white flex items-center justify-center rounded-full shadow-lg shadow-primary/20">0</span>
-            </Link>
-            {isLoading ? (
-              <div className="w-8 h-8 rounded-full bg-slate-100 animate-pulse" />
-            ) : user ? (
-              <Link href={user.role === 'Admin' ? '/dashboard/admin' : user.role === 'Vendor' ? '/dashboard/vendor' : '/dashboard/customer'}>
-                <div className="w-9 h-9 rounded-xl gradient-hero p-[1px] flex items-center justify-center group">
-                  <div className="w-full h-full bg-white rounded-xl flex items-center justify-center group-hover:bg-transparent transition-all overflow-hidden">
-                    <UserIcon className="w-4 h-4 text-text-primary group-hover:text-white" />
-                  </div>
-                </div>
+          <div className="flex items-center gap-8">
+            <div className="hidden md:flex items-center gap-9 border-r border-slate-100 pr-9 mr-2">
+              <Link href="/catalog/products" className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-500 hover:text-indigo-600 hover:-translate-y-0.5 transition-all duration-300">Marketplace</Link>
+              <Link href="/catalog/products?type=men" className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-500 hover:text-indigo-600 hover:-translate-y-0.5 transition-all duration-300">Men</Link>
+              <Link href="/catalog/products?type=women" className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-500 hover:text-indigo-600 hover:-translate-y-0.5 transition-all duration-300">Women</Link>
+              <Link href="/catalog/products?type=boysgirls" className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-500 hover:text-indigo-600 hover:-translate-y-0.5 transition-all duration-300 whitespace-nowrap">Boys & Girls</Link>
+              <Link href="/catalog/products?type=kids" className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-500 hover:text-indigo-600 hover:-translate-y-0.5 transition-all duration-300">Kids</Link>
+            </div>
+            
+            <div className="flex items-center gap-7">
+              <Link href="/shopping/cart" className="relative group p-2.5 rounded-xl hover:bg-slate-50 transition-all active:scale-95 duration-300">
+                <ShoppingBag className="w-5 h-5 text-slate-600 group-hover:text-indigo-600 transition-all hover:-translate-y-0.5" />
+                <span className="absolute top-1 right-1 w-4 h-4 bg-indigo-600 text-[8px] font-black text-white flex items-center justify-center rounded-full shadow-lg shadow-indigo-600/20 group-hover:scale-110 transition-transform">0</span>
               </Link>
-            ) : (
-              <div className="flex items-center gap-4">
-                <Link href="/auth/login" className="text-[10px] font-black uppercase tracking-[0.2em] text-text-primary hover:text-primary transition-all">Login</Link>
-                <Link href="/auth/register">
-                  <button className="px-6 py-2.5 gradient-hero text-white rounded-xl text-[10px] font-black uppercase tracking-[0.2em] shadow-lg shadow-primary/20 active:scale-95 transition-all">
-                    Sign Up
-                  </button>
+              {isLoading ? (
+                <div className="w-8 h-8 rounded-full bg-slate-100 animate-pulse" />
+              ) : user ? (
+                <Link href={user.role === 'Admin' ? '/dashboard/admin' : user.role === 'Vendor' ? '/dashboard/vendor' : '/dashboard/customer'}>
+                  <div className="w-9 h-9 rounded-xl gradient-hero p-[1px] flex items-center justify-center group active:scale-95 transition-all">
+                    <div className="w-full h-full bg-white rounded-xl flex items-center justify-center group-hover:bg-transparent transition-all overflow-hidden shadow-sm">
+                      <UserIcon className="w-4 h-4 text-slate-700 group-hover:text-white transition-colors" />
+                    </div>
+                  </div>
                 </Link>
-              </div>
-            )}
+              ) : (
+                <div className="flex items-center gap-5">
+                  <Link href="/auth/login" className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-900 hover:text-indigo-600 hover:-translate-y-0.5 transition-all duration-300">Login</Link>
+                  <Link href="/auth/register">
+                    <button className="px-7 py-3 bg-slate-900 text-white rounded-xl text-[10px] font-black uppercase tracking-[0.2em] shadow-xl shadow-slate-900/10 active:scale-95 transition-all hover:bg-indigo-600 hover:-translate-y-0.5">
+                      Sign Up
+                    </button>
+                  </Link>
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </nav>

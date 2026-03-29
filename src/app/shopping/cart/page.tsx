@@ -69,8 +69,13 @@ export default function CartPage() {
             {cartItems.length > 0 ? (
               cartItems.map((item: any) => (
                 <div key={item._id} className="bg-white border border-slate-200 rounded-xl p-4 flex flex-col sm:flex-row gap-4 items-center shadow-sm group hover:border-indigo-600/20 transition-all">
-                  <div className="w-16 h-16 bg-slate-50 rounded-lg overflow-hidden flex-shrink-0 border border-slate-100">
+                  <div className="w-16 h-16 bg-slate-50 rounded-lg overflow-hidden flex-shrink-0 border border-slate-100 relative">
                      <img src={item.productId?.images?.[0]?.url} alt={item.productId?.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+                     {item.productId?.discountPrice > 0 && item.productId?.discountPrice < item.productId?.price && (
+                        <div className="absolute top-0 right-0 bg-red-600 text-[8px] font-black text-white px-2 py-1 rounded-bl-lg uppercase tracking-tighter">
+                          -{Math.round(((item.productId.price - item.productId.discountPrice) / item.productId.price) * 100)}%
+                        </div>
+                     )}
                   </div>
                    <div className="flex-1 text-center sm:text-left">
                       <h3 className="font-black text-sm mb-1 uppercase tracking-tight text-slate-900 leading-none">{item.productId?.name}</h3>
@@ -90,7 +95,14 @@ export default function CartPage() {
                            >+</button>
                         </div>
                          <div className="h-4 w-[1px] bg-slate-100 hidden sm:block" />
-                         <span className="font-black text-indigo-600 text-sm">{item.price.toLocaleString()} <span className="text-sm font-black">TK</span></span>
+                          <div className="flex flex-col items-center sm:items-start leading-none">
+                             <span className="font-black text-indigo-600 text-sm">{item.price.toLocaleString()} <span className="text-sm font-black">TK</span></span>
+                             {item.productId?.price > item.price && (
+                                <span className="text-[10px] text-slate-400 line-through font-bold opacity-60">
+                                   {item.productId.price.toLocaleString()} TK
+                                </span>
+                             )}
+                          </div>
                      </div>
                   </div>
                   <button 

@@ -46,14 +46,14 @@ export default function ProductCard({ product }: ProductCardProps) {
     : 0;
  
   return (
-    <div className="group relative bg-white rounded-3xl p-4 transition-all duration-500 hover:shadow-[0_40px_80px_-20px_rgba(0,0,0,0.06)] hover:-translate-y-2 border border-slate-50 hover:border-action/10">
+    <div className="group relative wow-card p-5 transition-all duration-700 rounded-[2.5rem]">
       {/* 1. TOP BADGES & ACTIONS */}
-      <div className="absolute top-6 left-6 z-20 flex flex-col gap-2">
+      <div className="absolute top-7 left-7 z-20 flex flex-col gap-2">
         {product.isNewArrival && (
-          <span className="px-3 py-1 bg-slate-900 text-[8px] font-black text-white rounded-full uppercase tracking-widest shadow-xl">New</span>
+          <span className="px-3 py-1 bg-white/40 backdrop-blur-md border border-white/40 text-[8px] font-black text-slate-800 rounded-full uppercase tracking-[0.2em] shadow-sm">New</span>
         )}
         {product.isFeatured && (
-          <span className="px-3 py-1 bg-action text-[8px] font-black text-white rounded-full uppercase tracking-widest shadow-xl">Staff Pick</span>
+          <span className="px-3 py-1 bg-indigo-600/10 backdrop-blur-md border border-indigo-600/20 text-[8px] font-black text-indigo-600 rounded-full uppercase tracking-[0.2em] shadow-sm">Elite</span>
         )}
       </div>
 
@@ -79,7 +79,7 @@ export default function ProductCard({ product }: ProductCardProps) {
         
         {/* Discount Badge */}
         {discountPercent > 0 && (
-          <div className="absolute bottom-4 left-4 bg-red-500 text-[10px] font-black text-white px-3 py-1 rounded-lg shadow-xl">
+          <div className="absolute bottom-5 left-5 bg-white/40 backdrop-blur-md border border-white/40 text-[8px] font-black text-slate-900 px-3 py-1 rounded-full tracking-widest">
             -{discountPercent}%
           </div>
         )}
@@ -106,7 +106,7 @@ export default function ProductCard({ product }: ProductCardProps) {
         </div>
  
         <Link href={`/catalog/products/${product._id}`}>
-          <h4 className="text-lg font-bold text-slate-900 mb-4 line-clamp-1 tracking-tight hover:text-action transition-colors">
+          <h4 className="text-sm font-black text-slate-900 mb-3 line-clamp-1 tracking-[0.05em] hover:text-indigo-600 transition-colors uppercase">
             {product.name}
           </h4>
         </Link>
@@ -116,16 +116,16 @@ export default function ProductCard({ product }: ProductCardProps) {
            <div className="flex items-baseline gap-2">
               {product.discountPrice ? (
                 <>
-                  <span className="text-xl font-black text-slate-900 tracking-tighter">
-                    {product.discountPrice.toLocaleString()} <span className="text-[10px] font-bold text-slate-400">TK</span>
+                  <span className="text-lg font-black text-slate-900 tracking-tighter">
+                    {product.discountPrice.toLocaleString()} <span className="text-[9px] font-bold text-slate-400 uppercase tracking-widest">TK</span>
                   </span>
-                  <span className="text-[10px] text-slate-300 line-through font-bold">
+                  <span className="text-[9px] text-slate-300 line-through font-bold">
                     {product.price.toLocaleString()}
                   </span>
                 </>
               ) : (
-                <span className="text-xl font-black text-slate-900 tracking-tighter">
-                  {product.price.toLocaleString()} <span className="text-[10px] font-bold text-slate-400">TK</span>
+                <span className="text-lg font-black text-slate-900 tracking-tighter">
+                  {product.price.toLocaleString()} <span className="text-[9px] font-bold text-slate-400 uppercase tracking-widest">TK</span>
                 </span>
               )}
            </div>
