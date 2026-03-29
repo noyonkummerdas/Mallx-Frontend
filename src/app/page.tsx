@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useGetProductsQuery, useGetCategoriesQuery } from "@/modules/shopping/services/productApi";
 import { useGetCampaignsQuery, useGetFlashSalesQuery, useGetBundlesQuery, useGetVouchersQuery } from "@/modules/shopping/services/marketingApi";
+import ProductCard from "@/modules/catalog/components/ProductCard";
 
 export default function Home() {
   const { data: campaignData, isLoading: campaignsLoading } = useGetCampaignsQuery({});
@@ -13,6 +14,15 @@ export default function Home() {
   const { data: featuredData, isLoading: productsLoading } = useGetProductsQuery({ limit: 8 });
 
   const campaigns = campaignData?.data || [];
+  const fashionBanners = [
+    { _id: 'f1', name: 'Elite Fashion Combo', bannerUrl: '/banners/combo.png', tag: 'Elite Combo' },
+    { _id: 'f2', name: 'Summer Luxury Sale', bannerUrl: '/banners/discount.png', tag: 'Limited Discount' },
+    { _id: 'f3', name: 'Designer BOGO Event', bannerUrl: '/banners/bogo.png', tag: 'Buy 1 Get 1' },
+    { _id: 'f4', name: 'New Season Arrival', bannerUrl: '/banners/collection.png', tag: 'New Collection' },
+  ];
+
+  // Prioritize fashion banners for this request
+  const displayCampaigns = fashionBanners; 
   const flashSales = flashSaleData?.data || [];
   const bundles = bundleData?.data?.bundles || [];
   const categories = categoryData?.data || [];
@@ -22,13 +32,13 @@ export default function Home() {
 
   // Auto-play for Campaign Slider
   useEffect(() => {
-    if (campaigns.length > 0) {
+    if (displayCampaigns.length > 0) {
       const timer = setInterval(() => {
-        setActiveCampaignIdx((prev) => (prev + 1) % campaigns.length);
+        setActiveCampaignIdx((prev) => (prev + 1) % displayCampaigns.length);
       }, 5000);
       return () => clearInterval(timer);
     }
-  }, [campaigns]);
+  }, [displayCampaigns]);
 
   return (
     <main className="min-h-screen bg-white text-slate-900 selection:bg-action/30">
@@ -38,9 +48,9 @@ export default function Home() {
       <section className="relative pt-8 pb-20 px-4 max-w-7xl mx-auto overflow-hidden">
         {campaignsLoading ? (
           <div className="h-[450px] bg-slate-50 rounded-[2.5rem] animate-pulse border border-slate-200" />
-        ) : campaigns.length > 0 ? (
+        ) : displayCampaigns.length > 0 ? (
           <div className="relative h-[450px] rounded-[2.5rem] overflow-hidden group shadow-2xl transition-all duration-700">
-            {campaigns.map((camp: any, idx: number) => (
+            {displayCampaigns.map((camp: any, idx: number) => (
               <div 
                 key={camp._id}
                 className={`absolute inset-0 transition-all duration-1000 ease-in-out ${idx === activeCampaignIdx ? 'opacity-100 scale-100' : 'opacity-0 scale-105 pointer-events-none'}`}
@@ -52,7 +62,7 @@ export default function Home() {
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-slate-900/60 via-transparent to-transparent" />
                 <div className="absolute bottom-16 left-16 max-w-xl text-left">
-                  <span className="inline-block px-4 py-1.5 bg-action text-white rounded-full text-[10px] font-black uppercase tracking-[0.2em] mb-6 shadow-xl shadow-blue-500/20">Featured Campaign</span>
+                  <span className="inline-block px-4 py-1.5 bg-action text-white rounded-full text-[10px] font-black uppercase tracking-[0.2em] mb-6 shadow-xl shadow-blue-500/20">{camp.tag || 'Featured Campaign'}</span>
                   <h1 className="text-5xl font-black text-white tracking-tighter mb-6 uppercase italic leading-tight">{camp.name}</h1>
                   <button className="px-10 py-4 accent-gradient text-white rounded-2xl font-black text-[10px] uppercase tracking-[0.2em] transform active:scale-95 transition-all shadow-xl shadow-indigo-500/20">Shop the Sale</button>
                 </div>
@@ -61,7 +71,7 @@ export default function Home() {
             
             {/* Slider Dots */}
             <div className="absolute bottom-6 right-12 flex gap-3">
-              {campaigns.map((_, idx) => (
+              {displayCampaigns.map((_, idx) => (
                 <button 
                   key={idx} 
                   onClick={() => setActiveCampaignIdx(idx)}
@@ -275,34 +285,7 @@ function CategoryShowcase({ category }: { category: any }) {
                ))
             ) : (
                products.map((product: any) => (
-                  <Link 
-                     href={`/catalog/products/${product._id}`} 
-                     key={product._id} 
-                     className="glass-card group p-3 overflow-hidden flex flex-col w-[300px] snap-start"
-                  >
-                     <div className="w-full aspect-square rounded-[4px] overflow-hidden bg-slate-50 mb-6 relative">
-                        <img 
-                           src={product.images?.[0]?.imageUrl || "https://images.unsplash.com/photo-1523275335684-37898b6baf30?q=80&w=1000"} 
-                           className="w-full h-full object-contain p-4 group-hover:scale-105 transition-transform duration-700" 
-                        />
-                        <div className="absolute inset-0 bg-slate-900/10 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                           <span className="text-[10px] font-black text-slate-900 uppercase tracking-[0.2em] border-2 border-slate-900 px-6 py-2 rounded-xl bg-white/80">Details</span>
-                        </div>
-                     </div>
-                     <div className="px-4 pb-4 text-left">
-                        <h4 className="text-sm font-black text-slate-400 mb-2 uppercase line-clamp-1 group-hover:text-slate-900 transition-colors tracking-tight">{product.name}</h4>
-                        <div className="flex items-center gap-3">
-                           {product.discountPrice ? (
-                              <>
-                                 <p className="text-xl font-black text-slate-900 tracking-tighter">{product.discountPrice.toLocaleString()} <span className="text-[10px] text-slate-400 ml-1">TK</span></p>
-                                 <p className="text-[10px] text-slate-400 line-through font-bold opacity-40">{product.price.toLocaleString()} TK</p>
-                              </>
-                           ) : (
-                              <p className="text-xl font-black text-slate-900 tracking-tighter">{product.price.toLocaleString()} <span className="text-[10px] text-slate-400 ml-1">TK</span></p>
-                           )}
-                        </div>
-                     </div>
-                  </Link>
+                  <ProductCard key={product._id} product={product} />
                ))
             )}
          </div>

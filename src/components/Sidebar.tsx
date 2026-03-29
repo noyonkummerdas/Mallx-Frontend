@@ -159,7 +159,7 @@ export default function Sidebar({ role }: SidebarProps) {
         />
       )}
 
-      <aside className={`fixed lg:sticky top-0 left-0 z-50 w-56 bg-white border-r border-slate-200 flex flex-col h-screen overflow-y-auto transition-transform duration-300 lg:translate-x-0 ${
+      <aside className={`fixed lg:sticky top-0 left-0 z-50 w-64 bg-white border-r border-slate-200 flex flex-col h-screen overflow-y-auto transition-transform duration-300 lg:translate-x-0 ${
         isOpen ? "translate-x-0" : "-translate-x-full"
       }`}>
         

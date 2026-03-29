@@ -1,6 +1,7 @@
 "use client";
 
 import { useGetProductsQuery, useGetCategoriesQuery } from "@/modules/shopping/services/productApi";
+import ProductCard from "@/modules/catalog/components/ProductCard";
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import { Filter, X, ChevronRight, LayoutGrid, Search, SlidersHorizontal } from "lucide-react";
@@ -36,7 +37,7 @@ export default function ProductListingPage() {
       <div className="flex">
         {/* LEFT SIDEBAR */}
         <aside className={`
-          fixed inset-y-0 left-0 z-40 w-80 bg-white border-r border-slate-100 transform transition-transform duration-500 ease-in-out lg:sticky lg:top-20 lg:h-[calc(100vh-80px)] lg:translate-x-0
+          fixed inset-y-0 left-0 z-40 w-72 bg-white border-r border-slate-100 transform transition-transform duration-500 ease-in-out lg:sticky lg:top-20 lg:h-[calc(100vh-80px)] lg:translate-x-0
           ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'}
         `}>
           <div className="h-full flex flex-col p-8">
@@ -54,43 +55,43 @@ export default function ProductListingPage() {
 
              <div className="space-y-12 flex-1 overflow-y-auto scrollbar-hide">
                 {/* Search in Sidebar */}
-                <div>
-                   <h3 className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-400 mb-6 border-l-2 border-action pl-3">Search</h3>
-                   <div className="relative">
-                      <input 
-                        type="text" 
-                        placeholder="Search products..." 
-                        value={search}
-                        onChange={(e) => setSearch(e.target.value)}
-                        className="w-full bg-slate-50 border border-slate-100 rounded-xl px-5 py-3 pl-10 text-[11px] font-bold focus:ring-2 focus:ring-action/10 focus:border-action outline-none transition-all placeholder:text-slate-300"
-                      />
-                      <Search className="w-4 h-4 absolute left-4 top-1/2 -translate-y-1/2 text-slate-300" />
-                   </div>
-                </div>
+                 <div>
+                    <h3 className="text-[9px] font-black uppercase tracking-[0.3em] text-slate-400 mb-5 border-l-2 border-action pl-3 self-start">Search</h3>
+                    <div className="relative group">
+                       <input 
+                         type="text" 
+                         placeholder="Discover products..." 
+                         value={search}
+                         onChange={(e) => setSearch(e.target.value)}
+                         className="w-full bg-slate-50 border border-slate-100 rounded-2xl px-5 py-3.5 pl-11 text-[11px] font-bold focus:ring-4 focus:ring-action/5 focus:border-action outline-none transition-all placeholder:text-slate-300"
+                       />
+                       <Search className="w-4 h-4 absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-action transition-colors" />
+                    </div>
+                 </div>
 
                 {/* Categories */}
-                <div>
-                   <h3 className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-400 mb-6 border-l-2 border-action pl-3">Categories</h3>
-                   <div className="space-y-2">
-                      <button 
-                        onClick={() => setSelectedCategory("")}
-                        className={`w-full flex items-center justify-between p-3 rounded-xl transition-all group ${selectedCategory === "" ? 'bg-slate-900 text-white shadow-xl shadow-slate-900/10' : 'hover:bg-slate-50 text-slate-500'}`}
-                      >
-                         <span className="text-[11px] font-black uppercase tracking-widest">All Collection</span>
-                         <ChevronRight className={`w-4 h-4 transition-transform ${selectedCategory === "" ? 'translate-x-1' : 'opacity-0 group-hover:opacity-100'}`} />
-                      </button>
-                      {categories.map((cat: any) => (
-                        <button 
-                           key={cat._id}
-                           onClick={() => setSelectedCategory(cat._id)}
-                           className={`w-full flex items-center justify-between p-3 rounded-xl transition-all group ${selectedCategory === cat._id ? 'bg-slate-900 text-white shadow-xl shadow-slate-900/10' : 'hover:bg-slate-50 text-slate-500'}`}
-                        >
-                           <span className="text-[11px] font-black uppercase tracking-widest">{cat.name}</span>
-                           <ChevronRight className={`w-4 h-4 transition-transform ${selectedCategory === cat._id ? 'translate-x-1' : 'opacity-0 group-hover:opacity-100'}`} />
-                        </button>
-                      ))}
-                   </div>
-                </div>
+                 <div>
+                    <h3 className="text-[9px] font-black uppercase tracking-[0.3em] text-slate-400 mb-5 border-l-2 border-action pl-3 self-start">Categories</h3>
+                    <div className="space-y-1.5 px-0.5">
+                       <button 
+                         onClick={() => setSelectedCategory("")}
+                         className={`w-full flex items-center justify-between p-3.5 rounded-2xl transition-all group ${selectedCategory === "" ? 'bg-slate-900 text-white shadow-xl shadow-slate-900/20' : 'hover:bg-slate-50 text-slate-500'}`}
+                       >
+                          <span className="text-[10px] font-black uppercase tracking-widest">All Collection</span>
+                          <ChevronRight className={`w-3.5 h-3.5 transition-transform ${selectedCategory === "" ? 'translate-x-1' : 'opacity-0 group-hover:opacity-100 translate-x-0'}`} />
+                       </button>
+                       {categories.map((cat: any) => (
+                         <button 
+                            key={cat._id}
+                            onClick={() => setSelectedCategory(cat._id)}
+                            className={`w-full flex items-center justify-between p-3.5 rounded-2xl transition-all group ${selectedCategory === cat._id ? 'bg-slate-900 text-white shadow-xl shadow-slate-900/20' : 'hover:bg-slate-50 text-slate-500'}`}
+                         >
+                            <span className="text-[10px] font-black uppercase tracking-widest">{cat.name}</span>
+                            <ChevronRight className={`w-3.5 h-3.5 transition-transform ${selectedCategory === cat._id ? 'translate-x-1' : 'opacity-0 group-hover:opacity-100 translate-x-0'}`} />
+                         </button>
+                       ))}
+                    </div>
+                 </div>
              </div>
 
              <div className="pt-8 border-t border-slate-100 mt-auto">
@@ -141,35 +142,7 @@ export default function ProductListingPage() {
             ) : products.length > 0 ? (
                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-8">
                   {products.map((product: any) => (
-                    <Link 
-                        href={`/catalog/products/${product._id}`} 
-                        key={product._id} 
-                        className="glass-card group p-3 overflow-hidden flex flex-col group/card shadow-sm hover:shadow-2xl hover:shadow-indigo-600/5"
-                    >
-                        <div className="w-full aspect-[4/5] rounded-[4px] overflow-hidden bg-slate-50 mb-6 relative">
-                          <img 
-                              src={product.images?.[0]?.imageUrl || "https://images.unsplash.com/photo-1523275335684-37898b6baf30?q=80&w=1000"} 
-                              className="w-full h-full object-contain p-6 group-hover/card:scale-105 transition-transform duration-700" 
-                              alt={product.name}
-                          />
-                          <div className="absolute inset-0 bg-slate-900/10 opacity-0 group-hover/card:opacity-100 transition-opacity flex items-center justify-center">
-                              <span className="text-[10px] font-black text-slate-900 uppercase tracking-[0.2em] border-2 border-slate-900 px-6 py-2 rounded-xl bg-white/80">Details</span>
-                          </div>
-                        </div>
-                        <div className="px-4 pb-4 text-left">
-                          <h4 className="text-xs font-black text-slate-400 mb-2 uppercase line-clamp-1 group-hover/card:text-slate-900 transition-colors tracking-tight">{product.name}</h4>
-                          <div className="flex items-center gap-3">
-                              {product.discountPrice ? (
-                                <>
-                                    <p className="text-xl font-black text-slate-900 tracking-tighter">{product.discountPrice.toLocaleString()} <span className="text-[10px] text-slate-400 ml-1 italic">TK</span></p>
-                                    <p className="text-[10px] text-slate-400 line-through font-bold opacity-40 italic">{product.price.toLocaleString()} TK</p>
-                                </>
-                              ) : (
-                                <p className="text-xl font-black text-slate-900 tracking-tighter">{product.price.toLocaleString()} <span className="text-[10px] text-slate-400 ml-1 italic">TK</span></p>
-                              )}
-                          </div>
-                        </div>
-                    </Link>
+                    <ProductCard key={product._id} product={product} />
                   ))}
                </div>
             ) : (
