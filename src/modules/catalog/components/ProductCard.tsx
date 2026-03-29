@@ -61,18 +61,11 @@ export default function ProductCard({ product }: ProductCardProps) {
         <button 
           onClick={handleQuickAdd}
           disabled={isAdding || product.stock <= 0}
-          className={`p-3 rounded-2xl shadow-lg transition-all flex items-center justify-center relative ${showSuccess ? 'bg-emerald-500 text-white' : 'bg-white/90 backdrop-blur-md text-slate-900 hover:bg-action hover:text-white'}`}
+          className="p-3 rounded-2xl shadow-lg transition-all flex items-center justify-center relative bg-white/90 backdrop-blur-md text-slate-900 hover:bg-action hover:text-white"
           title="Add to Cart"
         >
-          {showSuccess ? (
-             <div className="flex items-center gap-2 px-1">
-                <ShoppingBag className="w-4 h-4" />
-                <span className="text-[8px] font-black uppercase">Added</span>
-             </div>
-          ) : (
-             <ShoppingBag className="w-4 h-4" />
-          )}
-          {isAdding && !showSuccess && <div className="absolute inset-0 border-2 border-action border-t-transparent rounded-2xl animate-spin" />}
+          <ShoppingBag className="w-4 h-4" />
+          {isAdding && <div className="absolute inset-0 border-2 border-action border-t-transparent rounded-2xl animate-spin" />}
         </button>
       </div>
  
