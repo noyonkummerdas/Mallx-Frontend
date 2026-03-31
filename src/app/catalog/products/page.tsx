@@ -114,8 +114,7 @@ export default function ProductListingPage() {
                            </button>
                         )}
                         <div className="flex flex-col">
-                           {/* <span there 
-                            className="text-indigo-600 font-extrabold tracking-[0.6em] text-[8px] uppercase opacity-70 mb-1">Collection Focus</span> */}
+                           {/* <span className="text-indigo-600 font-extrabold tracking-[0.6em] text-[8px] uppercase opacity-70 mb-1">Collection Focus</span> */}
                            <h1 className="text-4xl md:text-6xl font-black text-slate-900 tracking-[0.1em] uppercase leading-none text-gradient-primary">
                               {selectedCategory ? categories.find((c: any) => c._id === selectedCategory)?.name : 'Global Collection'}
                            </h1>
