@@ -9,7 +9,7 @@ import { Filter, X, ChevronRight, LayoutGrid, Search, SlidersHorizontal } from "
 export default function ProductListingPage() {
    const [search, setSearch] = useState("");
    const [selectedCategory, setSelectedCategory] = useState("");
-   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
    const { data: categoryData, isLoading: catLoading } = useGetCategoriesQuery({});
    const { data: productData, isLoading } = useGetProductsQuery({
@@ -28,8 +28,8 @@ export default function ProductListingPage() {
 
             {/* 2. FLOATING SIDEBAR DRAWER */}
             <aside className={`
-          fixed inset-y-0 left-0 z-50 w-80 bg-white border-r border-slate-100 transform transition-all duration-700 ease-in-out shadow-2xl origin-top
-          ${isSidebarOpen ? 'scale-y-100 opacity-100' : 'scale-y-0 opacity-0'}
+          fixed inset-y-0 left-0 z-50 w-80 bg-white/80 backdrop-blur-[60px] border-r border-white/20 transform transition-all duration-1000 cubic-bezier(0.16, 1, 0.3, 1) shadow-[40px_0_100px_-20px_rgba(0,0,0,0.1)] origin-top [perspective:2000px]
+          ${isSidebarOpen ? 'scale-y-100 opacity-100 [transform:rotateX(0deg)_translateZ(0)]' : 'scale-y-0 opacity-0 [transform:rotateX(-10deg)_translateZ(-100px)]'}
         `}>
                <div className="h-full flex flex-col p-8">
                   <div className="flex items-center justify-between mb-12">
