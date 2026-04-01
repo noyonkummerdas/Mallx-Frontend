@@ -10,6 +10,7 @@ export default function ProductListingPage() {
    const [search, setSearch] = useState("");
    const [selectedCategory, setSelectedCategory] = useState("");
    const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+   const [sidebarTop, setSidebarTop] = useState(0);
 
    const { data: categoryData, isLoading: catLoading } = useGetCategoriesQuery({});
    const { data: productData, isLoading } = useGetProductsQuery({
@@ -27,8 +28,10 @@ export default function ProductListingPage() {
          <div className="relative min-h-screen bg-background">
 
             {/* 2. FLOATING SIDEBAR DRAWER */}
-            <aside className={`
-          fixed top-20 left-0 z-40 w-80 bg-white/80 backdrop-blur-[60px] transform transition-all duration-1000 cubic-bezier(0.16, 1, 0.3, 1) shadow-[40px_0_100px_-20px_rgba(0,0,0,0.1)] origin-top [perspective:2000px] h-[calc(100vh-80px)]
+            <aside 
+               style={{ top: `${sidebarTop}px`, height: `calc(100vh - ${sidebarTop}px)` }}
+               className={`
+          fixed left-0 z-40 w-80 bg-white/80 backdrop-blur-[60px] transform transition-all duration-1000 cubic-bezier(0.16, 1, 0.3, 1) origin-top [perspective:2000px]
           ${isSidebarOpen ? 'scale-y-100 opacity-100 [transform:rotateX(0deg)_translateZ(0)]' : 'scale-y-0 opacity-0 [transform:rotateX(-10deg)_translateZ(-100px)]'}
         `}>
                <div className="h-full flex flex-col p-8">
@@ -102,7 +105,11 @@ export default function ProductListingPage() {
                      <div className="flex items-center gap-10 min-h-[64px]">
                         {!isSidebarOpen && (
                            <button
-                              onClick={() => setIsSidebarOpen(true)}
+                              onClick={(e) => {
+                                 const rect = e.currentTarget.getBoundingClientRect();
+                                 setSidebarTop(rect.top);
+                                 setIsSidebarOpen(true);
+                              }}
                               className="p-5 bg-white border border-slate-100 rounded-2xl shadow-xl shadow-slate-200/50 hover:border-indigo-600 transition-all active:scale-95 group relative overflow-hidden"
                               title="Open Filters"
                            >
