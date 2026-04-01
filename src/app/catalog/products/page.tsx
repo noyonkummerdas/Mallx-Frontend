@@ -28,7 +28,7 @@ export default function ProductListingPage() {
 
             {/* 2. FLOATING SIDEBAR DRAWER */}
             <aside className={`
-          fixed inset-y-0 left-0 z-50 w-80 bg-white/80 backdrop-blur-[60px] border-r border-white/20 transform transition-all duration-1000 cubic-bezier(0.16, 1, 0.3, 1) shadow-[40px_0_100px_-20px_rgba(0,0,0,0.1)] origin-top [perspective:2000px]
+          fixed top-20 left-0 z-40 w-80 bg-white/80 backdrop-blur-[60px] transform transition-all duration-1000 cubic-bezier(0.16, 1, 0.3, 1) shadow-[40px_0_100px_-20px_rgba(0,0,0,0.1)] origin-top [perspective:2000px] h-[calc(100vh-80px)]
           ${isSidebarOpen ? 'scale-y-100 opacity-100 [transform:rotateX(0deg)_translateZ(0)]' : 'scale-y-0 opacity-0 [transform:rotateX(-10deg)_translateZ(-100px)]'}
         `}>
                <div className="h-full flex flex-col p-8">
