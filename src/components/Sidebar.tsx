@@ -160,12 +160,12 @@ export default function Sidebar({ role }: SidebarProps) {
         />
       )}
 
-      <aside className={`fixed lg:sticky top-0 left-0 z-50 w-64 bg-white border-r border-slate-200 flex flex-col h-screen overflow-y-auto transition-transform duration-300 lg:translate-x-0 ${
+      <aside className={`fixed lg:sticky top-0 left-0 z-50 w-64 bg-white/90 backdrop-blur-xl border-r border-slate-200/40 flex flex-col h-screen overflow-y-auto transition-transform duration-300 lg:translate-x-0 ${
         isOpen ? "translate-x-0" : "-translate-x-full"
       }`}>
         
         {/* User Identity Section - Side-by-Side Layout */}
-        <div className="sticky top-0 bg-white z-10 px-6 py-8 border-b border-slate-50 flex items-center gap-4 group">
+        <div className="sticky top-0 bg-white/40 backdrop-blur-md z-10 px-6 py-8 border-b border-slate-100/30 flex items-center gap-4 group">
           <div className="w-10 h-10 rounded-full overflow-hidden border border-slate-100 shadow-sm flex-shrink-0 group-hover:scale-110 transition-transform">
             {user?.photo ? (
               <img src={user.photo} alt={user.name} className="w-full h-full object-cover" />
