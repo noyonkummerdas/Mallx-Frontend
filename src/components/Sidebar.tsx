@@ -74,6 +74,7 @@ const menuItems = {
   ],
   customer: [
     { name: "Dashboard", href: "/dashboard/customer", icon: LayoutDashboard },
+    { name: "Marketplace", href: "/catalog/products", icon: Store },
     { name: "Order History", href: "/orders", icon: Package },
     { name: "My Cart", href: "/shopping/cart", icon: ShoppingCart },
     { name: "Loyalty/Rewards", href: "/rewards", icon: Gift },
