@@ -12,7 +12,7 @@ const poppins = Poppins({
 });
 
 export const metadata: Metadata = {
-  title: "MallX - Modern Marketplace",
+  title: "MallX Marketplace",
   description: "A high-performance marketplace powered by MallX Backend",
 };
 
