@@ -28,7 +28,7 @@ export default function ProductListingPage() {
          <div className="relative min-h-screen bg-background">
 
             {/* 2. FLOATING SIDEBAR DRAWER */}
-            <aside 
+            <aside
                style={{ top: `${sidebarTop}px`, height: `calc(100vh - ${sidebarTop}px)` }}
                className={`
           fixed left-0 z-40 w-80 bg-white/80 backdrop-blur-[60px] transform transition-all duration-1000 cubic-bezier(0.16, 1, 0.3, 1) origin-top [perspective:2000px]
@@ -40,32 +40,29 @@ export default function ProductListingPage() {
                         <div className="w-8 h-8 gradient-hero rounded-lg flex items-center justify-center">
                            <SlidersHorizontal className="w-4 h-4 text-white" />
                         </div>
-                        <h2 className="text-sm font-black uppercase tracking-[0.2em] text-slate-900">Explorer</h2>
+                        <h2 className="text-sm font-black uppercase tracking-[0.2em] text-slate-900">Category</h2>
                      </div>
                      <button onClick={() => setIsSidebarOpen(false)} className="text-slate-400 hover:text-slate-900 transition-colors">
                         <X className="w-5 h-5" />
                      </button>
                   </div>
 
-                  <div className="space-y-12 flex-1 overflow-y-auto scrollbar-hide">
+                  <div className="space-y-8 flex-1 overflow-y-auto scrollbar-hide">
                      {/* Search in Sidebar */}
-                     <div>
-                        <h3 className="text-[9px] font-black uppercase tracking-[0.3em] text-slate-400 mb-5 border-l-2 border-action pl-3 self-start">Search</h3>
-                        <div className="relative group">
-                           <input
-                              type="text"
-                              placeholder="Discover products..."
-                              value={search}
-                              onChange={(e) => setSearch(e.target.value)}
-                              className="w-full bg-slate-50 border border-slate-100 rounded-2xl px-5 py-3.5 pl-11 text-[11px] font-bold focus:ring-4 focus:ring-action/5 focus:border-action outline-none transition-all placeholder:text-slate-300"
-                           />
-                           <Search className="w-4 h-4 absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-action transition-colors" />
-                        </div>
+                     <div className="relative group px-1">
+                        <input
+                           type="text"
+                           placeholder="Search products..."
+                           value={search}
+                           onChange={(e) => setSearch(e.target.value)}
+                           className="w-full bg-slate-50/50 border border-gray-200 rounded-xl px-2 py-2 pl-11 text-[11px] font-bold focus:ring-4 focus:ring-action/5 focus:border-action outline-none transition-all placeholder:text-slate-300 backdrop-blur-md"
+                        />
+                        <Search className="w-4 h-4 absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-action transition-colors" />
                      </div>
 
                      {/* Categories */}
                      <div>
-                        <h3 className="text-[9px] font-black uppercase tracking-[0.3em] text-slate-400 mb-5 border-l-2 border-action pl-3 self-start">Categories</h3>
+
                         <div className="space-y-1.5 px-0.5">
                            <button
                               onClick={() => { setSelectedCategory(""); }}
@@ -110,7 +107,7 @@ export default function ProductListingPage() {
                                  setSidebarTop(rect.top);
                                  setIsSidebarOpen(true);
                               }}
-                              className="p-5 bg-white border border-slate-100 rounded-2xl shadow-xl shadow-slate-200/50 hover:border-indigo-600 transition-all active:scale-95 group relative overflow-hidden"
+                              className="p-5 bg-white border border-slate-100 rounded-2xl hover:border-indigo-600 transition-all active:scale-95 group relative overflow-hidden"
                               title="Open Filters"
                            >
                               <div className="flex flex-col gap-1.5 w-6 relative z-10">
