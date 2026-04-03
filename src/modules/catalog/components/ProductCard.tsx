@@ -20,9 +20,10 @@ interface ProductCardProps {
     isNewArrival?: boolean;
     images?: Array<{ imageUrl: string }>;
   };
+  layout?: 'vertical' | 'horizontal';
 }
  
-export default function ProductCard({ product }: ProductCardProps) {
+export default function ProductCard({ product, layout = 'vertical' }: ProductCardProps) {
   const router = useRouter();
   const [addToCart, { isLoading: isAdding }] = useAddToCartMutation();
 
@@ -44,6 +45,68 @@ export default function ProductCard({ product }: ProductCardProps) {
   const discountPercent = product.discountPrice 
     ? Math.round(((product.price - product.discountPrice) / product.price) * 100) 
     : 0;
+
+  if (layout === 'horizontal') {
+    return (
+      <div className="group relative wow-card p-4 transition-all duration-500 rounded-[2rem] flex gap-6 items-center hover:translate-x-2">
+        {/* IMAGE CONTAINER */}
+        <Link href={`/catalog/products/${product._id}`} className="block relative w-32 h-32 rounded-2xl overflow-hidden bg-slate-50 flex-shrink-0">
+          <img 
+            src={product.images?.[0]?.imageUrl || "https://images.unsplash.com/photo-1523275335684-37898b6baf30?q=80&w=1000"} 
+            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" 
+            alt={product.name}
+          />
+          {discountPercent > 0 && (
+            <div className="absolute top-2 left-2 bg-red-500 text-[7px] font-black text-white px-2 py-0.5 rounded-full uppercase tracking-tighter shadow-lg">-{discountPercent}%</div>
+          )}
+        </Link>
+   
+        {/* PRODUCT INFO */}
+        <div className="flex-1 min-w-0 pr-4">
+          <div className="flex items-center justify-between mb-2">
+            {product.brand && (
+              <span className="text-[8px] font-bold text-action uppercase tracking-[0.2em]">{product.brand}</span>
+            )}
+            <div className="flex items-center gap-1">
+              <Star className="w-2.5 h-2.5 text-amber-400 fill-current" />
+              <span className="text-[9px] font-bold text-slate-400">{product.ratingsAverage || 5.0}</span>
+            </div>
+          </div>
+   
+          <Link href={`/catalog/products/${product._id}`}>
+            <h4 className="text-xs font-black text-slate-900 mb-2 truncate uppercase tracking-tight group-hover:text-action transition-colors">
+              {product.name}
+            </h4>
+          </Link>
+   
+          <div className="flex items-center gap-3 mb-3">
+             <span className="text-base font-black text-slate-900 tracking-tighter">
+               {(product.discountPrice || product.price).toLocaleString()} <span className="text-[8px] font-bold text-slate-400 uppercase tracking-widest">TK</span>
+             </span>
+             {product.discountPrice && (
+               <span className="text-[8px] text-slate-300 line-through font-bold">
+                 {product.price.toLocaleString()}
+               </span>
+             )}
+          </div>
+
+          <div className="flex items-center gap-4">
+            <button 
+              onClick={handleQuickAdd}
+              disabled={isAdding || (product.stock !== undefined && product.stock <= 0)}
+              className="px-4 py-2 bg-slate-900 text-white rounded-xl text-[8px] font-black uppercase tracking-widest hover:bg-action transition-all shadow-md active:scale-95 disabled:opacity-30 flex items-center gap-2"
+            >
+              <ShoppingBag className="w-3 h-3" />
+              Add to Cart
+            </button>
+            <Link href={`/catalog/products/${product._id}`} className="p-2 border border-slate-100 rounded-xl hover:border-action transition-colors">
+                <ArrowUpRight className="w-3.5 h-3.5 text-slate-300 hover:text-action" />
+            </Link>
+          </div>
+        </div>
+      </div>
+    );
+  }
  
   return (
     <div className="group relative wow-card p-5 transition-all duration-700 rounded-[2.5rem]">
@@ -60,7 +123,7 @@ export default function ProductCard({ product }: ProductCardProps) {
       <div className="absolute top-6 right-6 z-20 flex flex-col gap-2 opacity-0 group-hover:opacity-100 translate-x-4 group-hover:translate-x-0 transition-all duration-500">
         <button 
           onClick={handleQuickAdd}
-          disabled={isAdding || product.stock <= 0}
+          disabled={isAdding || (product.stock !== undefined && product.stock <= 0)}
           className="p-3 rounded-2xl shadow-lg transition-all flex items-center justify-center relative bg-white/90 backdrop-blur-md text-slate-900 hover:bg-action hover:text-white"
           title="Add to Cart"
         >
@@ -171,3 +234,4 @@ export default function ProductCard({ product }: ProductCardProps) {
     </div>
   );
 }
+

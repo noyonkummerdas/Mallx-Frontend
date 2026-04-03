@@ -27,8 +27,8 @@ export default function Navbar() {
 
   return (
     <>
-      <nav className="sticky top-0 z-50 w-full bg-white/80 backdrop-blur-md glass-panel border-b border-slate-100 transition-all duration-300">
-        <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+      <nav className="sticky top-0 z-50 w-full bg-white backdrop-blur-md glass-panel border-b border-slate-100 transition-all duration-300">
+        <div className="max-w-8xl mx-auto px-6 h-20 flex items-center justify-between">
           {/* Brand Logo */}
           <Link href="/" className="flex items-center gap-3 group">
             <div className="w-10 h-10 gradient-hero rounded-xl shadow-lg shadow-primary/20 flex items-center justify-center transform group-hover:rotate-12 transition-all">
@@ -46,7 +46,7 @@ export default function Navbar() {
               <Link href="/catalog/products?type=boysgirls" className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-500 hover:text-indigo-600 hover:-translate-y-0.5 transition-all duration-300 whitespace-nowrap">Boys & Girls</Link>
               <Link href="/catalog/products?type=kids" className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-500 hover:text-indigo-600 hover:-translate-y-0.5 transition-all duration-300">Kids</Link>
             </div>
-            
+
             <div className="flex items-center gap-7">
               <Link href="/shopping/cart" className="relative group p-2.5 rounded-xl hover:bg-slate-50 transition-all active:scale-95 duration-300">
                 <ShoppingBag className="w-5 h-5 text-slate-600 group-hover:text-indigo-600 transition-all hover:-translate-y-0.5" />

@@ -277,15 +277,15 @@ function CategoryShowcase({ category }: { category: any }) {
             </div>
          )}
 
-         {/* 2-Row Horizontal Scroll Grid */}
-         <div className="grid grid-rows-2 grid-flow-col gap-8 overflow-x-auto pb-10 scrollbar-hide -mx-4 px-4 snap-x">
+         {/* Horizontal Collection Grid */}
+         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {isLoading ? (
-               [...Array(12)].map((_, i) => (
-                  <div key={i} className="w-[300px] aspect-[4/5] rounded-[2rem] bg-slate-50 animate-pulse border border-slate-200" />
+               [...Array(6)].map((_, i) => (
+                  <div key={i} className="h-40 rounded-[2rem] bg-slate-50 animate-pulse border border-slate-200" />
                ))
             ) : (
                products.map((product: any) => (
-                  <ProductCard key={product._id} product={product} />
+                  <ProductCard key={product._id} product={product} layout="horizontal" />
                ))
             )}
          </div>
