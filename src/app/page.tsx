@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import { ArrowUpRight } from "lucide-react";
 import { useGetProductsQuery, useGetCategoriesQuery } from "@/modules/shopping/services/productApi";
 import { useGetCampaignsQuery, useGetFlashSalesQuery, useGetBundlesQuery, useGetVouchersQuery } from "@/modules/shopping/services/marketingApi";
 import ProductCard from "@/modules/catalog/components/ProductCard";
@@ -198,7 +199,7 @@ export default function Home() {
 
 // Category Showcase Sub-component
 function CategoryShowcase({ category }: { category: any }) {
-   const { data: catProducts, isLoading } = useGetProductsQuery({ categoryId: category._id, limit: 12 });
+   const { data: catProducts, isLoading } = useGetProductsQuery({ categoryId: category._id, limit: 24 });
    const { data: bundleData } = useGetBundlesQuery({ categoryId: category._id });
    const { data: voucherData } = useGetVouchersQuery({ categoryId: category._id });
    const { data: flashData } = useGetFlashSalesQuery({ categoryId: category._id });
@@ -207,29 +208,34 @@ function CategoryShowcase({ category }: { category: any }) {
    const bundles = bundleData?.data?.bundles || [];
    const vouchers = voucherData?.data?.vouchers || [];
    const categoryFlash = flashData?.data || [];
-
+ 
    if (products.length === 0 && !isLoading) return null;
+
+   const gridProducts = products.slice(0, 12);
+   const sliderProducts = products.slice(12, 24);
 
    return (
       <div className="mb-32">
          {/* Category Header */}
          <div className="flex items-end justify-between mb-10 border-b border-slate-100 pb-8">
-            <h3 className="text-3xl font-black text-slate-900 italic uppercase tracking-tighter">
-               {category.name} <span className="text-action">Vertical</span>
-            </h3>
+            <div className="flex flex-col gap-2">
+               <span className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">{category.name} Vertical</span>
+               <h3 className="text-4xl font-black text-slate-900 italic uppercase tracking-tighter">
+                  The <span className="text-action">Elite</span> Collection
+               </h3>
+            </div>
             <div className="flex items-center gap-6">
-               <span className="text-[10px] font-black text-slate-400 uppercase tracking-widest hidden md:block">Scroll for More →</span>
-               <Link href={`/catalog/products?categoryId=${category._id}`} className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-900 hover:text-action transition-colors bg-slate-50 px-4 py-2 rounded-full border border-slate-200">Digital Gallery</Link>
+               <Link href={`/catalog/products?categoryId=${category._id}`} className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-900 hover:text-action transition-colors bg-slate-50 px-6 py-3 rounded-2xl border border-slate-200 shadow-sm active:scale-95 transition-all">Digital Gallery</Link>
             </div>
          </div>
 
-         {/* Category Marketing Slider (Flash, Bundles & Coupons) */}
+         {/* 1. TOP MARKETING ROW (Flash, Bundles, Vouchers) */}
          {(categoryFlash.length > 0 || bundles.length > 0 || vouchers.length > 0) && (
-            <div className="flex gap-6 overflow-x-auto pb-10 scrollbar-hide snap-x mb-2">
+            <div className="flex gap-6 overflow-x-auto pb-12 scrollbar-hide snap-x mb-10">
                {categoryFlash.map((flash: any) => {
                   const discountPercent = Math.round(((flash.productId?.price - flash.discountPrice) / flash.productId?.price) * 100);
                   return (
-                     <div key={flash._id} className="min-w-[340px] h-48 bg-red-600/5 border border-red-600/10 rounded-[2rem] p-8 flex flex-col justify-between relative overflow-hidden group snap-start shadow-sm">
+                     <div key={flash._id} className="min-w-[340px] h-48 bg-red-600/5 border border-red-600/10 rounded-[2.5rem] p-8 flex flex-col justify-between relative overflow-hidden group snap-start shadow-sm">
                         <div className="absolute top-0 right-0 w-32 h-32 bg-red-600/5 blur-3xl rounded-full translate-x-10 -translate-y-10 group-hover:scale-150 transition-transform" />
                         <div className="relative z-10 flex justify-between items-start">
                            <div>
@@ -249,7 +255,7 @@ function CategoryShowcase({ category }: { category: any }) {
                   );
                })}
                {bundles.map((bundle: any) => (
-                  <div key={bundle._id} className="min-w-[400px] h-48 accent-gradient rounded-[2rem] p-8 flex flex-col justify-between relative overflow-hidden group snap-start shadow-xl">
+                  <div key={bundle._id} className="min-w-[400px] h-48 accent-gradient rounded-[2.5rem] p-8 flex flex-col justify-between relative overflow-hidden group snap-start shadow-xl">
                      <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 blur-3xl rounded-full translate-x-10 -translate-y-10 group-hover:scale-150 transition-transform" />
                      <div className="relative z-10">
                         <span className="text-[9px] font-black text-white/60 uppercase tracking-[0.2em]">Exclusive Bundle</span>
@@ -262,7 +268,7 @@ function CategoryShowcase({ category }: { category: any }) {
                   </div>
                ))}
                {vouchers.map((voucher: any) => (
-                  <div key={voucher._id} className="min-w-[320px] h-48 bg-white border-2 border-dashed border-action/40 rounded-[2rem] p-8 flex flex-col justify-between snap-start group relative">
+                  <div key={voucher._id} className="min-w-[320px] h-48 bg-white border-2 border-dashed border-action/40 rounded-[2.5rem] p-8 flex flex-col justify-between snap-start group relative">
                      <div className="absolute -right-4 top-1/2 -translate-y-1/2 w-8 h-8 bg-background rounded-full border-2 border-slate-100" />
                      <div>
                         <span className="text-[9px] font-black text-action uppercase tracking-[0.2em]">Category Coupon</span>
@@ -277,18 +283,50 @@ function CategoryShowcase({ category }: { category: any }) {
             </div>
          )}
 
-         {/* Horizontal Collection Grid */}
-         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+         {/* 2. MAIN 12-PRODUCT GRID (First 12) */}
+         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-20">
             {isLoading ? (
-               [...Array(6)].map((_, i) => (
-                  <div key={i} className="h-40 rounded-[2rem] bg-slate-50 animate-pulse border border-slate-200" />
+               [...Array(8)].map((_, i) => (
+                  <div key={i} className="aspect-[4/5] rounded-[2.5rem] bg-slate-50 animate-pulse border border-slate-200" />
                ))
             ) : (
-               products.map((product: any) => (
-                  <ProductCard key={product._id} product={product} layout="horizontal" />
+               gridProducts.map((product: any) => (
+                  <ProductCard key={product._id} product={product} />
                ))
             )}
          </div>
+
+         {/* 3. 12-PRODUCT HORIZONTAL SLIDER (Next 12) */}
+         {sliderProducts.length > 0 && (
+            <div className="relative group">
+               <div className="flex items-center justify-between mb-8">
+                  <span className="text-[10px] font-black text-slate-400 uppercase tracking-[0.3em]">Curated Spotlight</span>
+                  <div className="flex items-center gap-4">
+                     <span className="text-[9px] font-black text-slate-300 uppercase tracking-[0.2em] animate-pulse">Swipe for More →</span>
+                  </div>
+               </div>
+               <div className="flex gap-6 overflow-x-auto pb-12 scrollbar-hide -mx-4 px-4 snap-x snap-mandatory">
+                  {sliderProducts.map((product: any) => (
+                     <div key={product._id} className="min-w-[85vw] md:min-w-[440px] snap-start flex-shrink-0">
+                        <ProductCard product={product} layout="horizontal" />
+                     </div>
+                  ))}
+                  
+                  {/* Final View More link at the end of category slider */}
+                  <div className="min-w-[200px] flex items-center justify-center snap-start flex-shrink-0">
+                     <Link 
+                        href={`/catalog/products?categoryId=${category._id}`}
+                        className="group flex flex-col items-center gap-6 text-slate-200 hover:text-action transition-all"
+                     >
+                        <div className="w-20 h-20 rounded-full border-2 border-dashed border-slate-100 flex items-center justify-center group-hover:border-action group-hover:scale-110 transition-all shadow-sm">
+                           <ArrowUpRight className="w-8 h-8" />
+                        </div>
+                        <span className="text-[10px] font-black uppercase tracking-[0.3em] font-sans">Full Gallery</span>
+                     </Link>
+                  </div>
+               </div>
+            </div>
+         )}
       </div>
    );
 }
