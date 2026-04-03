@@ -199,7 +199,7 @@ export default function Home() {
 
 // Category Showcase Sub-component
 function CategoryShowcase({ category }: { category: any }) {
-   const { data: catProducts, isLoading } = useGetProductsQuery({ categoryId: category._id, limit: 24 });
+   const { data: catProducts, isLoading } = useGetProductsQuery({ categoryId: category._id, limit: 12 });
    const { data: bundleData } = useGetBundlesQuery({ categoryId: category._id });
    const { data: voucherData } = useGetVouchersQuery({ categoryId: category._id });
    const { data: flashData } = useGetFlashSalesQuery({ categoryId: category._id });
@@ -210,9 +210,6 @@ function CategoryShowcase({ category }: { category: any }) {
    const categoryFlash = flashData?.data || [];
  
    if (products.length === 0 && !isLoading) return null;
-
-   const gridProducts = products.slice(0, 12);
-   const sliderProducts = products.slice(12, 24);
 
    return (
       <div className="mb-32">
@@ -225,11 +222,12 @@ function CategoryShowcase({ category }: { category: any }) {
                </h3>
             </div>
             <div className="flex items-center gap-6">
+               <span className="text-[10px] font-black text-slate-300 uppercase tracking-[0.2em] hidden md:block animate-pulse">Swipe to Browse →</span>
                <Link href={`/catalog/products?categoryId=${category._id}`} className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-900 hover:text-action transition-colors bg-slate-50 px-6 py-3 rounded-2xl border border-slate-200 shadow-sm active:scale-95 transition-all">Digital Gallery</Link>
             </div>
          </div>
 
-         {/* 1. TOP MARKETING ROW (Flash, Bundles, Vouchers) */}
+         {/* 1. MARKETING SLIDER (Flash, Bundles, Vouchers) */}
          {(categoryFlash.length > 0 || bundles.length > 0 || vouchers.length > 0) && (
             <div className="flex gap-6 overflow-x-auto pb-12 scrollbar-hide snap-x mb-10">
                {categoryFlash.map((flash: any) => {
@@ -283,50 +281,34 @@ function CategoryShowcase({ category }: { category: any }) {
             </div>
          )}
 
-         {/* 2. MAIN 12-PRODUCT GRID (First 12) */}
-         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-20">
+         {/* 2. MAIN 12-PRODUCT GRID SLIDER (2 Rows) */}
+         <div className="grid grid-rows-2 grid-flow-col gap-8 overflow-x-auto pb-12 scrollbar-hide -mx-4 px-4 snap-x snap-mandatory">
             {isLoading ? (
-               [...Array(8)].map((_, i) => (
-                  <div key={i} className="aspect-[4/5] rounded-[2.5rem] bg-slate-50 animate-pulse border border-slate-200" />
+               [...Array(12)].map((_, i) => (
+                  <div key={i} className="w-[300px] aspect-[4/5] rounded-[2.5rem] bg-slate-50 animate-pulse border border-slate-200 flex-shrink-0" />
                ))
             ) : (
-               gridProducts.map((product: any) => (
-                  <ProductCard key={product._id} product={product} />
+               products.map((product: any) => (
+                  <div key={product._id} className="w-[300px] snap-start flex-shrink-0">
+                     <ProductCard product={product} />
+                  </div>
                ))
             )}
-         </div>
-
-         {/* 3. 12-PRODUCT HORIZONTAL SLIDER (Next 12) */}
-         {sliderProducts.length > 0 && (
-            <div className="relative group">
-               <div className="flex items-center justify-between mb-8">
-                  <span className="text-[10px] font-black text-slate-400 uppercase tracking-[0.3em]">Curated Spotlight</span>
-                  <div className="flex items-center gap-4">
-                     <span className="text-[9px] font-black text-slate-300 uppercase tracking-[0.2em] animate-pulse">Swipe for More →</span>
+            
+            {/* View More at the end of the Grid Slider */}
+            <div className="w-[200px] flex items-center justify-center snap-start flex-shrink-0 row-span-2">
+               <Link 
+                  href={`/catalog/products?categoryId=${category._id}`}
+                  className="group flex flex-col items-center gap-6 text-slate-200 hover:text-action transition-all"
+               >
+                  <div className="w-20 h-20 rounded-full border-2 border-dashed border-slate-100 flex items-center justify-center group-hover:border-action group-hover:scale-110 transition-all shadow-sm">
+                     <ArrowUpRight className="w-8 h-8" />
                   </div>
-               </div>
-               <div className="flex gap-6 overflow-x-auto pb-12 scrollbar-hide -mx-4 px-4 snap-x snap-mandatory">
-                  {sliderProducts.map((product: any) => (
-                     <div key={product._id} className="min-w-[85vw] md:min-w-[440px] snap-start flex-shrink-0">
-                        <ProductCard product={product} layout="horizontal" />
-                     </div>
-                  ))}
-                  
-                  {/* Final View More link at the end of category slider */}
-                  <div className="min-w-[200px] flex items-center justify-center snap-start flex-shrink-0">
-                     <Link 
-                        href={`/catalog/products?categoryId=${category._id}`}
-                        className="group flex flex-col items-center gap-6 text-slate-200 hover:text-action transition-all"
-                     >
-                        <div className="w-20 h-20 rounded-full border-2 border-dashed border-slate-100 flex items-center justify-center group-hover:border-action group-hover:scale-110 transition-all shadow-sm">
-                           <ArrowUpRight className="w-8 h-8" />
-                        </div>
-                        <span className="text-[10px] font-black uppercase tracking-[0.3em] font-sans">Full Gallery</span>
-                     </Link>
-                  </div>
-               </div>
+                  <span className="text-[10px] font-black uppercase tracking-[0.3em]">Explore Collection</span>
+               </Link>
             </div>
-         )}
+         </div>
       </div>
    );
 }
+
