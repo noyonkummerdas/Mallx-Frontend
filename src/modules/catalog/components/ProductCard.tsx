@@ -48,59 +48,62 @@ export default function ProductCard({ product, layout = 'vertical' }: ProductCar
 
   if (layout === 'horizontal') {
     return (
-      <div className="group relative wow-card p-4 transition-all duration-500 rounded-[2rem] flex gap-6 items-center hover:translate-x-2">
-        {/* IMAGE CONTAINER */}
-        <Link href={`/catalog/products/${product._id}`} className="block relative w-32 h-32 rounded-2xl overflow-hidden bg-slate-50 flex-shrink-0">
+      <div className="group relative wow-card p-0 transition-all duration-500 rounded-[2rem] flex items-stretch hover:shadow-2xl hover:shadow-slate-200/50 hover:border-action/20 overflow-hidden h-48 sm:h-56">
+        {/* IMAGE CONTAINER - 60% */}
+        <Link href={`/catalog/products/${product._id}`} className="relative w-[60%] overflow-hidden bg-slate-50 border-r border-slate-100 block shrink-0">
           <img 
             src={product.images?.[0]?.imageUrl || "https://images.unsplash.com/photo-1523275335684-37898b6baf30?q=80&w=1000"} 
-            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" 
+            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000" 
             alt={product.name}
           />
           {discountPercent > 0 && (
-            <div className="absolute top-2 left-2 bg-red-500 text-[7px] font-black text-white px-2 py-0.5 rounded-full uppercase tracking-tighter shadow-lg">-{discountPercent}%</div>
+            <div className="absolute top-4 left-4 bg-red-500 text-[8px] font-black text-white px-3 py-1 rounded-full uppercase tracking-tighter shadow-lg z-10">-{discountPercent}%</div>
           )}
+          <div className="absolute inset-0 bg-slate-900/5 group-hover:bg-transparent transition-colors duration-500" />
         </Link>
    
-        {/* PRODUCT INFO */}
-        <div className="flex-1 min-w-0 pr-4">
-          <div className="flex items-center justify-between mb-2">
+        {/* PRODUCT INFO - 40% */}
+        <div className="w-[40%] flex flex-col justify-center px-4 sm:px-6 py-4 min-w-0 bg-white">
+          <div className="flex items-center justify-between mb-1.5">
             {product.brand && (
-              <span className="text-[8px] font-bold text-action uppercase tracking-[0.2em]">{product.brand}</span>
+              <span className="text-[7.5px] font-bold text-action uppercase tracking-[0.15em] truncate mr-2">{product.brand}</span>
             )}
-            <div className="flex items-center gap-1">
-              <Star className="w-2.5 h-2.5 text-amber-400 fill-current" />
-              <span className="text-[9px] font-bold text-slate-400">{product.ratingsAverage || 5.0}</span>
+            <div className="flex items-center gap-0.5 shrink-0">
+              <Star className="w-2 h-2 text-amber-400 fill-current" />
+              <span className="text-[8.5px] font-bold text-slate-400">{product.ratingsAverage || 5.0}</span>
             </div>
           </div>
    
           <Link href={`/catalog/products/${product._id}`}>
-            <h4 className="text-xs font-black text-slate-900 mb-2 truncate uppercase tracking-tight group-hover:text-action transition-colors">
+            <h4 className="text-[10px] sm:text-[11px] font-black text-slate-900 mb-2.5 line-clamp-2 uppercase tracking-tight group-hover:text-action transition-colors leading-[1.2]">
               {product.name}
             </h4>
           </Link>
    
-          <div className="flex items-center gap-3 mb-3">
-             <span className="text-base font-black text-slate-900 tracking-tighter">
-               {(product.discountPrice || product.price).toLocaleString()} <span className="text-[8px] font-bold text-slate-400 uppercase tracking-widest">TK</span>
-             </span>
-             {product.discountPrice && (
-               <span className="text-[8px] text-slate-300 line-through font-bold">
-                 {product.price.toLocaleString()}
-               </span>
-             )}
+          <div className="flex flex-col gap-0.5 mb-4 border-l-2 border-slate-50 pl-3">
+             <div className="flex flex-wrap items-baseline gap-1.5">
+                <span className="text-sm sm:text-lg font-black text-slate-900 tracking-tighter leading-none">
+                  {(product.discountPrice || product.price).toLocaleString()} <span className="text-[7px] font-bold text-slate-300 uppercase tracking-widest">TK</span>
+                </span>
+                {product.discountPrice && (
+                  <span className="text-[7px] font-bold text-slate-200 line-through">
+                    {product.price.toLocaleString()}
+                  </span>
+                )}
+             </div>
           </div>
-
-          <div className="flex items-center gap-4">
+ 
+          <div className="flex items-center gap-2">
             <button 
               onClick={handleQuickAdd}
               disabled={isAdding || (product.stock !== undefined && product.stock <= 0)}
-              className="px-4 py-2 bg-slate-900 text-white rounded-xl text-[8px] font-black uppercase tracking-widest hover:bg-action transition-all shadow-md active:scale-95 disabled:opacity-30 flex items-center gap-2"
+              className="flex-1 h-9 bg-slate-900 text-white rounded-xl text-[7px] sm:text-[8px] font-black uppercase tracking-widest hover:bg-action transition-all shadow-md active:scale-95 disabled:opacity-30 flex items-center justify-center gap-1.5 px-2"
             >
-              <ShoppingBag className="w-3 h-3" />
-              Add to Cart
+              <ShoppingBag className="w-3 h-3 shrink-0" />
+              <span className="truncate">Add to Cart</span>
             </button>
-            <Link href={`/catalog/products/${product._id}`} className="p-2 border border-slate-100 rounded-xl hover:border-action transition-colors">
-                <ArrowUpRight className="w-3.5 h-3.5 text-slate-300 hover:text-action" />
+            <Link href={`/catalog/products/${product._id}`} className="size-9 border border-slate-100 rounded-xl hover:border-action transition-colors shrink-0 flex items-center justify-center bg-slate-50/50 hover:bg-white group/arrow">
+                <ArrowUpRight className="w-3.5 h-3.5 text-slate-300 group-hover/arrow:text-action group-hover/arrow:translate-x-0.5 group-hover/arrow:-translate-y-0.5 transition-all" />
             </Link>
           </div>
         </div>
