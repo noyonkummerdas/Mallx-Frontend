@@ -143,7 +143,7 @@ export default function Home() {
          )}
 
          {/* 4. COMBO PRODUCT (BUNDLE) SHOWCASE */}
-         {bundles.length > 0 && (
+         {/* {bundles.length > 0 && (
             <section className="pb-32 px-4 max-w-7xl mx-auto">
                <div className="glass-panel p-16 rounded-[3.5rem] relative overflow-hidden group border border-slate-100 shadow-2xl">
                   <div className="absolute top-0 right-0 w-1/3 h-full bg-blue-500/5 blur-[100px] group-hover:opacity-40 transition-opacity" />
@@ -173,7 +173,7 @@ export default function Home() {
                   </div>
                </div>
             </section>
-         )}
+         )} */}
 
          {/* 5. CATEGORY-WISE PRODUCT SHOWCASE */}
          <section className="pb-32 px-4 max-w-7xl mx-auto">
@@ -183,7 +183,7 @@ export default function Home() {
          </section>
 
          {/* 6. CALL TO ACTION */}
-         <section className="py-40 px-8 text-center max-w-4xl mx-auto relative">
+         {/* <section className="py-40 px-8 text-center max-w-4xl mx-auto relative">
             <div className="absolute inset-0 bg-action/5 blur-[120px] rounded-full" />
             <h2 className="text-6xl font-black text-slate-900 tracking-tighter mb-8 uppercase italic leading-[0.9] text-gradient relative z-10">Join the Elite <br /> Marketplace</h2>
             <p className="text-slate-400 mb-12 font-bold uppercase tracking-widest text-[12px] opacity-60 relative z-10">Secure your position in the future of commerce.</p>
@@ -192,7 +192,7 @@ export default function Home() {
                   Apply for Membership
                </button>
             </Link>
-         </section>
+         </section> */}
       </main>
    );
 }
@@ -249,10 +249,8 @@ function CategoryShowcase({ category }: { category: any }) {
          {/* Category Header */}
          <div className="flex items-end justify-between mb-10 border-b border-slate-100 pb-8">
             <div className="flex flex-col gap-2">
-               <span className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">{category.name} MallX</span>
-               <h3 className="text-4xl font-black text-slate-900 italic uppercase tracking-tighter">
-                  The <span className="text-action">Elite</span> Collection
-               </h3>
+               <span className="text-2xl font-black text-slate-700 uppercase">{category.name} MallX</span>
+
             </div>
             <div className="flex items-center gap-6">
                <div className="flex items-center gap-2 mr-4">
@@ -275,7 +273,7 @@ function CategoryShowcase({ category }: { category: any }) {
 
          {/* 1. MARKETING SLIDER (Flash, Bundles, Vouchers) */}
          {(categoryFlash.length > 0 || bundles.length > 0 || vouchers.length > 0) && (
-            <div className="flex gap-6 overflow-x-auto pb-12 scrollbar-hide snap-x mb-10">
+            <div className="flex gap-6 overflow-x-auto scrollbar-hide snap-x mb-10">
                {categoryFlash.map((flash: any) => {
                   const discountPercent = Math.round(((flash.productId?.price - flash.discountPrice) / flash.productId?.price) * 100);
                   return (
@@ -298,7 +296,7 @@ function CategoryShowcase({ category }: { category: any }) {
                      </div>
                   );
                })}
-               {bundles.map((bundle: any) => (
+               {/* {bundles.map((bundle: any) => (
                   <div key={bundle._id} className="min-w-[400px] h-48 accent-gradient rounded-[2.5rem] p-8 flex flex-col justify-between relative overflow-hidden group snap-start shadow-xl">
                      <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 blur-3xl rounded-full translate-x-10 -translate-y-10 group-hover:scale-150 transition-transform" />
                      <div className="relative z-10">
@@ -310,8 +308,8 @@ function CategoryShowcase({ category }: { category: any }) {
                         <button className="px-6 py-2 bg-white text-black text-[10px] font-black uppercase rounded-xl tracking-widest hover:scale-105 active:scale-95 transition-all">Claim Pack</button>
                      </div>
                   </div>
-               ))}
-               {vouchers.map((voucher: any) => (
+               ))} */}
+               {/* {vouchers.map((voucher: any) => (
                   <div key={voucher._id} className="min-w-[320px] h-48 bg-white border-2 border-dashed border-action/40 rounded-[2.5rem] p-8 flex flex-col justify-between snap-start group relative">
                      <div className="absolute -right-4 top-1/2 -translate-y-1/2 w-8 h-8 bg-background rounded-full border-2 border-slate-100" />
                      <div>
@@ -323,7 +321,7 @@ function CategoryShowcase({ category }: { category: any }) {
                         <button className="text-[10px] font-black text-white uppercase tracking-widest bg-action px-4 py-2 rounded-xl active:scale-95 transition-all">Collect</button>
                      </div>
                   </div>
-               ))}
+               ))} */}
             </div>
          )}
 
