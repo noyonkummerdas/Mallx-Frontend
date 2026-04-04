@@ -57,7 +57,11 @@ export default function ProductCard({ product, layout = 'vertical' }: ProductCar
             alt={product.name}
           />
           {discountPercent > 0 && (
-            <div className="absolute top-4 left-4 bg-red-500 text-[8px] font-black text-white px-3 py-1 rounded-full uppercase tracking-tighter shadow-lg z-10">-{discountPercent}%</div>
+            <div className="absolute top-0 right-0 overflow-hidden w-16 h-16 z-10">
+               <div className="bg-red-500 text-white text-[7px] font-black uppercase text-center py-1 absolute w-[141%] rotate-45 translate-x-[25%] translate-y-[20%] shadow-lg">
+                  -{discountPercent}%
+               </div>
+            </div>
           )}
           <div className="absolute inset-0 bg-slate-900/5 group-hover:bg-transparent transition-colors duration-500" />
         </Link>
@@ -150,10 +154,12 @@ export default function ProductCard({ product, layout = 'vertical' }: ProductCar
           alt={product.name}
         />
         
-        {/* Discount Badge */}
+        {/* Discount Badge - Triangular Corner */}
         {discountPercent > 0 && (
-          <div className="absolute bottom-5 left-5 bg-white/40 backdrop-blur-md border border-white/40 text-[8px] font-black text-slate-900 px-3 py-1 rounded-full tracking-widest">
-            -{discountPercent}%
+          <div className="absolute top-0 right-0 overflow-hidden w-16 h-16 z-10">
+             <div className="bg-red-500 text-white text-[7px] font-black uppercase text-center py-1 absolute w-[141%] rotate-45 translate-x-[25%] translate-y-[20%] shadow-lg">
+                -{discountPercent}%
+             </div>
           </div>
         )}
  
@@ -165,7 +171,6 @@ export default function ProductCard({ product, layout = 'vertical' }: ProductCar
            </div>
         </div>
       </Link>
->
  
       {/* 3. PRODUCT INFO */}
       <div className="px-2 font-sans">
