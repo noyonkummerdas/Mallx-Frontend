@@ -48,7 +48,7 @@ export default function ProductCard({ product, layout = 'vertical' }: ProductCar
 
   if (layout === 'horizontal') {
     return (
-      <div className="group relative wow-card p-0 transition-all duration-500 rounded-2xl flex items-stretch hover:shadow-2xl hover:shadow-slate-200/50 hover:border-action/20 overflow-hidden h-48 sm:h-56">
+      <div className="group relative wow-card p-0 transition-all duration-500 rounded-xl flex items-stretch hover:shadow-2xl hover:shadow-slate-200/50 hover:border-action/20 overflow-hidden h-48 sm:h-56">
         {/* IMAGE CONTAINER - 60% */}
         <Link href={`/catalog/products/${product._id}`} className="relative w-[60%] overflow-hidden bg-slate-50 border-r border-slate-100 block shrink-0">
           <img 
@@ -123,7 +123,7 @@ export default function ProductCard({ product, layout = 'vertical' }: ProductCar
   }
  
   return (
-    <div className="group relative wow-card p-5 transition-all duration-700 rounded-3xl">
+    <div className="group relative wow-card p-5 transition-all duration-700 rounded-xl">
       {/* 1. TOP BADGES & ACTIONS */}
       <div className="absolute top-7 left-7 z-20 flex flex-col gap-2">
         {product.isNewArrival && (
@@ -138,16 +138,16 @@ export default function ProductCard({ product, layout = 'vertical' }: ProductCar
         <button 
           onClick={handleQuickAdd}
           disabled={isAdding || (product.stock !== undefined && product.stock <= 0)}
-          className="p-3 rounded-xl shadow-lg transition-all flex items-center justify-center relative bg-white/90 backdrop-blur-md text-slate-900 hover:bg-action hover:text-white"
+          className="p-3 rounded-lg shadow-lg transition-all flex items-center justify-center relative bg-white/90 backdrop-blur-md text-slate-900 hover:bg-action hover:text-white"
           title="Add to Cart"
         >
           <ShoppingBag className="w-4 h-4" />
-          {isAdding && <div className="absolute inset-0 border-2 border-action border-t-transparent rounded-xl animate-spin" />}
+          {isAdding && <div className="absolute inset-0 border-2 border-action border-t-transparent rounded-lg animate-spin" />}
         </button>
       </div>
  
       {/* 2. IMAGE CONTAINER */}
-      <Link href={`/catalog/products/${product._id}`} className="block relative aspect-[4/5] rounded-xl overflow-hidden bg-slate-50/50 mb-6 font-sans">
+      <Link href={`/catalog/products/${product._id}`} className="block relative aspect-[4/5] rounded-lg overflow-hidden bg-slate-50/50 mb-6 font-sans">
         <img 
           src={product.images?.[0]?.imageUrl || "https://images.unsplash.com/photo-1523275335684-37898b6baf30?q=80&w=1000"} 
           className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000 ease-out" 
@@ -165,7 +165,7 @@ export default function ProductCard({ product, layout = 'vertical' }: ProductCar
  
         {/* Quick View Overlay */}
         <div className="absolute inset-0 bg-slate-900/40 opacity-0 group-hover:opacity-100 transition-all duration-500 backdrop-blur-[2px] flex items-center justify-center">
-           <div className="flex items-center gap-2 bg-white px-6 py-3 rounded-2xl shadow-2xl translate-y-4 group-hover:translate-y-0 transition-transform duration-500 font-black text-[10px] uppercase tracking-widest text-slate-900">
+           <div className="flex items-center gap-2 bg-white px-6 py-3 rounded-lg shadow-2xl translate-y-4 group-hover:translate-y-0 transition-transform duration-500 font-black text-[10px] uppercase tracking-widest text-slate-900">
               <Eye className="w-3.5 h-3.5" />
               Quick View
            </div>
