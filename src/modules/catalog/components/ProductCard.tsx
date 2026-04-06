@@ -123,7 +123,7 @@ export default function ProductCard({ product, layout = 'vertical' }: ProductCar
   }
  
   return (
-    <div className="group relative wow-card p-0 transition-all duration-700 rounded-[2rem] overflow-hidden border border-slate-100/50">
+    <div className="group relative wow-card p-0 transition-all duration-700 rounded-[2rem] overflow-hidden border border-slate-100/50 hover:z-10">
       {/* 1. TOP BADGES & ACTIONS */}
       <div className="absolute top-5 left-5 z-20 flex flex-col gap-2">
         {product.isNewArrival && (
