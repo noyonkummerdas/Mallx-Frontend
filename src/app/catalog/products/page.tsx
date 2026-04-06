@@ -136,17 +136,17 @@ export default function ProductListingPage() {
                   {/* 4. PRODUCT GRID - DYNAMIC COLUMNS */}
                   {isLoading ? (
                      <div className={`grid gap-5 ${isSidebarOpen
-                        ? 'grid-cols-1 sm:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4'
-                        : 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5'
+                        ? 'grid-cols-1 sm:grid-cols-1 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5'
+                        : 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6'
                         }`}>
                         {[...Array(10)].map((_, i) => (
-                           <div key={i} className="aspect-[4/5] rounded-2xl bg-white/40 animate-pulse border border-white/20" />
+                           <div key={i} className="aspect-square rounded-2xl bg-white/40 animate-pulse border border-white/20" />
                         ))}
                      </div>
                   ) : products.length > 0 ? (
                      <div className={`grid gap-5 transition-all duration-500 ${isSidebarOpen
-                        ? 'grid-cols-1 sm:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3'
-                        : 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5'
+                        ? 'grid-cols-1 sm:grid-cols-1 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5'
+                        : 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6'
                         }`}>
                         {products.map((product: any) => (
                            <ProductCard key={product._id} product={product} />

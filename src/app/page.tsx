@@ -220,7 +220,7 @@ function CategoryShowcase({ category }: { category: any }) {
             if (scrollLeft + clientWidth >= scrollWidth - 10) {
                scrollRef.current.scrollTo({ left: 0, behavior: 'smooth' });
             } else {
-               scrollRef.current.scrollBy({ left: 472, behavior: 'smooth' }); // Width of one card (440) + gap (32)
+               scrollRef.current.scrollBy({ left: 352, behavior: 'smooth' }); // Width of one card (320) + gap (32)
             }
          }
       }, 3000);
@@ -230,7 +230,7 @@ function CategoryShowcase({ category }: { category: any }) {
 
    const scroll = (direction: 'left' | 'right') => {
       if (scrollRef.current) {
-         const scrollAmount = 472;
+         const scrollAmount = 352;
          scrollRef.current.scrollBy({
             left: direction === 'left' ? -scrollAmount : scrollAmount,
             behavior: 'smooth'
@@ -337,11 +337,11 @@ function CategoryShowcase({ category }: { category: any }) {
             >
                {isLoading ? (
                   [...Array(12)].map((_, i) => (
-                     <div key={i} className="w-[440px] aspect-[4/5] rounded-[2.5rem] bg-slate-50 animate-pulse border border-slate-200 flex-shrink-0" />
+                     <div key={i} className="w-[320px] aspect-square rounded-[2.5rem] bg-slate-50 animate-pulse border border-slate-200 flex-shrink-0" />
                   ))
                ) : (
                   products.map((product: any) => (
-                     <div key={product._id} className="w-[440px] snap-start flex-shrink-0">
+                     <div key={product._id} className="w-[320px] snap-start flex-shrink-0">
                         <ProductCard product={product} layout="horizontal" />
                      </div>
                   ))

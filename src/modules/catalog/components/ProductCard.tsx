@@ -147,7 +147,7 @@ export default function ProductCard({ product, layout = 'vertical' }: ProductCar
       </div>
  
       {/* 2. IMAGE CONTAINER */}
-      <Link href={`/catalog/products/${product._id}`} className="block relative aspect-[4/5] overflow-hidden bg-slate-50/20 font-sans">
+      <Link href={`/catalog/products/${product._id}`} className="block relative aspect-square overflow-hidden bg-slate-50/20 font-sans">
         <img 
           src={product.images?.[0]?.imageUrl || "https://images.unsplash.com/photo-1523275335684-37898b6baf30?q=80&w=1000"} 
           className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000 ease-out" 
