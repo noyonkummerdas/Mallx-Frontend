@@ -123,9 +123,9 @@ export default function ProductCard({ product, layout = 'vertical' }: ProductCar
   }
  
   return (
-    <div className="group relative wow-card p-5 transition-all duration-700 rounded-xl">
+    <div className="group relative wow-card px-2.5 py-5 transition-all duration-700 rounded-xl">
       {/* 1. TOP BADGES & ACTIONS */}
-      <div className="absolute top-7 left-7 z-20 flex flex-col gap-2">
+      <div className="absolute top-4 left-4 z-20 flex flex-col gap-2">
         {product.isNewArrival && (
           <span className="px-3 py-1 bg-white/40 backdrop-blur-md border border-white/40 text-[8px] font-black text-slate-800 rounded-full uppercase tracking-[0.2em] shadow-sm">New</span>
         )}
@@ -134,7 +134,7 @@ export default function ProductCard({ product, layout = 'vertical' }: ProductCar
         )}
       </div>
  
-      <div className="absolute top-6 right-6 z-20 flex flex-col gap-2 opacity-0 group-hover:opacity-100 translate-x-4 group-hover:translate-x-0 transition-all duration-500">
+      <div className="absolute top-3 right-3 z-20 flex flex-col gap-2 opacity-0 group-hover:opacity-100 translate-x-4 group-hover:translate-x-0 transition-all duration-500">
         <button 
           onClick={handleQuickAdd}
           disabled={isAdding || (product.stock !== undefined && product.stock <= 0)}
@@ -147,7 +147,7 @@ export default function ProductCard({ product, layout = 'vertical' }: ProductCar
       </div>
  
       {/* 2. IMAGE CONTAINER */}
-      <Link href={`/catalog/products/${product._id}`} className="block relative aspect-[4/5] rounded-lg overflow-hidden bg-slate-50/50 mb-6 font-sans">
+      <Link href={`/catalog/products/${product._id}`} className="block relative aspect-[4/5] rounded-lg overflow-hidden bg-slate-50/50 mb-4 font-sans">
         <img 
           src={product.images?.[0]?.imageUrl || "https://images.unsplash.com/photo-1523275335684-37898b6baf30?q=80&w=1000"} 
           className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000 ease-out" 
@@ -173,7 +173,7 @@ export default function ProductCard({ product, layout = 'vertical' }: ProductCar
       </Link>
  
       {/* 3. PRODUCT INFO */}
-      <div className="px-2 font-sans">
+      <div className="px-1 font-sans">
         <div className="flex items-center justify-between mb-2">
           {product.brand && (
             <span className="text-[9px] font-bold text-action uppercase tracking-[0.2em]">{product.brand}</span>
