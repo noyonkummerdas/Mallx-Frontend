@@ -123,9 +123,9 @@ export default function ProductCard({ product, layout = 'vertical' }: ProductCar
   }
  
   return (
-    <div className="group relative wow-card px-2.5 py-5 transition-all duration-700 rounded-xl">
+    <div className="group relative wow-card p-0 transition-all duration-700 rounded-[2rem] overflow-hidden border border-slate-100/50">
       {/* 1. TOP BADGES & ACTIONS */}
-      <div className="absolute top-4 left-4 z-20 flex flex-col gap-2">
+      <div className="absolute top-5 left-5 z-20 flex flex-col gap-2">
         {product.isNewArrival && (
           <span className="px-3 py-1 bg-white/40 backdrop-blur-md border border-white/40 text-[8px] font-black text-slate-800 rounded-full uppercase tracking-[0.2em] shadow-sm">New</span>
         )}
@@ -134,7 +134,7 @@ export default function ProductCard({ product, layout = 'vertical' }: ProductCar
         )}
       </div>
  
-      <div className="absolute top-3 right-3 z-20 flex flex-col gap-2 opacity-0 group-hover:opacity-100 translate-x-4 group-hover:translate-x-0 transition-all duration-500">
+      <div className="absolute top-5 right-5 z-20 flex flex-col gap-2 opacity-0 group-hover:opacity-100 translate-x-4 group-hover:translate-x-0 transition-all duration-500">
         <button 
           onClick={handleQuickAdd}
           disabled={isAdding || (product.stock !== undefined && product.stock <= 0)}
@@ -147,7 +147,7 @@ export default function ProductCard({ product, layout = 'vertical' }: ProductCar
       </div>
  
       {/* 2. IMAGE CONTAINER */}
-      <Link href={`/catalog/products/${product._id}`} className="block relative aspect-[4/5] rounded-lg overflow-hidden bg-slate-50/50 mb-4 font-sans">
+      <Link href={`/catalog/products/${product._id}`} className="block relative aspect-[4/5] overflow-hidden bg-slate-50/20 font-sans">
         <img 
           src={product.images?.[0]?.imageUrl || "https://images.unsplash.com/photo-1523275335684-37898b6baf30?q=80&w=1000"} 
           className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000 ease-out" 
@@ -173,10 +173,10 @@ export default function ProductCard({ product, layout = 'vertical' }: ProductCar
       </Link>
  
       {/* 3. PRODUCT INFO */}
-      <div className="px-1 font-sans">
+      <div className="px-6 pb-8 pt-5 font-sans">
         <div className="flex items-center justify-between mb-2">
           {product.brand && (
-            <span className="text-[9px] font-bold text-action uppercase tracking-[0.2em]">{product.brand}</span>
+            <span className="text-[9px] font-bold text-indigo-500 uppercase tracking-[0.3em]">{product.brand}</span>
           )}
           <div className="flex items-center gap-1">
             <Star className="w-3 h-3 text-amber-400 fill-current" />
@@ -185,7 +185,7 @@ export default function ProductCard({ product, layout = 'vertical' }: ProductCar
         </div>
  
         <Link href={`/catalog/products/${product._id}`}>
-          <h4 className="text-sm font-black text-slate-900 mb-3 line-clamp-1 tracking-[0.05em] hover:text-indigo-600 transition-colors uppercase">
+          <h4 className="text-[13px] font-black text-slate-900 mb-3 line-clamp-1 tracking-wide hover:text-indigo-600 transition-colors uppercase">
             {product.name}
           </h4>
         </Link>
@@ -195,7 +195,7 @@ export default function ProductCard({ product, layout = 'vertical' }: ProductCar
            <div className="flex items-baseline gap-2">
               {product.discountPrice ? (
                 <>
-                  <span className="text-lg font-black text-slate-900 tracking-tighter">
+                  <span className="text-xl font-black text-slate-900 tracking-tighter">
                     {product.discountPrice.toLocaleString()} <span className="text-[9px] font-bold text-slate-400 uppercase tracking-widest">TK</span>
                   </span>
                   <span className="text-[9px] text-slate-300 line-through font-bold">
@@ -203,7 +203,7 @@ export default function ProductCard({ product, layout = 'vertical' }: ProductCar
                   </span>
                 </>
               ) : (
-                <span className="text-lg font-black text-slate-900 tracking-tighter">
+                <span className="text-xl font-black text-slate-900 tracking-tighter">
                   {product.price.toLocaleString()} <span className="text-[9px] font-bold text-slate-400 uppercase tracking-widest">TK</span>
                 </span>
               )}
