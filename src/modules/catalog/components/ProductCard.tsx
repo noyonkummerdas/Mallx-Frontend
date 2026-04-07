@@ -19,6 +19,10 @@ interface ProductCardProps {
     isFeatured?: boolean;
     isNewArrival?: boolean;
     images?: Array<{ imageUrl: string }>;
+    vendorId?: {
+      _id: string;
+      shopName: string;
+    };
   };
   layout?: 'vertical' | 'horizontal';
 }
@@ -84,10 +88,16 @@ export default function ProductCard({ product, layout = 'vertical' }: ProductCar
 
           {/* Title */}
           <Link href={`/catalog/products/${product._id}`}>
-            <h4 className="text-[10px] sm:text-[11px] font-black text-slate-900 mb-2 line-clamp-2 uppercase tracking-tight group-hover:text-action transition-colors leading-[1.2] text-left">
+            <h4 className="text-[10px] sm:text-[11px] font-black text-slate-900 mb-1 line-clamp-2 uppercase tracking-tight group-hover:text-action transition-colors leading-[1.2] text-left">
               {product.name}
             </h4>
           </Link>
+
+          {/* Vendor Info */}
+          <div className="flex items-center gap-1 mb-3">
+            <span className="text-[7px] font-medium text-slate-400 uppercase tracking-widest">By</span>
+            <span className="text-[7px] font-black text-slate-900 uppercase tracking-widest truncate">{product.vendorId?.shopName || "MallX Direct"}</span>
+          </div>
 
           {/* Price */}
           <div className="mb-4">
@@ -179,10 +189,16 @@ export default function ProductCard({ product, layout = 'vertical' }: ProductCar
         </div>
 
         <Link href={`/catalog/products/${product._id}`}>
-          <h4 className="text-[13px] font-black text-slate-900 mb-3 line-clamp-1 tracking-wide hover:text-indigo-600 transition-colors uppercase">
+          <h4 className="text-[13px] font-black text-slate-900 mb-1 line-clamp-1 tracking-wide hover:text-indigo-600 transition-colors uppercase">
             {product.name}
           </h4>
         </Link>
+
+        {/* Vendor Info */}
+        <div className="flex items-center gap-1.5 mb-4">
+          <span className="text-[8px] font-medium text-slate-400 uppercase tracking-widest">Sold by</span>
+          <span className="text-[8px] font-black text-slate-900 uppercase tracking-widest truncate max-w-[140px]">{product.vendorId?.shopName || "MallX Direct"}</span>
+        </div>
 
         {/* Price Row */}
         <div className="flex items-center justify-between">
