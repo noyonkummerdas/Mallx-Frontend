@@ -23,6 +23,10 @@ interface ProductCardProps {
       _id: string;
       shopName: string;
     };
+    categoryId?: {
+      _id: string;
+      name: string;
+    };
   };
   layout?: 'vertical' | 'horizontal';
 }
@@ -81,7 +85,13 @@ export default function ProductCard({ product, layout = 'vertical' }: ProductCar
             {product.brand && (
               <>
                 <span className="text-[10px] text-slate-200">•</span>
-                <span className="text-[6.5px] font-bold text-action uppercase tracking-[0.1em] truncate">{product.brand}</span>
+                <span className="text-[6.5px] font-bold text-action uppercase tracking-[0.1em] truncate max-w-[40px]">{product.brand}</span>
+              </>
+            )}
+            {product.categoryId?.name && (
+              <>
+                <span className="text-[10px] text-slate-200">{product.brand ? '|' : '•'}</span>
+                <span className="text-[6.5px] font-medium text-slate-400 uppercase tracking-[0.1em] truncate max-w-[50px]">{product.categoryId.name}</span>
               </>
             )}
           </div>
@@ -179,9 +189,17 @@ export default function ProductCard({ product, layout = 'vertical' }: ProductCar
       {/* 3. PRODUCT INFO */}
       <div className="px-6 pb-8 pt-5 font-sans">
         <div className="flex items-center justify-between mb-2">
-          {product.brand && (
-            <span className="text-[9px] font-bold text-indigo-500 uppercase tracking-[0.3em]">{product.brand}</span>
-          )}
+          <div className="flex items-center gap-2">
+            {product.brand && (
+              <span className="text-[9px] font-bold text-indigo-500 uppercase tracking-[0.3em]">{product.brand}</span>
+            )}
+            {product.brand && product.categoryId?.name && (
+              <span className="text-[8px] text-slate-200">•</span>
+            )}
+            {product.categoryId?.name && (
+              <span className="text-[9px] font-medium text-slate-400 uppercase tracking-widest">{product.categoryId.name}</span>
+            )}
+          </div>
           <div className="flex items-center gap-1">
             <Star className="w-3 h-3 text-amber-400 fill-current" />
             <span className="text-[10px] font-bold text-slate-400">{product.ratingsAverage || 5.0}</span>
