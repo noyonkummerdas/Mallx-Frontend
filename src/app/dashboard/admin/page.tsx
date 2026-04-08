@@ -10,8 +10,8 @@ import {
 import { useUpdateWithdrawalStatusMutation } from "@/modules/finance/services/financeApi";
 import { useState, useEffect, useMemo } from "react";
 import Sidebar from "@/components/Sidebar";
-import { Search, Filter, ChevronRight, Zap, Package, Wallet, Users, LayoutDashboard, TrendingUp, Settings, Eye, Plus, Truck, ArrowUpRight, BarChart3, AlertCircle, Calendar } from "lucide-react";
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell, AreaChart, Area } from 'recharts';
+import { Search, Filter, ChevronRight, Zap, Package, Wallet, Users, LayoutDashboard, TrendingUp, Settings, Eye, Plus, Truck, ArrowUpRight, BarChart3, AlertCircle, Calendar, ArrowDownRight, Activity } from "lucide-react";
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell, PieChart, Pie } from 'recharts';
 
 export default function AdminDashboard() {
   const { data: commissionData, isLoading: isReportLoading } = useGetDashboardDataQuery({});
@@ -29,7 +29,33 @@ export default function AdminDashboard() {
     thisMonth: { totalAmount: 0, orderCount: 0 } 
   };
 
-  // Prepare chart data (Format: { name: 'Date', sales: 5000, orders: 10 })
+  // 2. GROWTH INTELLIGENCE CALCULATION
+  const performanceNode = useMemo(() => {
+    if (!salesAnalytics?.data || salesAnalytics.data.length < 2) return { growth: 0, status: 'stable', today: 0, yesterday: 0 };
+    
+    // Sort logic to ensure we get the latest days
+    const sorted = [...salesAnalytics.data].sort((a, b) => new Date(b._id).getTime() - new Date(a._id).getTime());
+    const todayVal = sorted[0]?.totalSales || 0;
+    const yesterdayVal = sorted[1]?.totalSales || 0;
+    
+    if (yesterdayVal === 0) return { growth: todayVal > 0 ? 100 : 0, status: 'growth', today: todayVal, yesterday: yesterdayVal };
+    
+    const diff = ((todayVal - yesterdayVal) / yesterdayVal) * 100;
+    return {
+      growth: Math.abs(Math.round(diff)),
+      status: diff >= 0 ? 'growth' : 'decline',
+      today: todayVal,
+      yesterday: yesterdayVal
+    };
+  }, [salesAnalytics]);
+
+  // Gauge Data for Recharts Pie
+  const gaugeData = [
+    { name: 'Progress', value: performanceNode.growth > 100 ? 100 : performanceNode.growth, fill: performanceNode.status === 'growth' ? '#4f46e5' : '#f43f5e' },
+    { name: 'Remaining', value: performanceNode.growth > 100 ? 0 : 100 - performanceNode.growth, fill: '#f1f5f9' }
+  ];
+
+  // Prepare chart data
   const chartData = useMemo(() => {
     if (!salesAnalytics?.data) return [];
     return salesAnalytics.data.map((item: any) => ({
@@ -70,7 +96,7 @@ export default function AdminDashboard() {
       <header className="flex flex-col md:flex-row md:items-center justify-between gap-6">
         <div>
           <h1 className="text-3xl font-black tracking-tight uppercase">
-            Marketplace <span className="text-indigo-600">Intelligence</span> <span className="text-slate-300 ml-2">V2.4</span>
+            Marketplace <span className="text-indigo-600">Intelligence</span> <span className="text-slate-300 ml-2">V2.5</span>
           </h1>
           <p className="text-slate-500 font-bold text-sm tracking-wide mt-1">Cross-role operational surveillance and financial governance node.</p>
         </div>
@@ -82,35 +108,82 @@ export default function AdminDashboard() {
         </div>
       </header>
 
-      {/* 2. PRIMARY FINANCIAL STREAM (REAL-TIME) */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-        <div className="bg-white border border-indigo-50 rounded-[40px] p-10 shadow-sm relative overflow-hidden group hover:shadow-2xl hover:shadow-indigo-100/50 transition-all">
-          <TrendingUp className="absolute top-10 right-10 text-indigo-100 group-hover:text-indigo-600 transition-colors" size={60} />
-          <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.3em] mb-4">Today Revenue</p>
-          <h3 className="text-4xl font-black mb-2 tracking-tighter text-slate-900">{sales.today?.totalAmount?.toLocaleString()} <span className="text-sm font-bold text-slate-300">TK</span></h3>
-          <p className="text-emerald-600 text-[10px] font-black uppercase tracking-widest bg-emerald-50 px-3 py-1.5 rounded-full w-fit flex items-center gap-2">
-            <Zap size={10} /> {sales.today?.orderCount} Real-time Orders
-          </p>
+      {/* 2. PERFORMANCE ANALYTICS (CIRCULAR GAUGE) AND KEY METRICS */}
+      <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+        {/* Growth Pulse Circle */}
+        <div className="bg-white border border-slate-100 rounded-[48px] p-10 shadow-sm flex flex-col items-center justify-center relative overflow-hidden group">
+           <div className="absolute top-6 left-10 flex items-center gap-2">
+              <Activity size={14} className="text-slate-300" />
+              <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest">Growth Pulse</span>
+           </div>
+           
+           <div className="relative size-48 mb-6">
+              <ResponsiveContainer width="100%" height="100%">
+                <PieChart>
+                  <Pie
+                    data={gaugeData}
+                    cx="50%"
+                    cy="50%"
+                    innerRadius={60}
+                    outerRadius={80}
+                    startAngle={225}
+                    endAngle={-45}
+                    paddingAngle={0}
+                    dataKey="value"
+                  >
+                    {gaugeData.map((entry, index) => (
+                      <Cell key={`cell-${index}`} fill={entry.fill} />
+                    ))}
+                  </Pie>
+                </PieChart>
+              </ResponsiveContainer>
+              <div className="absolute inset-0 flex flex-col items-center justify-center">
+                 <div className="flex items-center gap-1">
+                    {performanceNode.status === 'growth' ? <ArrowUpRight className="text-indigo-600" size={24} /> : <ArrowDownRight className="text-rose-500" size={24} />}
+                    <span className={`text-3xl font-black tracking-tighter ${performanceNode.status === 'growth' ? 'text-indigo-600' : 'text-rose-500'}`}>{performanceNode.growth}%</span>
+                 </div>
+                 <p className="text-[8px] font-black text-slate-400 uppercase tracking-widest">Daily Flux</p>
+              </div>
+           </div>
+           
+           <div className="text-center">
+              <p className="text-[10px] font-bold text-slate-500 uppercase leading-relaxed">
+                 {performanceNode.status === 'growth' ? 'Outperforming' : 'Flux Decline'} vs yesterday
+              </p>
+              <p className="text-[9px] font-black text-slate-300 mt-1 uppercase tracking-tighter">Based on revenue aggregate</p>
+           </div>
         </div>
 
-        <div className="bg-white border border-indigo-50 rounded-[40px] p-10 shadow-sm relative overflow-hidden group hover:shadow-2xl hover:shadow-indigo-100/50 transition-all">
-          <BarChart3 className="absolute top-10 right-10 text-purple-100 group-hover:text-purple-600 transition-colors" size={60} />
-          <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.3em] mb-4">Weekly Volume</p>
-          <h3 className="text-4xl font-black mb-2 tracking-tighter text-slate-900">{sales.thisWeek?.totalAmount?.toLocaleString()} <span className="text-sm font-bold text-slate-300">TK</span></h3>
-          <p className="text-purple-600 text-[10px] font-black uppercase tracking-widest bg-purple-50 px-3 py-1.5 rounded-full w-fit">Active Growth Period</p>
-        </div>
+        {/* Financial Detail Cards */}
+        <div className="lg:col-span-3 grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="bg-white border border-indigo-50 rounded-[40px] p-10 shadow-sm relative overflow-hidden group hover:shadow-2xl hover:shadow-indigo-100/50 transition-all">
+            <TrendingUp className="absolute top-10 right-10 text-indigo-100 group-hover:text-indigo-600 transition-colors" size={60} />
+            <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.3em] mb-4">Today Revenue</p>
+            <h3 className="text-4xl font-black mb-2 tracking-tighter text-slate-900">{sales.today?.totalAmount?.toLocaleString()} <span className="text-sm font-bold text-slate-300">TK</span></h3>
+            <p className="text-emerald-600 text-[10px] font-black uppercase tracking-widest bg-emerald-50 px-3 py-1.5 rounded-full w-fit flex items-center gap-2">
+              <Zap size={10} /> {sales.today?.orderCount} Real-time Orders
+            </p>
+          </div>
 
-        <div className="bg-slate-900 rounded-[40px] p-10 shadow-2xl shadow-slate-900/20 text-white relative overflow-hidden">
-          <div className="absolute top-[-20%] right-[-10%] w-64 h-64 bg-indigo-500/10 rounded-full blur-3xl opacity-50" />
-          <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.3em] mb-4">Platform Gross</p>
-          <h3 className="text-4xl font-black mb-2 tracking-tighter">{(commissionData?.data?.totalPlatformRevenue || 0).toLocaleString()} <span className="text-sm font-bold text-slate-500 uppercase">TK</span></h3>
-          <div className="flex items-center gap-4 mt-6">
-            <div className="px-3 py-1 bg-white/10 rounded-full text-[9px] font-black uppercase tracking-widest border border-white/10">Commission: 10%</div>
+          <div className="bg-white border border-indigo-50 rounded-[40px] p-10 shadow-sm relative overflow-hidden group hover:shadow-2xl hover:shadow-indigo-100/50 transition-all">
+            <BarChart3 className="absolute top-10 right-10 text-purple-100 group-hover:text-purple-600 transition-colors" size={60} />
+            <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.3em] mb-4">Weekly Volume</p>
+            <h3 className="text-4xl font-black mb-2 tracking-tighter text-slate-900">{sales.thisWeek?.totalAmount?.toLocaleString()} <span className="text-sm font-bold text-slate-300">TK</span></h3>
+            <p className="text-purple-600 text-[10px] font-black uppercase tracking-widest bg-purple-50 px-3 py-1.5 rounded-full w-fit">Active Growth Period</p>
+          </div>
+
+          <div className="bg-slate-900 rounded-[40px] p-10 shadow-2xl shadow-slate-900/20 text-white relative overflow-hidden">
+            <div className="absolute top-[-20%] right-[-10%] w-64 h-64 bg-indigo-500/10 rounded-full blur-3xl opacity-50" />
+            <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.3em] mb-4">Platform Gross</p>
+            <h3 className="text-4xl font-black mb-2 tracking-tighter">{(commissionData?.data?.totalPlatformRevenue || 0).toLocaleString()} <span className="text-sm font-bold text-slate-500 uppercase">TK</span></h3>
+            <div className="flex items-center gap-4 mt-6">
+              <div className="px-3 py-1 bg-white/10 rounded-full text-[9px] font-black uppercase tracking-widest border border-white/10">Commission: 10%</div>
+            </div>
           </div>
         </div>
       </div>
 
-      {/* 3. VISUAL ANALYTICS (NEW) */}
+      {/* 3. VISUAL ANALYTICS */}
       <section className="bg-white border border-slate-100 rounded-[48px] p-10 shadow-sm">
         <div className="flex items-center justify-between mb-10">
           <div>
