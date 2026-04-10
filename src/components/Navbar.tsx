@@ -31,20 +31,20 @@ export default function Navbar() {
         <div className="max-w-8xl mx-auto px-6 h-20 flex items-center justify-between">
           {/* Brand Logo */}
           <Link href="/" className="flex items-center gap-3 group">
-            <div className="w-10 h-10 gradient-hero rounded-xl shadow-lg shadow-primary/20 flex items-center justify-center transform group-hover:rotate-12 transition-all">
+            {/* <div className="w-10 h-10 gradient-hero rounded-xl shadow-lg shadow-primary/20 flex items-center justify-center transform group-hover:rotate-12 transition-all">
               <span className="text-white font-black text-xl">X</span>
-            </div>
-            <span className="text-xl font-black tracking-tighter text-text-primary uppercase italic">
-              Mall<span className="text-primary font-black">X</span>
+            </div> */}
+            <span className="text-xl font-black tracking-tighter text-text-primary uppercase">
+              Mall
             </span>
           </Link>
           <div className="flex items-center gap-8">
             <div className="hidden md:flex items-center gap-9 border-r border-slate-100 pr-9 mr-2">
-              <Link href="/catalog/products" className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-500 hover:text-indigo-600 hover:-translate-y-0.5 transition-all duration-300">Marketplace</Link>
-              <Link href="/catalog/products?type=men" className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-500 hover:text-indigo-600 hover:-translate-y-0.5 transition-all duration-300">Men</Link>
-              <Link href="/catalog/products?type=women" className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-500 hover:text-indigo-600 hover:-translate-y-0.5 transition-all duration-300">Women</Link>
-              <Link href="/catalog/products?type=boysgirls" className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-500 hover:text-indigo-600 hover:-translate-y-0.5 transition-all duration-300 whitespace-nowrap">Boys & Girls</Link>
-              <Link href="/catalog/products?type=kids" className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-500 hover:text-indigo-600 hover:-translate-y-0.5 transition-all duration-300">Kids</Link>
+              <Link href="/catalog/products" className="text-[10px] font-black   text-slate-500 hover:text-indigo-600 hover:-translate-y-0.5 transition-all duration-300">Marketplace</Link>
+              <Link href="/catalog/products?type=men" className="text-[10px] font-black  tracking-[0.2em] text-slate-500 hover:text-indigo-600 hover:-translate-y-0.5 transition-all duration-300">Men</Link>
+              <Link href="/catalog/products?type=women" className="text-[10px] font-black  tracking-[0.2em] text-slate-500 hover:text-indigo-600 hover:-translate-y-0.5 transition-all duration-300">Women</Link>
+              <Link href="/catalog/products?type=boysgirls" className="text-[10px] font-black  tracking-[0.2em] text-slate-500 hover:text-indigo-600 hover:-translate-y-0.5 transition-all duration-300 whitespace-nowrap">Boys & Girls</Link>
+              <Link href="/catalog/products?type=kids" className="text-[10px] font-black  tracking-[0.2em] text-slate-500 hover:text-indigo-600 hover:-translate-y-0.5 transition-all duration-300">Kids</Link>
             </div>
 
             <div className="flex items-center gap-7">
