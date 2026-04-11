@@ -40,7 +40,7 @@ export default function Navbar() {
           </Link>
           <div className="flex items-center gap-8">
             <div className="hidden md:flex items-center gap-9 border-r border-slate-100 pr-9 mr-2">
-              <Link href="/catalog/products" className="text-[16px] font-black   text-slate-900 hover:text-indigo-600 hover:-translate-y-0.5 transition-all duration-300">Marketplace</Link>
+              <Link href="/catalog/products" className="text-[16px] font-black   text-slate-900 hover:text-red-600 hover:-translate-y-0.5 transition-all duration-300">Marketplace</Link>
               {/* <Link href="/catalog/products?type=men" className="text-[10px] font-black  tracking-[0.2em] text-slate-500 hover:text-indigo-600 hover:-translate-y-0.5 transition-all duration-300">Men</Link>
               <Link href="/catalog/products?type=women" className="text-[10px] font-black  tracking-[0.2em] text-slate-500 hover:text-indigo-600 hover:-translate-y-0.5 transition-all duration-300">Women</Link>
               <Link href="/catalog/products?type=boysgirls" className="text-[10px] font-black  tracking-[0.2em] text-slate-500 hover:text-indigo-600 hover:-translate-y-0.5 transition-all duration-300 whitespace-nowrap">Boys & Girls</Link>
