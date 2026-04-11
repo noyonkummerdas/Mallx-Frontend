@@ -68,11 +68,14 @@ export default function ProductDetailClient({ id }: { id: string }) {
 
   const handleAddToCart = async () => {
     try {
+      const flashPrice = product.activeFlashSale?.discountPrice;
+      const finalPrice = flashPrice || product.discountPrice || product.price;
+
       await addToCart({ 
         productId: product._id, 
         variantId: selectedVariant?._id, 
         quantity,
-        price: product.discountPrice || product.price 
+        price: finalPrice
       }).unwrap();
       router.push("/shopping/cart");
     } catch (err) {
@@ -394,7 +397,18 @@ export default function ProductDetailClient({ id }: { id: string }) {
                     <ChevronRight size={14} className="group-hover:translate-x-1 transition-transform" />
                   </div>
                   <div className="pl-6 text-right">
-                    {product.discountPrice ? (
+                    {product.activeFlashSale ? (
+                      <div className="flex flex-col items-end">
+                        <div className="flex items-end justify-end gap-1">
+                           <span className="text-sm font-black text-rose-500 tracking-widest uppercase pb-1.5">TK</span>
+                           <span className="text-5xl font-black text-rose-500 tracking-tighter leading-none">{(product.activeFlashSale.discountPrice * quantity).toLocaleString()}</span>
+                        </div>
+                        <div className="flex items-center gap-2 mt-2">
+                           <span className="text-xs font-medium text-slate-400">Flash Sale Price</span>
+                           <span className="text-[10px] font-black text-rose-500 uppercase bg-rose-50 px-2 py-0.5 rounded-md">Save {Math.round(((product.price - product.activeFlashSale.discountPrice)/product.price)*100)}%</span>
+                        </div>
+                      </div>
+                    ) : product.discountPrice ? (
                       <div className="flex flex-col items-end">
                         <div className="flex items-end justify-end gap-1">
                            <span className="text-sm font-black text-slate-400 tracking-widest uppercase pb-1.5">TK</span>
