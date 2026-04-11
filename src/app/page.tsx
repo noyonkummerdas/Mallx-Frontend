@@ -24,7 +24,7 @@ export default function Home() {
 
    // Prioritize fashion banners for this request
    const displayCampaigns = fashionBanners;
-   const flashSales = flashSaleData?.data || [];
+   const flashSales = flashSaleData?.data?.flashSales || [];
    const bundles = bundleData?.data?.bundles || [];
    const categories = categoryData?.data || [];
    const featuredProducts = featuredData?.data?.products || [];
@@ -206,7 +206,7 @@ function CategoryShowcase({ category }: { category: any }) {
    const products = catProducts?.data?.products || [];
    const bundles = bundleData?.data?.bundles || [];
    const vouchers = voucherData?.data?.vouchers || [];
-   const categoryFlash = flashData?.data || [];
+   const categoryFlash = flashData?.data?.flashSales || [];
 
    const scrollRef = useRef<HTMLDivElement>(null);
    const [isHovered, setIsHovered] = useState(false);
