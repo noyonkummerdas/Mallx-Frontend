@@ -44,7 +44,7 @@ export default function Navbar() {
               <Link href="/catalog/products?type=men" className="text-[10px] font-black  tracking-[0.2em] text-slate-500 hover:text-indigo-600 hover:-translate-y-0.5 transition-all duration-300">Men</Link>
               <Link href="/catalog/products?type=women" className="text-[10px] font-black  tracking-[0.2em] text-slate-500 hover:text-indigo-600 hover:-translate-y-0.5 transition-all duration-300">Women</Link>
               <Link href="/catalog/products?type=boysgirls" className="text-[10px] font-black  tracking-[0.2em] text-slate-500 hover:text-indigo-600 hover:-translate-y-0.5 transition-all duration-300 whitespace-nowrap">Boys & Girls</Link>
-              <Link href="/catalog/products?type=kids" className="text-[10px] font-black  tracking-[0.2em] text-slate-500 hover:text-indigo-600 hover:-translate-y-0.5 transition-all duration-300">Kids</Link>
+              {/* <Link href="/catalog/products?type=kids" className="text-[10px] font-black  tracking-[0.2em] text-slate-500 hover:text-indigo-600 hover:-translate-y-0.5 transition-all duration-300">Kids</Link> */}
             </div>
 
             <div className="flex items-center gap-7">
