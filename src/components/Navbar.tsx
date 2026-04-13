@@ -67,7 +67,7 @@ export default function Navbar() {
                   <Link href="/auth/login" className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-900 hover:text-indigo-600 hover:-translate-y-0.5 transition-all duration-300">Login</Link>
                   <Link href="/auth/register">
                     <button className="px-7 py-3 bg-slate-900 text-white rounded-xl text-[10px] font-black uppercase tracking-[0.2em] shadow-xl shadow-slate-900/10 active:scale-95 transition-all hover:bg-indigo-600 hover:-translate-y-0.5">
-                      Sign Up
+                      Sign Here
                     </button>
                   </Link>
                 </div>
