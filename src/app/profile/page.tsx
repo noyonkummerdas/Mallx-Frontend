@@ -91,7 +91,7 @@ export default function ProfilePage() {
                         <div className="space-y-4">
                            <div className="flex items-center justify-between">
                               <div>
-                                 <p className="text-sm font-black text-slate-900 uppercase tracking-tight">Two-Factor Auth</p>
+                                 <p className="text-sm font-black text-slate-900 uppercase tracking-tight">Two-Factor</p>
                                  <p className="text-sm font-black text-slate-400 uppercase tracking-widest">{user?.isTwoFactorEnabled ? 'PROTECTION ENABLED' : 'PROTECTION DISABLED'}</p>
                               </div>
                               <button
