@@ -56,7 +56,7 @@ export default function Footer() {
 
       <div className="max-w-7xl mx-auto px-6 mt-24 pt-8 border-t border-slate-100 flex flex-col md:flex-row justify-between items-center gap-6 relative z-10">
         <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] opacity-40">
-          © 2026 MallX Technologies. All rights reserved.
+          nknoyon01936@gmail.com
         </p>
         <div className="flex gap-8">
           <Link href="#" className="text-[10px] font-black text-slate-400 hover:text-slate-900 uppercase tracking-[0.2em] transition-all">Privacy</Link>
