@@ -39,7 +39,7 @@ export default function Footer() {
         {[
           { title: 'Shop', links: ['Marketplace', 'Campaigns', 'Bundles', 'Flash Sales'] },
           { title: 'Partners', links: ['Vendors', 'Delivery', 'Affiliates', 'Rewards'] },
-          { title: 'Support', links: ['Help Center', 'API Docs', 'Status', 'Security'] }
+          { title: 'Support', links: ['Help Center', 'Security'] }
         ].map((column) => (
           <div key={column.title}>
             <h4 className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-900 mb-8 border-l-2 border-action pl-3">{column.title}</h4>
