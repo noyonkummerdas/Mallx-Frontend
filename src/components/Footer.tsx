@@ -60,7 +60,7 @@ export default function Footer() {
         </p>
         <div className="flex gap-8">
           <Link href="#" className="text-[10px] font-black text-slate-400 hover:text-slate-900 uppercase tracking-[0.2em] transition-all">Privacy</Link>
-          {/* <Link href="#" className="text-[10px] font-black text-slate-400 hover:text-slate-900 uppercase tracking-[0.2em] transition-all">Terms</Link> */}
+          <Link href="#" className="text-[10px] font-black text-slate-400 hover:text-slate-900 uppercase tracking-[0.2em] transition-all">Terms</Link>
           <Link href="#" className="text-[10px] font-black text-slate-400 hover:text-slate-900 uppercase tracking-[0.2em] transition-all">Cookies</Link>
         </div>
       </div>
