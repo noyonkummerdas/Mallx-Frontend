@@ -90,7 +90,7 @@ export default function ReturnsPage() {
                   </td>
                 </tr>
               )) : (
-                <tr><td colSpan={4} className="py-12 text-center text-sm uppercase font-bold text-slate-400">No return found in the ecosystem.</td></tr>
+                <tr><td colSpan={4} className="py-12 text-center text-sm uppercase font-bold text-slate-400">No return requests found in the ecosystem.</td></tr>
               )}
             </tbody>
           </table>
