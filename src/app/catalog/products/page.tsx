@@ -31,7 +31,7 @@ export default function ProductListingPage() {
             <aside
                style={{ top: `${sidebarTop}px`, height: `calc(100vh - ${sidebarTop}px)` }}
                className={`
-          fixed left-0 z-40 w-80 bg-white/80 backdrop-blur-[60px] transform transition-all duration-1000 cubic-bezier(0.16, 1, 0.3, 1) origin-top [perspective:2000px]
+          fixed left-0 z-40 w-80 bg-white/80 border border-gray-200 rounded-2xl backdrop-blur-[60px] transform transition-all duration-1000 cubic-bezier(0.16, 1, 0.3, 1) origin-top [perspective:2000px]
           ${isSidebarOpen ? 'scale-y-100 opacity-100 [transform:rotateX(0deg)_translateZ(0)]' : 'scale-y-0 opacity-0 [transform:rotateX(-10deg)_translateZ(-100px)]'}
         `}>
                <div className="h-full flex flex-col p-8">
@@ -86,9 +86,9 @@ export default function ProductListingPage() {
                   </div>
 
                   <div className="pt-8 border-t border-slate-100 mt-auto">
-                     <div className="p-6 bg-slate-50 rounded-[2rem] border border-slate-100">
-                        <p className="text-[9px] font-black text-slate-400 uppercase tracking-widest leading-relaxed">
-                           Discover the future of high-performance commerce.
+                     <div className="p-6 text-center border border-gray-200">
+                        <p className="text-[12px] font-black uppercase tracking-widest leading-relaxed">
+                           Mall materials
                         </p>
                      </div>
                   </div>
@@ -118,8 +118,8 @@ export default function ProductListingPage() {
                            </button>
                         )}
                         <div className="flex flex-col">
-                           {/* <span className="text-indigo-600 font-extrabold tracking-[0.6em] text-[8px] uppercase opacity-70 mb-1">Collection Focus</span> */}
-                           <h1 className="text-4xl md:text-6xl font-black text-slate-900 tracking-[0.1em] uppercase leading-none text-gradient-primary">
+                           <span className="text-green-600 font-extrabold tracking-[0.6em] text-[12px] uppercase opacity-70 mb-1 ml-2">Collection Focus</span>
+                           <h1 className="text-4xl md:text-6xl font-black text-slate-900 tracking-[0.1em] uppercase leading-none">
                               {selectedCategory ? categories.find((c: any) => c._id === selectedCategory)?.name : 'Global Collection'}
                            </h1>
                         </div>
@@ -128,7 +128,7 @@ export default function ProductListingPage() {
                      <div className="flex items-center gap-4 self-end md:self-auto">
                         <div className="px-5 py-2 glass-panel rounded-full border border-white/40 flex items-center gap-3 shadow-xl shadow-indigo-500/5">
                            <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 shadow-[0_0_12px_rgba(16,185,129,0.4)]" />
-                           <span className="text-[8px] font-black text-slate-900 uppercase tracking-[0.4em]">{products.length} Discovery Found</span>
+                           <span className="text-[8px] font-black  uppercase tracking-[0.4em]">{products.length} Discovery Found</span>
                         </div>
                      </div>
                   </header>
