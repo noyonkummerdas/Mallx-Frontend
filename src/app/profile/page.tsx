@@ -104,7 +104,7 @@ export default function ProfilePage() {
                            </div>
                            <div className="p-3 rounded-xl bg-slate-50 border border-slate-100">
                               <p className="text-sm font-black text-slate-400 uppercase tracking-widest mb-1 leading-tight">Data Protection</p>
-                              {/* <p className="text-sm text-slate-500 font-black leading-relaxed">Secured using standard AES-256 encryption.</p> */}
+                              <p className="text-sm text-slate-500 font-black leading-relaxed">Secured using standard AES-256 encryption.</p>
                            </div>
                         </div>
                      </section>
