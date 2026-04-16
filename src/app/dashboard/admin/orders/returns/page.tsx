@@ -36,8 +36,8 @@ export default function ReturnsPage() {
 
       <section className="bg-white border border-slate-200 rounded-3xl p-8 shadow-sm text-slate-900">
         <div className="flex items-center gap-3 mb-8">
-           <div className="p-2 bg-orange-50 text-orange-600 rounded-lg"><RotateCcw size={16} /></div>
-           <h2 className="text-base font-black uppercase tracking-tighter">Pending Returns</h2>
+          <div className="p-2 bg-orange-50 text-orange-600 rounded-lg"><RotateCcw size={16} /></div>
+          <h2 className="text-base font-black uppercase tracking-tighter">Pending Returns</h2>
         </div>
 
         <div className="overflow-x-auto">
@@ -60,38 +60,37 @@ export default function ReturnsPage() {
                     <p className="text-sm text-slate-400 font-bold tracking-tight">Customer: {returnReq.customerName || 'Syncing...'}</p>
                   </td>
                   <td className="py-4">
-                     <div className="flex items-center gap-2">
-                        <ShieldAlert size={12} className="text-orange-500" />
-                        <span className="text-sm font-bold text-slate-600">{returnReq.reason || 'Not Specified'}</span>
-                     </div>
+                    <div className="flex items-center gap-2">
+                      <ShieldAlert size={12} className="text-orange-500" />
+                      <span className="text-sm font-bold text-slate-600">{returnReq.reason || 'Not Specified'}</span>
+                    </div>
                   </td>
                   <td className="py-4">
-                     <span className={`px-2 py-1 rounded-md text-sm font-black uppercase tracking-widest ${
-                       returnReq.status === 'Approved' ? 'bg-emerald-50 text-emerald-600' : 
-                       returnReq.status === 'Rejected' ? 'bg-red-50 text-red-600' : 'bg-orange-50 text-orange-600 animate-pulse'
-                     }`}>
-                       {returnReq.status || 'Pending'}
-                     </span>
+                    <span className={`px-2 py-1 rounded-md text-sm font-black uppercase tracking-widest ${returnReq.status === 'Approved' ? 'bg-emerald-50 text-emerald-600' :
+                      returnReq.status === 'Rejected' ? 'bg-red-50 text-red-600' : 'bg-orange-50 text-orange-600 animate-pulse'
+                      }`}>
+                      {returnReq.status || 'Pending'}
+                    </span>
                   </td>
                   <td className="py-4 text-right">
                     <div className="flex items-center justify-end gap-2 opacity-100 lg:opacity-0 group-hover:opacity-100 transition-opacity">
-                       <button 
-                         onClick={() => onProcessReturn(returnReq._id, 'Approved')}
-                         className="p-1.5 text-emerald-600 hover:bg-emerald-50 rounded-lg transition-colors"
-                       >
-                         <CheckCircle size={16} />
-                       </button>
-                       <button 
-                         onClick={() => onProcessReturn(returnReq._id, 'Rejected')}
-                         className="p-1.5 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
-                       >
-                         <XCircle size={16} />
-                       </button>
+                      <button
+                        onClick={() => onProcessReturn(returnReq._id, 'Approved')}
+                        className="p-1.5 text-emerald-600 hover:bg-emerald-50 rounded-lg transition-colors"
+                      >
+                        <CheckCircle size={16} />
+                      </button>
+                      <button
+                        onClick={() => onProcessReturn(returnReq._id, 'Rejected')}
+                        className="p-1.5 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                      >
+                        <XCircle size={16} />
+                      </button>
                     </div>
                   </td>
                 </tr>
               )) : (
-                <tr><td colSpan={4} className="py-12 text-center text-sm uppercase font-bold text-slate-400">No return requests found in the ecosystem.</td></tr>
+                <tr><td colSpan={4} className="py-12 text-center text-sm uppercase font-bold text-slate-400">No return found in the ecosystem.</td></tr>
               )}
             </tbody>
           </table>
