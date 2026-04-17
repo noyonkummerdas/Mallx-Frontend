@@ -128,7 +128,7 @@ export default function ProductListingPage() {
                      <div className="flex items-center gap-4 self-end md:self-auto">
                         <div className="px-5 py-2 glass-panel rounded-full border border-white/40 flex items-center gap-3 shadow-xl shadow-indigo-500/5">
                            <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 shadow-[0_0_12px_rgba(16,185,129,0.4)]" />
-                           <span className="text-[8px] font-black  uppercase tracking-[0.4em]">{products.length} Discovery Found</span>
+                           <span className="text-[8px] font-black  uppercase tracking-[0.4em]">{products.length}</span>
                         </div>
                      </div>
                   </header>
