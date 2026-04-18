@@ -158,7 +158,7 @@ export default function ProductListingPage() {
                            <Filter className="w-10 h-10 text-slate-200" />
                         </div>
                         {/* <h3 className="text-xl font-black text-slate-900 uppercase tracking-tighter mb-2">Sector Depleted</h3> */}
-                        <p className="text-slate-400 font-black uppercase tracking-[0.3em] text-[10px]">No active products detected with current parameters</p>
+                        <p className="text-slate-400 font-black uppercase tracking-[0.3em] text-[10px]">No active products detected with current </p>
                         <button
                            onClick={() => { setSelectedCategory(""); setSearch(""); }}
                            className="mt-8 px-8 py-3 bg-slate-900 text-white rounded-2xl text-[10px] font-black uppercase tracking-widest hover:bg-action transition-all active:scale-95 shadow-xl shadow-slate-900/20"
