@@ -163,7 +163,7 @@ export default function ProductListingPage() {
                            onClick={() => { setSelectedCategory(""); setSearch(""); }}
                            className="mt-8 px-8 py-3 bg-slate-900 text-white rounded-2xl text-[10px] font-black uppercase tracking-widest hover:bg-action transition-all active:scale-95 shadow-xl shadow-slate-900/20"
                         >
-                           Reset Explorer
+                           Reset
                         </button>
                      </div>
                   )}
