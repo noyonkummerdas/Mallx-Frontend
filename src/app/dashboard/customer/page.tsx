@@ -89,7 +89,7 @@ export default function CustomerDashboard() {
                      </div>
                   )) : (
                      <div className="text-center py-16 bg-slate-50/50 rounded-2xl border border-dashed border-slate-200">
-                        <p className="text-sm text-slate-300 uppercase tracking-widest font-black">No order history .</p>
+                        <p className="text-sm text-slate-300 uppercase tracking-widest font-black">No order history found.</p>
                      </div>
                   )}
                </div>
