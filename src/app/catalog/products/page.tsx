@@ -40,7 +40,7 @@ export default function ProductListingPage() {
                         <div className="w-8 h-8 gradient-hero rounded-lg flex items-center justify-center">
                            <SlidersHorizontal className="w-4 h-4 text-white" />
                         </div>
-                        <h2 className="text-sm font-black uppercase tracking-[0.2em] text-slate-900">Category Name</h2>
+                        <h2 className="text-sm font-black uppercase tracking-[0.2em] text-slate-900">Category</h2>
                      </div>
                      <button onClick={() => setIsSidebarOpen(false)} className="text-slate-400 hover:text-slate-900 transition-colors">
                         <X className="w-5 h-5" />
