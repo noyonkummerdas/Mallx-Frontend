@@ -83,13 +83,13 @@ export default function CustomerDashboard() {
                         <div className="text-right">
                            <p className="text-slate-900 tracking-tighter mb-1 font-bold">{order.total?.toLocaleString()} TK</p>
                            <span className={`px-2 py-0.5 rounded-full text-sm font-black uppercase tracking-widest ${order.status === 'Delivered' ? 'bg-slate-200 text-slate-700' :
-                                 order.status === 'Cancelled' ? 'bg-red-50 text-red-600' : 'bg-slate-100 text-slate-600'
+                              order.status === 'Cancelled' ? 'bg-red-50 text-red-600' : 'bg-slate-100 text-slate-600'
                               }`}>{order.status}</span>
                         </div>
                      </div>
                   )) : (
                      <div className="text-center py-16 bg-slate-50/50 rounded-2xl border border-dashed border-slate-200">
-                        <p className="text-sm text-slate-300 uppercase tracking-widest font-black">No order history found.</p>
+                        <p className="text-sm text-slate-300 uppercase tracking-widest font-black">No order history .</p>
                      </div>
                   )}
                </div>
