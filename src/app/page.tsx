@@ -30,6 +30,18 @@ export default function Home() {
    const featuredProducts = featuredData?.data?.products || [];
 
    const [activeCampaignIdx, setActiveCampaignIdx] = useState(0);
+   const categoryScrollRef = useRef<HTMLDivElement>(null);
+
+   const scrollCategories = (direction: 'left' | 'right') => {
+      if (categoryScrollRef.current) {
+         const scrollAmount = 400;
+         categoryScrollRef.current.scrollBy({
+            left: direction === 'left' ? -scrollAmount : scrollAmount,
+            behavior: 'smooth'
+         });
+      }
+   };
+
 
    // Auto-play for Campaign Slider
    useEffect(() => {
@@ -88,17 +100,68 @@ export default function Home() {
             )}
          </section>
 
-         {/* 2. CATEGORY QUICK THUMBNAILS */}
-         <section className="pb-24 px-4 max-w-7xl mx-auto">
-            <div className="flex flex-wrap items-center justify-center gap-10">
-               {categories.slice(0, 8).map((cat: any) => (
-                  <Link key={cat._id} href={`/catalog/products?categoryId=${cat._id}`} className="flex flex-col items-center gap-4 group">
-                     <div className="w-16 h-16 rounded-full bg-slate-50 border border-slate-200 flex items-center justify-center group-hover:border-action group-hover:scale-110 transition-all duration-300 shadow-sm group-hover:shadow-[0_0_20px_rgba(59,130,246,0.1)]">
-                        <span className="text-xl font-black text-slate-400 group-hover:text-action transition-colors uppercase">{cat.name.charAt(0)}</span>
-                     </div>
-                     <span className="text-[10px] font-black uppercase tracking-widest text-slate-400 group-hover:text-slate-900 transition-colors">{cat.name}</span>
-                  </Link>
-               ))}
+         {/* 2. CATEGORY QUICK THUMBNAILS (Horizontal Carousel) */}
+         <section className="pb-24 px-4 max-w-7xl mx-auto relative group">
+            {/* Navigation Buttons - Only visible on hover/appropriate screen size */}
+            <div className="absolute top-1/2 -left-4 -right-4 -translate-y-1/2 flex justify-between items-center z-20 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+               <button
+                  onClick={() => scrollCategories('left')}
+                  className="w-12 h-12 rounded-full bg-white shadow-xl border border-slate-100 flex items-center justify-center pointer-events-auto hover:bg-slate-50 active:scale-90 transition-all ml-2"
+               >
+                  <ChevronLeft className="w-6 h-6 text-slate-600" />
+               </button>
+               <button
+                  onClick={() => scrollCategories('right')}
+                  className="w-12 h-12 rounded-full bg-white shadow-xl border border-slate-100 flex items-center justify-center pointer-events-auto hover:bg-slate-50 active:scale-90 transition-all mr-2"
+               >
+                  <ChevronRight className="w-6 h-6 text-slate-600" />
+               </button>
+            </div>
+
+            <div
+               ref={categoryScrollRef}
+               className="flex gap-6 overflow-x-auto pb-8 scrollbar-hide snap-x -mx-4 px-4 scroll-smooth"
+            >
+               {categories.map((cat: any, idx: number) => {
+                  const gradients = [
+                     'from-blue-600 to-cyan-500',
+                     'from-purple-600 to-indigo-500',
+                     'from-rose-600 to-pink-500',
+                     'from-amber-500 to-orange-600',
+                     'from-emerald-600 to-teal-500',
+                     'from-violet-600 to-fuchsia-500',
+                     'from-sky-600 to-blue-500',
+                     'from-slate-700 to-slate-900'
+                  ];
+                  const currentGradient = gradients[idx % gradients.length];
+
+                  return (
+                     <Link
+                        key={cat._id}
+                        href={`/catalog/products?categoryId=${cat._id}`}
+                        className="group relative snap-start flex-shrink-0"
+                     >
+                        <div className="glass-panel p-6 rounded-[2.5rem] flex flex-col items-center gap-4 transition-all duration-500 hover:-translate-y-3 hover:shadow-[0_20px_50px_rgba(59,130,246,0.15)] group-hover:border-action/30 border border-slate-100 min-w-[150px] text-center">
+                           {/* Icon Box - Squircle Shape */}
+                           <div className={`w-16 h-16 rounded-[1.8rem] bg-gradient-to-br ${currentGradient} p-[1px] shadow-lg group-hover:rotate-6 transition-all duration-500`}>
+                              <div className="w-full h-full rounded-[1.7rem] bg-white/10 backdrop-blur-sm flex items-center justify-center border border-white/20">
+                                 <span className="text-2xl font-black text-white drop-shadow-md uppercase">{cat.name.charAt(0)}</span>
+                              </div>
+                           </div>
+
+                           <div>
+                              <span className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 group-hover:text-slate-900 transition-colors block mb-1">Explore</span>
+                              <span className="text-xs font-black uppercase tracking-tight text-slate-800 group-hover:text-action transition-colors">{cat.name}</span>
+                           </div>
+
+                           {/* Subtle Indicator */}
+                           <div className="absolute bottom-4 opacity-0 group-hover:opacity-100 transition-all duration-500 translate-y-2 group-hover:translate-y-0">
+                              <div className="w-1 h-1 rounded-full bg-action shadow-[0_0_10px_#3b82f6]" />
+                           </div>
+                        </div>
+                     </Link>
+                  );
+               })}
             </div>
          </section>
 
