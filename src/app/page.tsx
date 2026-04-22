@@ -48,9 +48,9 @@ export default function Home() {
          {/* 1. HERO CAMPAIGN SLIDER */}
          <section className="relative pt-8 pb-20 px-4 max-w-7xl mx-auto overflow-hidden">
             {campaignsLoading ? (
-               <div className="h-[450px] bg-slate-50 rounded-[2.5rem] animate-pulse border border-slate-200" />
+               <div className="h-[450px] bg-slate-50  animate-pulse border border-slate-200" />
             ) : displayCampaigns.length > 0 ? (
-               <div className="relative h-[450px] rounded-[2.5rem] overflow-hidden group shadow-2xl transition-all duration-700">
+               <div className="relative h-[450px] overflow-hidden group shadow-2xl transition-all duration-700">
                   {displayCampaigns.map((camp: any, idx: number) => (
                      <div
                         key={camp._id}
