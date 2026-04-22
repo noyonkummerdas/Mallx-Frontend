@@ -4,13 +4,24 @@ import { useGetProductsQuery, useGetCategoriesQuery } from "@/modules/shopping/s
 import ProductCard from "@/modules/catalog/components/ProductCard";
 import Link from "next/link";
 import { useState, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
 import { Filter, X, ChevronRight, LayoutGrid, Search, SlidersHorizontal } from "lucide-react";
 
 export default function ProductListingPage() {
+   const searchParams = useSearchParams();
+   const categoryIdFromUrl = searchParams.get("categoryId");
+
    const [search, setSearch] = useState("");
-   const [selectedCategory, setSelectedCategory] = useState("");
+   const [selectedCategory, setSelectedCategory] = useState(categoryIdFromUrl || "");
    const [isSidebarOpen, setIsSidebarOpen] = useState(false);
    const [sidebarTop, setSidebarTop] = useState(0);
+
+   // Sync URL changes with state
+   useEffect(() => {
+      if (categoryIdFromUrl) {
+         setSelectedCategory(categoryIdFromUrl);
+      }
+   }, [categoryIdFromUrl]);
 
    const { data: categoryData, isLoading: catLoading } = useGetCategoriesQuery({});
    const { data: productData, isLoading } = useGetProductsQuery({
