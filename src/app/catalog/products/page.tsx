@@ -77,7 +77,7 @@ export default function ProductListingPage() {
                         <div className="space-y-1.5 px-0.5">
                            <button
                               onClick={() => { setSelectedCategory(""); }}
-                              className={`w-full flex items-center justify-between p-3.5 rounded-2xl transition-all group ${selectedCategory === "" ? 'bg-slate-900 text-white shadow-xl shadow-slate-900/20' : 'hover:bg-slate-50 text-slate-500'}`}
+                              className={`w-full flex items-center justify-between p-3.5 rounded-2xl transition-all group ${selectedCategory === "" ? 'bg-slate-100 text-white shadow-xl shadow-slate-900/20' : 'hover:bg-slate-50 text-slate-500'}`}
                            >
                               <span className="text-[10px] font-black uppercase tracking-widest">All Collection</span>
                               <ChevronRight className={`w-3.5 h-3.5 transition-transform ${selectedCategory === "" ? 'translate-x-1' : 'opacity-0 group-hover:opacity-100 translate-x-0'}`} />
