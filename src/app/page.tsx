@@ -334,7 +334,7 @@ function CategoryShowcase({ category }: { category: any }) {
          onMouseLeave={() => setIsHovered(false)}
       >
          {/* Category Header */}
-         <div className="flex items-end justify-between mb-10 border-b border-slate-100 pb-8">
+         <div className="flex items-end justify-between mb-10 border-b border-slate-100 pb-4">
             <div className="flex flex-col gap-2">
                <div className="flex items-center gap-4">
                   <div className="relative group/icon">
@@ -367,7 +367,7 @@ function CategoryShowcase({ category }: { category: any }) {
                      <ChevronRight className="w-5 h-5 text-slate-600" />
                   </button>
                </div>
-               <Link href={`/catalog/products?categoryId=${category._id}`} className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-900 hover:text-action transition-colors bg-slate-50 px-6 py-3 rounded-2xl border border-slate-200 shadow-sm active:scale-95 transition-all">Digital Gallery</Link>
+               <Link href={`/catalog/products?categoryId=${category._id}`} className="text-[10px] font-black uppercase tracking-[0.2em] text-black-200 transition-colors bg-white-400 px-6 py-3 rounded-2xl border border-slate-200 shadow-sm active:scale-95 transition-all">Digital Gallery</Link>
             </div>
          </div>
 
@@ -428,8 +428,8 @@ function CategoryShowcase({ category }: { category: any }) {
          {/* 2. MAIN 12-PRODUCT GRID SLIDER (2 Rows) */}
          <div className="relative">
             {/* Overlay Navigation (Optional but recommended for premium feel) */}
-            <div className="absolute inset-y-0 left-0 -ml-4 w-12 bg-gradient-to-r from-background to-transparent z-10 pointer-events-none opacity-0 group-hover/section:opacity-100 transition-opacity" />
-            <div className="absolute inset-y-0 right-0 -mr-4 w-12 bg-gradient-to-l from-background to-transparent z-10 pointer-events-none opacity-0 group-hover/section:opacity-100 transition-opacity" />
+
+
 
             <div
                ref={scrollRef}
