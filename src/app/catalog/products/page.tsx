@@ -118,7 +118,7 @@ export default function ProductListingPage() {
                                  setSidebarTop(rect.top);
                                  setIsSidebarOpen(true);
                               }}
-                              className="p-5 bg-white border border-slate-100 rounded-2xl hover:border-indigo-600 transition-all active:scale-95 group relative overflow-hidden"
+                              className="p-5 bg-white border border-gray-300 rounded-lg hover:border-gray-900 transition-all active:scale-95 group relative overflow-hidden"
                               title="Open Filters"
                            >
                               <div className="flex flex-col gap-1.5 w-6 relative z-10">
@@ -130,7 +130,7 @@ export default function ProductListingPage() {
                         )}
                         <div className="flex flex-col">
                            <span className="text-green-600 font-extrabold tracking-[0.6em] text-[12px] uppercase opacity-70 mb-1 ml-2">Collection Focus</span>
-                           <h1 className="text-4xl md:text-6xl font-black text-slate-900 tracking-[0.1em] uppercase leading-none">
+                           <h1 className="text-3xl md:text-5xl font-black text-slate-900 tracking-[0.1em] uppercase leading-none">
                               {selectedCategory ? categories.find((c: any) => c._id === selectedCategory)?.name : 'Global Collection'}
                            </h1>
                         </div>

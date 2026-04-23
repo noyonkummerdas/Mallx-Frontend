@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
-import { ArrowUpRight, ChevronLeft, ChevronRight } from "lucide-react";
+import { ArrowUpRight, ChevronLeft, ChevronRight, Shirt, Smartphone, ShoppingBasket, Home as HomeIcon, Watch, Trophy, Sparkles, Cpu, Headphones, Gem, Footprints, ShoppingBag, Baby } from "lucide-react";
 import { useGetProductsQuery, useGetCategoriesQuery } from "@/modules/shopping/services/productApi";
 import { useGetCampaignsQuery, useGetFlashSalesQuery, useGetBundlesQuery, useGetVouchersQuery } from "@/modules/shopping/services/marketingApi";
 import ProductCard from "@/modules/catalog/components/ProductCard";
@@ -62,7 +62,7 @@ export default function Home() {
             {campaignsLoading ? (
                <div className="h-[450px] bg-slate-50  animate-pulse border border-slate-200" />
             ) : displayCampaigns.length > 0 ? (
-               <div className="relative h-[450px] overflow-hidden group shadow-2xl transition-all duration-700">
+               <div className="relative h-[450px] overflow-hidden group shadow-lg transition-all duration-700 border-[1px] border-gray-900 rounded-lg backdrop-blur-md bg-white/5 mx-2">
                   {displayCampaigns.map((camp: any, idx: number) => (
                      <div
                         key={camp._id}
@@ -301,6 +301,30 @@ function CategoryShowcase({ category }: { category: any }) {
       }
    };
 
+   const getCategoryIcon = (name: string) => {
+      const lowerName = name.toLowerCase();
+      // Fashion & Apparel
+      if (lowerName.includes('fashion') || lowerName.includes('clothing') || lowerName.includes('shirt')) return <Shirt className="w-6 h-6" />;
+      // Tech & Digital
+      if (lowerName.includes('phone') || lowerName.includes('mobile') || lowerName.includes('smartphone')) return <Smartphone className="w-6 h-6" />;
+      if (lowerName.includes('electronic') || lowerName.includes('tech') || lowerName.includes('gadget') || lowerName.includes('computer')) return <Cpu className="w-6 h-6" />;
+      if (lowerName.includes('audio') || lowerName.includes('headphone') || lowerName.includes('sound')) return <Headphones className="w-6 h-6" />;
+      // Lifestyle & Living
+      if (lowerName.includes('home') || lowerName.includes('living') || lowerName.includes('furniture') || lowerName.includes('kitchen')) return <HomeIcon className="w-6 h-6" />;
+      if (lowerName.includes('grocery') || lowerName.includes('food') || lowerName.includes('supermarket')) return <ShoppingBasket className="w-6 h-6" />;
+      // Accessories (The 90% use case)
+      if (lowerName.includes('watch') || lowerName.includes('timepiece')) return <Watch className="w-6 h-6" />;
+      if (lowerName.includes('accessory') || lowerName.includes('jewelry') || lowerName.includes('luxury') || lowerName.includes('gold') || lowerName.includes('diamond')) return <Gem className="w-6 h-6" />;
+      if (lowerName.includes('shoe') || lowerName.includes('footwear') || lowerName.includes('sneaker') || lowerName.includes('boot')) return <Footprints className="w-6 h-6" />;
+      if (lowerName.includes('bag') || lowerName.includes('handbag') || lowerName.includes('backpack') || lowerName.includes('purse')) return <ShoppingBag className="w-6 h-6" />;
+      // specialized
+      if (lowerName.includes('sport') || lowerName.includes('gym') || lowerName.includes('fitness')) return <Trophy className="w-6 h-6" />;
+      if (lowerName.includes('beauty') || lowerName.includes('makeup') || lowerName.includes('cosmetic') || lowerName.includes('skin')) return <Sparkles className="w-6 h-6" />;
+      if (lowerName.includes('baby') || lowerName.includes('kid') || lowerName.includes('toy')) return <Baby className="w-6 h-6" />;
+
+      return <ShoppingBag className="w-6 h-6 opacity-40" />; // Default Shopping Mall Vibe
+   };
+
    if (products.length === 0 && !isLoading) return null;
 
    return (
@@ -312,8 +336,21 @@ function CategoryShowcase({ category }: { category: any }) {
          {/* Category Header */}
          <div className="flex items-end justify-between mb-10 border-b border-slate-100 pb-8">
             <div className="flex flex-col gap-2">
-               <span className="text-2xl font-black text-slate-700 uppercase">{category.name} MallX</span>
-
+               <div className="flex items-center gap-4">
+                  <div className="relative group/icon">
+                     <div className="p-3 bg-white border border-slate-200 rounded-lg text-action group-hover/icon:bg-action group-hover/icon:text-black-200 transition-all duration-500 shadow-sm">
+                        {getCategoryIcon(category.name)}
+                     </div>
+                     {/* Dynamic Reason Indicator */}
+                     <div className="absolute right-full mr-4 top-1/2 -translate-y-1/2 px-4 py-2 bg-slate-900 text-white text-[9px] font-black uppercase tracking-widest rounded-xl whitespace-nowrap opacity-0 group-hover/icon:opacity-100 transition-opacity pointer-events-none z-20">
+                        <span className="flex items-center gap-2">
+                           <div className="w-1 h-1 bg-action rounded-full animate-ping" />
+                           Smart Matched For {category.name}
+                        </span>
+                     </div>
+                  </div>
+                  <span className="text-2xl font-black text-slate-700 uppercase">{category.name} MallX</span>
+               </div>
             </div>
             <div className="flex items-center gap-6">
                <div className="flex items-center gap-2 mr-4">
