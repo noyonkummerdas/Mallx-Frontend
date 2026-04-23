@@ -1,11 +1,12 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { apiSlice } from './api/apiSlice';
 import { setupListeners } from '@reduxjs/toolkit/query';
+import cartReducer from '@/modules/shopping/store/cartSlice';
 
 export const store = configureStore({
   reducer: {
     [apiSlice.reducerPath]: apiSlice.reducer,
-    // Add other slices here (e.g., auth, ui)
+    cart: cartReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(apiSlice.middleware),

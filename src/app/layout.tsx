@@ -4,6 +4,7 @@ import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { ReduxProvider } from "@/store/providers";
+import CartSyncProcessor from "@/modules/shopping/components/CartSyncProcessor";
 
 const poppins = Poppins({
   weight: ["400"],
@@ -27,6 +28,7 @@ export default function RootLayout({
         className={`${poppins.variable} font-sans antialiased`}
       >
         <ReduxProvider>
+          <CartSyncProcessor />
           <Navbar />
           {children}
           <Footer />

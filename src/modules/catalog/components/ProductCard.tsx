@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { Star, Eye, ShoppingBag, ArrowUpRight } from "lucide-react";
-import { useAddToCartMutation } from "@/modules/shopping/services/shoppingApi";
+import { useCart } from "@/modules/shopping/hooks/useCart";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 
@@ -33,17 +33,19 @@ interface ProductCardProps {
 
 export default function ProductCard({ product, layout = 'vertical' }: ProductCardProps) {
   const router = useRouter();
-  const [addToCart, { isLoading: isAdding }] = useAddToCartMutation();
+  const { addItem, isLoading: isAdding } = useCart();
 
   const handleQuickAdd = async (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
     try {
-      await addToCart({
+      await addItem({
         productId: product._id,
-        quantity: 1,
-        price: product.discountPrice || product.price
-      }).unwrap();
+        name: product.name,
+        price: product.discountPrice || product.price,
+        image: product.images?.[0]?.imageUrl || "",
+        quantity: 1
+      });
       router.push("/shopping/cart");
     } catch (err) {
       console.error("Failed to add to cart:", err);
