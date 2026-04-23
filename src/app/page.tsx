@@ -349,7 +349,7 @@ function CategoryShowcase({ category }: { category: any }) {
                         </span>
                      </div>
                   </div>
-                  <span className="text-2xl font-black text-slate-700 uppercase">{category.name} MallX</span>
+                  <span className="text-2xl font-black text-black-200 uppercase">{category.name}</span>
                </div>
             </div>
             <div className="flex items-center gap-6">
