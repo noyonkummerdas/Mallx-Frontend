@@ -37,7 +37,7 @@ export default function ProductListingPage() {
    // --- GROUP PRODUCTS BY CATEGORY (For Men's Selection) ---
    const groupedProducts = typeFromUrl === "men" 
       ? products.reduce((acc: any, product: any) => {
-          const catName = product.category?.name || "Other";
+          const catName = product.categoryId?.name || "Boutique Collection";
           if (!acc[catName]) acc[catName] = [];
           acc[catName].push(product);
           return acc;
@@ -177,21 +177,28 @@ export default function ProductListingPage() {
                         ))}
                      </div>
                   ) : typeFromUrl === "men" && groupedProducts ? (
-                     <div className="space-y-32">
+                     <div className="space-y-40">
                         {Object.entries(groupedProducts).map(([catName, catProducts]: [string, any], index) => (
-                           <section key={catName} className="relative">
-                              <header className="mb-12 flex flex-col gap-4">
-                                 <div className="flex items-center gap-4">
-                                    <span className="text-indigo-600 font-black text-xs tracking-widest opacity-40">0{index + 1}</span>
-                                    <div className="h-[1px] w-12 bg-indigo-600/20" />
-                                    <h3 className="text-2xl font-black text-slate-900 uppercase tracking-[0.2em]">{catName}</h3>
+                           <section key={catName} className="relative group/section">
+                              <header className="mb-16">
+                                 <div className="flex items-end justify-between border-b border-slate-100 pb-8 group-hover/section:border-indigo-500/30 transition-colors duration-500">
+                                    <div className="flex flex-col gap-4">
+                                       <div className="flex items-center gap-6">
+                                          <span className="text-indigo-600 font-black text-xs tracking-[0.5em] opacity-30">SECTION / 0{index + 1}</span>
+                                          <div className="h-[1px] w-20 bg-indigo-600/10" />
+                                       </div>
+                                       <h3 className="text-4xl md:text-6xl font-black text-slate-900 uppercase tracking-tighter transition-all group-hover/section:translate-x-2">
+                                          {catName}
+                                       </h3>
+                                    </div>
+                                    <div className="hidden md:flex flex-col items-end gap-2 mb-2">
+                                       <span className="text-[10px] font-black uppercase tracking-[0.4em] text-slate-400">Inventory Ident</span>
+                                       <span className="text-xl font-black text-slate-900">{catProducts.length} ARTICLES</span>
+                                    </div>
                                  </div>
-                                 <p className="text-[10px] text-slate-400 font-bold uppercase tracking-[0.4em] ml-16">
-                                    {catProducts.length} Exclusive Pieces Selected
-                                 </p>
                               </header>
                               
-                              <div className={`grid gap-10 transition-all duration-500 ${isSidebarOpen
+                              <div className={`grid gap-12 transition-all duration-700 ${isSidebarOpen
                                  ? 'grid-cols-1 sm:grid-cols-1 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5'
                                  : 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6'
                                  }`}>
