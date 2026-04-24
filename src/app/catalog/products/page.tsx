@@ -5,7 +5,10 @@ import ProductCard from "@/modules/catalog/components/ProductCard";
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
-import { Filter, X, ChevronRight, LayoutGrid, Search, SlidersHorizontal } from "lucide-react";
+import { 
+   Filter, X, ChevronRight, LayoutGrid, Search, SlidersHorizontal, 
+   Shirt, Watch, Briefcase, Zap, Star, Package, Diamond
+} from "lucide-react";
 
 export default function ProductListingPage() {
    const searchParams = useSearchParams();
@@ -16,6 +19,55 @@ export default function ProductListingPage() {
    const [selectedCategory, setSelectedCategory] = useState(categoryIdFromUrl || "");
    const [isSidebarOpen, setIsSidebarOpen] = useState(false);
    const [sidebarTop, setSidebarTop] = useState(0);
+
+   // --- DYNAMIC HERO CONTENT ---
+   const heroContent: any = {
+      men: {
+         title: "Men's",
+         accent: "Universe",
+         subtitle: "Curated Elite Series",
+         quote: "Redefining the modern silhouette with unparalleled precision and architectural grace.",
+         image: "https://images.unsplash.com/photo-1490578474895-699cd4e2cf59?q=80&w=2671&auto=format&fit=crop",
+         cta: "Shop Edition"
+      },
+      women: {
+         title: "Women's",
+         accent: "Elegance",
+         subtitle: "Luxury Couture Series",
+         quote: "Embracing the fluid intersection of contemporary art and timeless feminine grace.",
+         image: "https://images.unsplash.com/photo-1490481651871-ab68de25d43d?q=80&w=2670&auto=format&fit=crop",
+         cta: "Explore Atelier"
+      },
+      boysgirls: {
+         title: "Young",
+         accent: "Discovery",
+         subtitle: "Next-Gen Style Series",
+         quote: "Fueling the spirit of adventure with vibrant textures and playful modern aesthetics.",
+         image: "https://images.unsplash.com/photo-1514096702362-f0420e484c05?q=80&w=2670&auto=format&fit=crop",
+         cta: "Launch Series"
+      }
+   };
+
+   const currentHero = typeFromUrl ? heroContent[typeFromUrl] : null;
+
+   // --- DYNAMIC CATEGORY ICON MAPPER ---
+   const getCategoryIcon = (name: string) => {
+      const lowerName = name.toLowerCase();
+      // Apparel
+      if (lowerName.includes('shirt') || lowerName.includes('apparel') || lowerName.includes('cloth') || lowerName.includes('dress') || lowerName.includes('wear')) return <Shirt className="w-6 h-6" />;
+      // Timepieces
+      if (lowerName.includes('watch') || lowerName.includes('time')) return <Watch className="w-6 h-6" />;
+      // Toys & Tech
+      if (lowerName.includes('toy') || lowerName.includes('game') || lowerName.includes('play')) return <Zap className="w-6 h-6 animate-pulse" />;
+      // Accessories
+      if (lowerName.includes('bag') || lowerName.includes('accessories') || lowerName.includes('jewelry') || lowerName.includes('purse') || lowerName.includes('shoe')) return <Briefcase className="w-6 h-6" />;
+      // Tech/Gadgets
+      if (lowerName.includes('electronic') || lowerName.includes('gadget')) return <Zap className="w-6 h-6" />;
+      // Premium/New
+      if (lowerName.includes('premium') || lowerName.includes('exclusive') || lowerName.includes('beauty') || lowerName.includes('cosmetic')) return <Star className="w-6 h-6" />;
+      
+      return <Diamond className="w-6 h-6" />;
+   };
 
    // Sync URL changes with state
    useEffect(() => {
@@ -34,8 +86,9 @@ export default function ProductListingPage() {
    const products = productData?.data?.products || [];
    const categories = categoryData?.data || [];
 
-   // --- GROUP PRODUCTS BY CATEGORY (For Men's Selection) ---
-   const groupedProducts = typeFromUrl === "men" 
+   // --- GROUP PRODUCTS BY CATEGORY (For Elite Selection) ---
+   const isEliteView = typeFromUrl === "men" || typeFromUrl === "women" || typeFromUrl === "boysgirls";
+   const groupedProducts = isEliteView 
       ? products.reduce((acc: any, product: any) => {
           const catName = product.categoryId?.name || "Boutique Collection";
           if (!acc[catName]) acc[catName] = [];
@@ -43,6 +96,8 @@ export default function ProductListingPage() {
           return acc;
         }, {})
       : null;
+
+   const hasGroupedProducts = groupedProducts && Object.keys(groupedProducts).length > 0;
 
    return (
       <main className="min-h-screen mesh-gradient text-slate-900 relative selection:bg-indigo-600/10">
@@ -122,37 +177,38 @@ export default function ProductListingPage() {
             <div className={`min-w-0 transition-all duration-500 flex flex-col ${isSidebarOpen ? 'lg:ml-80' : ''}`}>
                <div className="p-6 lg:p-12 max-w-[1600px] mx-auto">
                   
-                  {/* --- MEN'S ELITE HERO SECTION --- */}
-                  {typeFromUrl === "men" && (
+                  {/* --- ELITE HERO SECTION (Dynamic for Men/Women) --- */}
+                  {currentHero && (
                      <div className="relative mb-24 rounded-[3rem] overflow-hidden group border border-slate-200/50 shadow-2xl shadow-slate-900/10">
                         <div className="absolute inset-0 bg-slate-900">
-                           <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1490578474895-699cd4e2cf59?q=80&w=2671&auto=format&fit=crop')] bg-cover bg-center opacity-30 mix-blend-overlay transition-transform duration-1000 group-hover:scale-105" />
+                           <div className="absolute inset-0 bg-cover bg-center opacity-30 mix-blend-overlay transition-transform duration-1000 group-hover:scale-105" 
+                                style={{ backgroundImage: `url(${currentHero.image})` }} />
                            <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/20 to-transparent" />
                         </div>
                         
                         <div className="relative p-12 lg:p-24 flex flex-col items-start gap-10">
                            <div className="flex items-center gap-3 px-5 py-2.5 bg-white/5 backdrop-blur-2xl rounded-full border border-white/10">
                               <div className="w-1.5 h-1.5 rounded-full bg-indigo-500 shadow-[0_0_12px_rgba(79,70,229,0.5)] animate-pulse" />
-                              <span className="text-[9px] font-bold text-white uppercase tracking-[0.4em]">Curated Elite Series</span>
+                              <span className="text-[9px] font-bold text-white uppercase tracking-[0.4em]">{currentHero.subtitle}</span>
                            </div>
                            
                            <div className="max-w-2xl">
                               <h2 className="text-6xl lg:text-8xl font-black text-white uppercase tracking-tighter leading-none mb-8">
-                                 Men's <br/>
-                                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-300 via-slate-200 to-indigo-100">Universe</span>
+                                 {currentHero.title} <br/>
+                                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-300 via-slate-200 to-indigo-100">{currentHero.accent}</span>
                               </h2>
                               <p className="text-slate-400 text-xl font-light italic leading-relaxed border-l-2 border-indigo-500/30 pl-8">
-                                 "Redefining the modern silhouette with unparalleled precision and architectural grace."
+                                 "{currentHero.quote}"
                               </p>
                            </div>
                            
                            <div className="flex flex-wrap items-center gap-8 mt-6">
                               <button className="group relative px-12 py-5 bg-white text-slate-900 rounded-2xl text-[10px] font-black uppercase tracking-[0.3em] overflow-hidden transition-all active:scale-95">
-                                 <span className="relative z-10 transition-colors group-hover:text-white">Shop Edition</span>
+                                 <span className="relative z-10 transition-colors group-hover:text-white">{currentHero.cta}</span>
                                  <div className="absolute inset-0 bg-slate-900 transform translate-y-full group-hover:translate-y-0 transition-transform duration-500" />
                               </button>
                               <button className="px-12 py-5 bg-transparent border border-white/10 text-white rounded-2xl text-[10px] font-black uppercase tracking-[0.3em] hover:bg-white/5 transition-all">
-                                 Lookbook
+                                 View Lookbook
                               </button>
                            </div>
                         </div>
@@ -166,69 +222,83 @@ export default function ProductListingPage() {
                      </div>
                   )}
 
-                  {/* 4. PRODUCT LISTING - CATEGORIZED FOR MEN, GRID FOR OTHERS */}
+                  {/* 4. PRODUCT LISTING - CATEGORIZED FOR ELITE VIEWS, GRID FOR OTHERS */}
                   {isLoading ? (
-                     <div className={`grid gap-8 ${isSidebarOpen
+                     <div className={`grid gap-12 ${isSidebarOpen
                         ? 'grid-cols-1 sm:grid-cols-1 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5'
                         : 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6'
                         }`}>
                         {[...Array(10)].map((_, i) => (
-                           <div key={i} className="aspect-square rounded-3xl bg-white/40 animate-pulse border border-white/20" />
+                           <div key={i} className="aspect-[3/4] rounded-[2.5rem] bg-white/40 animate-pulse border border-white/20" />
                         ))}
                      </div>
-                  ) : typeFromUrl === "men" && groupedProducts ? (
-                     <div className="space-y-40">
+                  ) : isEliteView && hasGroupedProducts ? (
+                     <div className="space-y-48 animate-in fade-in slide-in-from-bottom-10 duration-1000">
                         {Object.entries(groupedProducts).map(([catName, catProducts]: [string, any], index) => (
                            <section key={catName} className="relative group/section">
-                              <header className="mb-16">
-                                 <div className="flex items-end justify-between border-b border-slate-100 pb-8 group-hover/section:border-indigo-500/30 transition-colors duration-500">
-                                    <div className="flex flex-col gap-4">
-                                       <div className="flex items-center gap-6">
-                                          <span className="text-indigo-600 font-black text-xs tracking-[0.5em] opacity-30">SECTION / 0{index + 1}</span>
-                                          <div className="h-[1px] w-20 bg-indigo-600/10" />
+                              <header className="mb-20">
+                                 <div className="flex items-end justify-between border-b border-slate-100 pb-10 group-hover/section:border-indigo-500/40 transition-all duration-1000 ease-[cubic-bezier(0.16,1,0.3,1)]">
+                                    <div className="flex flex-col gap-6">
+                                       <div className="flex items-center gap-8">
+                                          <div className="flex items-center gap-3">
+                                             <div className="w-1.5 h-1.5 rounded-full bg-indigo-600 shadow-[0_0_15px_rgba(79,70,229,0.4)]" />
+                                             <span className="text-indigo-600 font-black text-[9px] tracking-[0.6em] uppercase">Division / 0{index + 1}</span>
+                                          </div>
+                                          <div className="h-[1px] w-24 bg-gradient-to-r from-indigo-600/20 to-transparent" />
                                        </div>
-                                       <h3 className="text-4xl md:text-6xl font-black text-slate-900 uppercase tracking-tighter transition-all group-hover/section:translate-x-2">
-                                          {catName}
-                                       </h3>
+                                       <div className="flex items-center gap-6">
+                                          <div className="w-16 h-16 rounded-2xl bg-slate-50 flex items-center justify-center text-slate-900 border border-slate-100 shadow-sm group-hover/section:scale-110 group-hover/section:bg-slate-900 group-hover/section:text-white transition-all duration-700">
+                                             {getCategoryIcon(catName)}
+                                          </div>
+                                          <h3 className="text-5xl md:text-7xl font-black text-slate-900 uppercase tracking-tighter transition-all duration-1000 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover/section:translate-x-4">
+                                             {catName}
+                                          </h3>
+                                       </div>
                                     </div>
-                                    <div className="hidden md:flex flex-col items-end gap-2 mb-2">
-                                       <span className="text-[10px] font-black uppercase tracking-[0.4em] text-slate-400">Inventory Ident</span>
-                                       <span className="text-xl font-black text-slate-900">{catProducts.length} ARTICLES</span>
+                                    <div className="hidden md:flex flex-col items-end gap-3 mb-4">
+                                       <div className="px-4 py-1.5 bg-slate-50 rounded-full border border-slate-100">
+                                          <span className="text-[9px] font-black uppercase tracking-[0.3em] text-slate-400">Authentic Inventory</span>
+                                       </div>
+                                       <span className="text-2xl font-black text-slate-950 tracking-tight">{catProducts.length} <span className="text-slate-300 font-light ml-1">Items</span></span>
                                     </div>
                                  </div>
                               </header>
                               
-                              <div className={`grid gap-12 transition-all duration-700 ${isSidebarOpen
+                              <div className={`grid gap-14 transition-all duration-1000 ease-[cubic-bezier(0.16,1,0.3,1)] ${isSidebarOpen
                                  ? 'grid-cols-1 sm:grid-cols-1 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5'
                                  : 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6'
                                  }`}>
                                  {catProducts.map((product: any) => (
-                                    <ProductCard key={product._id} product={product} />
+                                    <div key={product._id} className="transform transition-all duration-700 hover:-translate-y-2">
+                                       <ProductCard product={product} />
+                                    </div>
                                  ))}
                               </div>
                            </section>
                         ))}
                      </div>
                   ) : products.length > 0 ? (
-                     <div className={`grid gap-10 transition-all duration-500 ${isSidebarOpen
+                     <div className={`grid gap-14 transition-all duration-1000 ease-[cubic-bezier(0.16,1,0.3,1)] ${isSidebarOpen
                         ? 'grid-cols-1 sm:grid-cols-1 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5'
                         : 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6'
                         }`}>
                         {products.map((product: any) => (
-                           <ProductCard key={product._id} product={product} />
+                           <div key={product._id} className="transform transition-all duration-700 hover:-translate-y-2">
+                              <ProductCard product={product} />
+                           </div>
                         ))}
                      </div>
                   ) : (
-                     <div className="py-40 text-center glass-panel rounded-[4rem] border border-dashed border-slate-200 shadow-inner">
-                        <div className="w-24 h-24 bg-slate-50 rounded-full flex items-center justify-center mx-auto mb-8 border border-slate-100">
+                     <div className="py-48 text-center glass-panel rounded-[5rem] border border-dashed border-slate-200 shadow-[inset_0_20px_50px_rgba(0,0,0,0.02)]">
+                        <div className="w-28 h-28 bg-white rounded-full flex items-center justify-center mx-auto mb-10 shadow-2xl shadow-slate-200/50 border border-slate-50">
                            <Filter className="w-10 h-10 text-slate-200" />
                         </div>
-                        <p className="text-slate-400 font-black uppercase tracking-[0.3em] text-[10px]">No active products detected with current parameters</p>
+                        <p className="text-slate-400 font-bold uppercase tracking-[0.5em] text-[11px] mb-10">No active discoveries found</p>
                         <button
                            onClick={() => { setSelectedCategory(""); setSearch(""); }}
-                           className="mt-8 px-10 py-4 bg-slate-900 text-white rounded-2xl text-[10px] font-black uppercase tracking-widest hover:bg-indigo-600 transition-all active:scale-95 shadow-xl shadow-slate-900/20"
+                           className="px-12 py-5 bg-slate-950 text-white rounded-2xl text-[10px] font-black uppercase tracking-[0.3em] hover:bg-indigo-600 transition-all active:scale-95 shadow-2xl shadow-slate-900/20"
                         >
-                           Reset Explorer
+                           Reset Navigation
                         </button>
                      </div>
                   )}
