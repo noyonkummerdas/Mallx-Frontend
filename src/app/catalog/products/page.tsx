@@ -10,6 +10,7 @@ import { Filter, X, ChevronRight, LayoutGrid, Search, SlidersHorizontal } from "
 export default function ProductListingPage() {
    const searchParams = useSearchParams();
    const categoryIdFromUrl = searchParams.get("categoryId");
+   const typeFromUrl = searchParams.get("type");
 
    const [search, setSearch] = useState("");
    const [selectedCategory, setSelectedCategory] = useState(categoryIdFromUrl || "");
@@ -26,11 +27,22 @@ export default function ProductListingPage() {
    const { data: categoryData, isLoading: catLoading } = useGetCategoriesQuery({});
    const { data: productData, isLoading } = useGetProductsQuery({
       name: search,
-      categoryId: selectedCategory
+      categoryId: selectedCategory,
+      type: typeFromUrl || undefined
    });
 
    const products = productData?.data?.products || [];
    const categories = categoryData?.data || [];
+
+   // --- GROUP PRODUCTS BY CATEGORY (For Men's Selection) ---
+   const groupedProducts = typeFromUrl === "men" 
+      ? products.reduce((acc: any, product: any) => {
+          const catName = product.category?.name || "Other";
+          if (!acc[catName]) acc[catName] = [];
+          acc[catName].push(product);
+          return acc;
+        }, {})
+      : null;
 
    return (
       <main className="min-h-screen mesh-gradient text-slate-900 relative selection:bg-indigo-600/10">
@@ -109,53 +121,89 @@ export default function ProductListingPage() {
             {/* 3. MAIN CONTENT AREA - FULL WIDTH BY DEFAULT */}
             <div className={`min-w-0 transition-all duration-500 flex flex-col ${isSidebarOpen ? 'lg:ml-80' : ''}`}>
                <div className="p-6 lg:p-12 max-w-[1600px] mx-auto">
-                  <header className="mb-16 flex flex-col md:flex-row items-start md:items-center justify-between gap-8">
-                     <div className="flex items-center gap-10 min-h-[64px]">
-                        {!isSidebarOpen && (
-                           <button
-                              onClick={(e) => {
-                                 const rect = e.currentTarget.getBoundingClientRect();
-                                 setSidebarTop(rect.top);
-                                 setIsSidebarOpen(true);
-                              }}
-                              className="p-5 bg-white border border-gray-300 rounded-lg hover:border-gray-900 transition-all active:scale-95 group relative overflow-hidden"
-                              title="Open Filters"
-                           >
-                              <div className="flex flex-col gap-1.5 w-6 relative z-10">
-                                 <div className="h-0.5 bg-slate-900 rounded-full w-full" />
-                                 <div className="h-0.5 bg-slate-900 rounded-full w-2/3 transition-all group-hover:w-full" />
-                                 <div className="h-0.5 bg-slate-900 rounded-full w-full" />
-                              </div>
-                           </button>
-                        )}
-                        <div className="flex flex-col">
-                           <span className="text-green-600 font-extrabold tracking-[0.6em] text-[12px] uppercase opacity-70 mb-1 ml-2">Collection Focus</span>
-                           <h1 className="text-3xl md:text-5xl font-black text-slate-900 tracking-[0.1em] uppercase leading-none">
-                              {selectedCategory ? categories.find((c: any) => c._id === selectedCategory)?.name : 'Global Collection'}
-                           </h1>
+                  
+                  {/* --- MEN'S ELITE HERO SECTION --- */}
+                  {typeFromUrl === "men" && (
+                     <div className="relative mb-24 rounded-[3rem] overflow-hidden group border border-slate-200/50 shadow-2xl shadow-slate-900/10">
+                        <div className="absolute inset-0 bg-slate-900">
+                           <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1490578474895-699cd4e2cf59?q=80&w=2671&auto=format&fit=crop')] bg-cover bg-center opacity-30 mix-blend-overlay transition-transform duration-1000 group-hover:scale-105" />
+                           <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/20 to-transparent" />
+                        </div>
+                        
+                        <div className="relative p-12 lg:p-24 flex flex-col items-start gap-10">
+                           <div className="flex items-center gap-3 px-5 py-2.5 bg-white/5 backdrop-blur-2xl rounded-full border border-white/10">
+                              <div className="w-1.5 h-1.5 rounded-full bg-indigo-500 shadow-[0_0_12px_rgba(79,70,229,0.5)] animate-pulse" />
+                              <span className="text-[9px] font-bold text-white uppercase tracking-[0.4em]">Curated Elite Series</span>
+                           </div>
+                           
+                           <div className="max-w-2xl">
+                              <h2 className="text-6xl lg:text-8xl font-black text-white uppercase tracking-tighter leading-none mb-8">
+                                 Men's <br/>
+                                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-300 via-slate-200 to-indigo-100">Universe</span>
+                              </h2>
+                              <p className="text-slate-400 text-xl font-light italic leading-relaxed border-l-2 border-indigo-500/30 pl-8">
+                                 "Redefining the modern silhouette with unparalleled precision and architectural grace."
+                              </p>
+                           </div>
+                           
+                           <div className="flex flex-wrap items-center gap-8 mt-6">
+                              <button className="group relative px-12 py-5 bg-white text-slate-900 rounded-2xl text-[10px] font-black uppercase tracking-[0.3em] overflow-hidden transition-all active:scale-95">
+                                 <span className="relative z-10 transition-colors group-hover:text-white">Shop Edition</span>
+                                 <div className="absolute inset-0 bg-slate-900 transform translate-y-full group-hover:translate-y-0 transition-transform duration-500" />
+                              </button>
+                              <button className="px-12 py-5 bg-transparent border border-white/10 text-white rounded-2xl text-[10px] font-black uppercase tracking-[0.3em] hover:bg-white/5 transition-all">
+                                 Lookbook
+                              </button>
+                           </div>
+                        </div>
+
+                        {/* Minimal Stats */}
+                        <div className="absolute top-12 right-12 hidden md:block">
+                           <div className="flex flex-col items-end gap-2">
+                              <span className="text-4xl font-black text-white/20 tracking-tighter">EST. 2024</span>
+                           </div>
                         </div>
                      </div>
+                  )}
 
-                     <div className="flex items-center gap-4 self-end md:self-auto">
-                        <div className="px-5 py-2 glass-panel rounded-full border border-white/40 flex items-center gap-3 shadow-xl shadow-indigo-500/5">
-                           <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 shadow-[0_0_12px_rgba(16,185,129,0.4)]" />
-                           <span className="text-[8px] font-black  uppercase tracking-[0.4em]">{products.length} Discovery Found</span>
-                        </div>
-                     </div>
-                  </header>
-
-                  {/* 4. PRODUCT GRID - DYNAMIC COLUMNS */}
+                  {/* 4. PRODUCT LISTING - CATEGORIZED FOR MEN, GRID FOR OTHERS */}
                   {isLoading ? (
                      <div className={`grid gap-8 ${isSidebarOpen
                         ? 'grid-cols-1 sm:grid-cols-1 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5'
                         : 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6'
                         }`}>
                         {[...Array(10)].map((_, i) => (
-                           <div key={i} className="aspect-square rounded-2xl bg-white/40 animate-pulse border border-white/20" />
+                           <div key={i} className="aspect-square rounded-3xl bg-white/40 animate-pulse border border-white/20" />
+                        ))}
+                     </div>
+                  ) : typeFromUrl === "men" && groupedProducts ? (
+                     <div className="space-y-32">
+                        {Object.entries(groupedProducts).map(([catName, catProducts]: [string, any], index) => (
+                           <section key={catName} className="relative">
+                              <header className="mb-12 flex flex-col gap-4">
+                                 <div className="flex items-center gap-4">
+                                    <span className="text-indigo-600 font-black text-xs tracking-widest opacity-40">0{index + 1}</span>
+                                    <div className="h-[1px] w-12 bg-indigo-600/20" />
+                                    <h3 className="text-2xl font-black text-slate-900 uppercase tracking-[0.2em]">{catName}</h3>
+                                 </div>
+                                 <p className="text-[10px] text-slate-400 font-bold uppercase tracking-[0.4em] ml-16">
+                                    {catProducts.length} Exclusive Pieces Selected
+                                 </p>
+                              </header>
+                              
+                              <div className={`grid gap-10 transition-all duration-500 ${isSidebarOpen
+                                 ? 'grid-cols-1 sm:grid-cols-1 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5'
+                                 : 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6'
+                                 }`}>
+                                 {catProducts.map((product: any) => (
+                                    <ProductCard key={product._id} product={product} />
+                                 ))}
+                              </div>
+                           </section>
                         ))}
                      </div>
                   ) : products.length > 0 ? (
-                     <div className={`grid gap-8 transition-all duration-500 ${isSidebarOpen
+                     <div className={`grid gap-10 transition-all duration-500 ${isSidebarOpen
                         ? 'grid-cols-1 sm:grid-cols-1 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5'
                         : 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6'
                         }`}>
@@ -164,15 +212,14 @@ export default function ProductListingPage() {
                         ))}
                      </div>
                   ) : (
-                     <div className="py-40 text-center glass-panel rounded-[3rem] border border-dashed border-slate-200 shadow-inner">
+                     <div className="py-40 text-center glass-panel rounded-[4rem] border border-dashed border-slate-200 shadow-inner">
                         <div className="w-24 h-24 bg-slate-50 rounded-full flex items-center justify-center mx-auto mb-8 border border-slate-100">
                            <Filter className="w-10 h-10 text-slate-200" />
                         </div>
-                        {/* <h3 className="text-xl font-black text-slate-900 uppercase tracking-tighter mb-2">Sector Depleted</h3> */}
                         <p className="text-slate-400 font-black uppercase tracking-[0.3em] text-[10px]">No active products detected with current parameters</p>
                         <button
                            onClick={() => { setSelectedCategory(""); setSearch(""); }}
-                           className="mt-8 px-8 py-3 bg-slate-900 text-white rounded-2xl text-[10px] font-black uppercase tracking-widest hover:bg-action transition-all active:scale-95 shadow-xl shadow-slate-900/20"
+                           className="mt-8 px-10 py-4 bg-slate-900 text-white rounded-2xl text-[10px] font-black uppercase tracking-widest hover:bg-indigo-600 transition-all active:scale-95 shadow-xl shadow-slate-900/20"
                         >
                            Reset Explorer
                         </button>
