@@ -93,16 +93,16 @@ export default function CheckoutPage() {
   };
 
   return (
-    <main className="min-h-screen bg-slate-50 text-slate-900 p-8">
+    <main className="min-h-screen bg-white text-black-200 p-8">
       <div className="max-w-7xl mx-auto">
-        <h1 className="text-base font-black mb-12 tracking-tight text-slate-900 uppercase">Checkout</h1>
+        <h1 className="text-base font-black mb-12 tracking-tight text-black-200 uppercase">Checkout</h1>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
           {/* Shipping Info */}
           <div className="space-y-10">
             <section>
               <h2 className="text-base font-black mb-6 flex items-center gap-4">
-                <span className="w-10 h-10 rounded-2xl bg-indigo-600 flex items-center justify-center text-sm font-black text-white shadow-lg shadow-indigo-600/20">1</span>
+                <span className="w-10 h-10 rounded-2xl bg-orange-400 flex items-center justify-center text-sm font-black text-white shadow-lg shadow-black-200/20">1</span>
                 Delivery Destination
               </h2>
 
@@ -118,13 +118,13 @@ export default function CheckoutPage() {
                         : "border-white bg-white hover:border-slate-200"
                         }`}
                     >
-                      <p className="font-black text-sm text-slate-900 mb-1 uppercase tracking-tight">{addr.addressLine}</p>
+                      <p className="font-black text-sm text-black-200 mb-1 uppercase tracking-tight">{addr.addressLine}</p>
                       <p className="text-sm text-slate-500 font-black uppercase tracking-widest">{addr.city}, {addr.zip}</p>
                     </div>
                   ))}
                   <button
                     onClick={() => setShowAddressForm(true)}
-                    className="p-6 rounded-3xl border-2 border-dashed border-slate-200 bg-transparent hover:bg-slate-50 transition-all flex flex-col items-center justify-center gap-2 group"
+                    className="p-6 rounded-xl border-2 border-dashed border-gray-200 bg-transparent hover:bg-gray-100 hover:border-gray-200 hover:text-gray-600 transition-all flex flex-col items-center justify-center gap-2 group"
                   >
                     <svg className="w-5 h-5 text-slate-300 group-hover:text-indigo-600 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M12 4v16m8-8H4" /></svg>
                     <span className="text-sm font-black text-slate-400 uppercase tracking-widest group-hover:text-indigo-600">New Location</span>
@@ -133,7 +133,7 @@ export default function CheckoutPage() {
 
                 {showAddressForm && (
                   <form onSubmit={handleAddAddress} className="bg-white border border-indigo-100 p-8 rounded-[2.5rem] animate-in slide-in-from-top-4 fade-in duration-300">
-                    <h3 className="text-sm font-black text-indigo-600 uppercase tracking-widest mb-6 border-l-4 border-indigo-600 pl-4">Register New Address</h3>
+                    <h3 className="text-sm font-black text-black-200 uppercase tracking-widest mb-6 border-l-4 border-indigo-600 pl-4">Register New Address</h3>
                     <div className="space-y-4">
                       <input
                         required
@@ -197,16 +197,16 @@ export default function CheckoutPage() {
 
             <section>
               <h2 className="text-base font-black mb-6 flex items-center gap-4">
-                <span className="w-10 h-10 rounded-2xl bg-indigo-600 flex items-center justify-center text-sm font-black text-white shadow-lg shadow-indigo-600/20">2</span>
+                <span className="w-10 h-10 rounded-2xl bg-orange-400 flex items-center justify-center text-sm font-black text-white shadow-lg shadow-indigo-600/20">2</span>
                 Preferred Payment
               </h2>
-              <div className="bg-white border-2 border-indigo-600 p-8 rounded-[2.5rem] flex items-center justify-between shadow-xl shadow-indigo-600/5">
+              <div className="bg-white border-2 border-gray-200 p-8  flex items-center justify-between shadow-xl shadow-indigo-600/5">
                 <div className="flex items-center gap-5">
-                  <div className="w-14 h-14 bg-indigo-50 rounded-2xl flex items-center justify-center border border-indigo-100">
-                    <svg className="w-7 h-7 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z" /></svg>
+                  <div className="w-14 h-14 bg-white-50 rounded-lg flex items-center justify-center border border-gray-200">
+                    <svg className="w-7 h-7 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z" /></svg>
                   </div>
                   <div>
-                    <p className="font-black text-slate-900 uppercase tracking-tight">Cash on Delivery</p>
+                    <p className="font-black text-black-200 uppercase tracking-tight">Cash on Delivery</p>
                     <p className="text-sm text-slate-500 font-black">Pay upon successful item reception</p>
                   </div>
                 </div>
@@ -216,21 +216,21 @@ export default function CheckoutPage() {
           </div>
 
           {/* Order Review */}
-          <div className="bg-white border border-slate-200 p-10 rounded-[3rem] shadow-2xl shadow-slate-200/50">
+          <div className="bg-white border border-gray-300 rounded-xl p-5 shadow-lg shadow-gray-200/50">
             <h2 className="text-base font-black mb-8 border-b-4 border-black pb-4 tracking-tighter uppercase">Review Selection</h2>
             <div className="space-y-6 mb-10 pb-8 border-b border-slate-100 max-h-[400px] overflow-y-auto pr-4 custom-scrollbar">
               {cartData?.data?.items?.map((item: any) => (
                 <div key={item._id} className="flex justify-between items-center group">
-                  <div className="flex items-center gap-4">
+                  <div className="flex items-center gap-2">
                     <div className="w-14 h-14 bg-slate-50 rounded-xl overflow-hidden border border-slate-100 group-hover:border-indigo-200 transition-colors">
                       <img src={item.productId?.images?.[0]?.url} alt="" className="w-full h-full object-cover" />
                     </div>
                     <div>
-                      <p className="font-black text-sm line-clamp-1 uppercase tracking-tight text-slate-900">{item.productId?.name}</p>
+                      <p className="font-black text-sm line-clamp-1 uppercase tracking-tight text-black-200">{item.productId?.name}</p>
                       <p className="text-sm font-black text-slate-400 uppercase tracking-widest">Qty: {item.quantity} · {item.variantId?.size}</p>
                     </div>
                   </div>
-                  <span className="font-black text-sm text-slate-900">{(item.price * item.quantity).toLocaleString()} TK</span>
+                  <span className="font-black text-sm text-black-200">{(item.price * item.quantity).toLocaleString()} TK</span>
                 </div>
               ))}
             </div>
@@ -238,11 +238,11 @@ export default function CheckoutPage() {
             <div className="space-y-4 mb-10">
               <div className="flex justify-between text-slate-500 font-black uppercase tracking-widest text-sm">
                 <span>Subtotal</span>
-                <span className="text-slate-900 font-black">{subtotal.toLocaleString()} TK</span>
+                <span className="text-black-200 font-black">{subtotal.toLocaleString()} TK</span>
               </div>
               <div className="flex justify-between text-slate-500 font-black uppercase tracking-widest text-sm">
                 <span>Logistics Fee</span>
-                <span className={deliveryCharge === 0 ? "text-green-600 font-black" : "text-slate-900 font-black"}>
+                <span className={deliveryCharge === 0 ? "text-green-600 font-black" : "text-black-200 font-black"}>
                   {deliveryCharge === 0 ? "FREE" : `${deliveryCharge.toLocaleString()} TK`}
                 </span>
               </div>
@@ -253,7 +253,7 @@ export default function CheckoutPage() {
                 </div>
               )}
               <div className="flex justify-between text-base font-black pt-6 border-t font-black border-slate-100 tracking-tighter">
-                <span className="text-slate-900 uppercase">Total pay</span>
+                <span className="text-black-200 uppercase">Total pay</span>
                 <span className="text-indigo-600">{grandTotal.toLocaleString()} TK</span>
               </div>
             </div>
@@ -261,7 +261,7 @@ export default function CheckoutPage() {
             <button
               onClick={handlePlaceOrder}
               disabled={isCheckingOut}
-              className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-black py-6 rounded-3xl shadow-2xl shadow-indigo-600/30 transition-all active:scale-95 disabled:opacity-50 uppercase tracking-widest text-sm"
+              className="w-full bg-black hover:bg-black-300 text-white font-black py-6 rounded-xl shadow-lg shadow-gray-200/30 transition-all active:scale-95 disabled:opacity-50 uppercase tracking-widest text-sm"
             >
               {isCheckingOut ? "Connecting Systems..." : `Secure Order - ${grandTotal.toLocaleString()} TK`}
             </button>

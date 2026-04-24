@@ -108,13 +108,13 @@ export default function Home() {
                   onClick={() => scrollCategories('left')}
                   className="w-12 h-12 rounded-full bg-white shadow-xl border border-slate-100 flex items-center justify-center pointer-events-auto hover:bg-slate-50 active:scale-90 transition-all ml-2"
                >
-                  <ChevronLeft className="w-6 h-6 text-slate-600" />
+                  {/* <ChevronLeft className="w-6 h-6 text-slate-600" /> */}
                </button>
                <button
                   onClick={() => scrollCategories('right')}
                   className="w-12 h-12 rounded-full bg-white shadow-xl border border-slate-100 flex items-center justify-center pointer-events-auto hover:bg-slate-50 active:scale-90 transition-all mr-2"
                >
-                  <ChevronRight className="w-6 h-6 text-slate-600" />
+                  {/* <ChevronRight className="w-6 h-6 text-slate-600" /> */}
                </button>
             </div>
 
