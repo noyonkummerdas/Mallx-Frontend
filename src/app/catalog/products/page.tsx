@@ -233,21 +233,30 @@ export default function ProductListingPage() {
                         ))}
                      </div>
                   ) : isEliteView && hasGroupedProducts ? (
-                     <div className="space-y-48 animate-in fade-in slide-in-from-bottom-10 duration-1000">
+                     <div className={`space-y-48 animate-in fade-in slide-in-from-bottom-10 duration-1000 relative`}>
+                        {/* Dynamic Background Glow for Youthful Vibe */}
+                        {typeFromUrl === "boysgirls" && (
+                           <div className="absolute -top-24 -left-24 w-[600px] h-[600px] bg-cyan-400/10 blur-[120px] -z-10 rounded-full animate-pulse" />
+                        )}
+                        
                         {Object.entries(groupedProducts).map(([catName, catProducts]: [string, any], index) => (
                            <section key={catName} className="relative group/section">
                               <header className="mb-20">
-                                 <div className="flex items-end justify-between border-b border-slate-100 pb-10 group-hover/section:border-indigo-500/40 transition-all duration-1000 ease-[cubic-bezier(0.16,1,0.3,1)]">
+                                 <div className={`flex items-end justify-between border-b border-slate-100 pb-10 transition-all duration-1000 ease-[cubic-bezier(0.16,1,0.3,1)] ${typeFromUrl === 'boysgirls' ? 'group-hover/section:border-cyan-500/40' : 'group-hover/section:border-indigo-500/40'}`}>
                                     <div className="flex flex-col gap-6">
                                        <div className="flex items-center gap-8">
                                           <div className="flex items-center gap-3">
-                                             <div className="w-1.5 h-1.5 rounded-full bg-indigo-600 shadow-[0_0_15px_rgba(79,70,229,0.4)]" />
-                                             <span className="text-indigo-600 font-black text-[9px] tracking-[0.6em] uppercase">Division / 0{index + 1}</span>
+                                             <div className={`w-1.5 h-1.5 rounded-full shadow-[0_0_15px_rgba(79,70,229,0.4)] ${typeFromUrl === 'boysgirls' ? 'bg-cyan-500 shadow-cyan-500/40' : 'bg-indigo-600 shadow-indigo-600/40'}`} />
+                                             <span className={`${typeFromUrl === 'boysgirls' ? 'text-cyan-600' : 'text-indigo-600'} font-black text-[9px] tracking-[0.6em] uppercase`}>Division / 0{index + 1}</span>
                                           </div>
-                                          <div className="h-[1px] w-24 bg-gradient-to-r from-indigo-600/20 to-transparent" />
+                                          <div className="h-[1px] w-24 bg-gradient-to-r from-slate-200 to-transparent" />
                                        </div>
                                        <div className="flex items-center gap-6">
-                                          <div className="w-16 h-16 rounded-2xl bg-slate-50 flex items-center justify-center text-slate-900 border border-slate-100 shadow-sm group-hover/section:scale-110 group-hover/section:bg-slate-900 group-hover/section:text-white transition-all duration-700">
+                                          <div className={`w-16 h-16 rounded-2xl flex items-center justify-center border transition-all duration-700 ${
+                                             typeFromUrl === 'boysgirls' 
+                                             ? 'bg-cyan-50/50 text-cyan-600 border-cyan-100 group-hover/section:bg-cyan-500 group-hover/section:text-white group-hover/section:scale-110 shadow-sm' 
+                                             : 'bg-slate-50 text-slate-900 border-slate-100 group-hover/section:bg-slate-900 group-hover/section:text-white group-hover/section:scale-110 shadow-sm'
+                                          }`}>
                                              {getCategoryIcon(catName)}
                                           </div>
                                           <h3 className="text-5xl md:text-7xl font-black text-slate-900 uppercase tracking-tighter transition-all duration-1000 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover/section:translate-x-4">
