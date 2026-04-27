@@ -253,8 +253,8 @@ export default function ProductListingPage() {
                                        </div>
                                        <div className="flex items-center gap-6">
                                           <div className={`w-16 h-16 rounded-2xl flex items-center justify-center border transition-all duration-700 ${typeFromUrl === 'boysgirls'
-                                                ? 'bg-cyan-50/50 text-cyan-600 border-cyan-100 group-hover/section:bg-cyan-500 group-hover/section:text-white group-hover/section:scale-110 shadow-sm'
-                                                : 'bg-slate-50 text-slate-900 border-slate-100 group-hover/section:bg-slate-900 group-hover/section:text-white group-hover/section:scale-110 shadow-sm'
+                                             ? 'bg-cyan-50/50 text-cyan-600 border-cyan-100 group-hover/section:bg-cyan-500 group-hover/section:text-white group-hover/section:scale-110 shadow-sm'
+                                             : 'bg-slate-50 text-slate-900 border-slate-100 group-hover/section:bg-slate-900 group-hover/section:text-white group-hover/section:scale-110 shadow-sm'
                                              }`}>
                                              {getCategoryIcon(catName)}
                                           </div>
@@ -265,7 +265,7 @@ export default function ProductListingPage() {
                                     </div>
                                     <div className="hidden md:flex flex-col items-end gap-3 mb-4">
                                        <div className="px-4 py-1.5 bg-slate-50 rounded-full border border-slate-100">
-                                          <span className="text-[9px] font-black uppercase tracking-[0.3em] text-slate-400">Authentic Inventory</span>
+                                          <span className="text-[9px] font-black uppercase tracking-[0.3em] text-slate-400">Inventory</span>
                                        </div>
                                        <span className="text-2xl font-black text-slate-950 tracking-tight">{catProducts.length} <span className="text-slate-300 font-light ml-1">Items</span></span>
                                     </div>
