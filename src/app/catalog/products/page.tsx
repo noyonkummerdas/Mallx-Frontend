@@ -5,8 +5,8 @@ import ProductCard from "@/modules/catalog/components/ProductCard";
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
-import { 
-   Filter, X, ChevronRight, LayoutGrid, Search, SlidersHorizontal, 
+import {
+   Filter, X, ChevronRight, LayoutGrid, Search, SlidersHorizontal,
    Shirt, Watch, Briefcase, Zap, Star, Package, Diamond
 } from "lucide-react";
 
@@ -65,7 +65,7 @@ export default function ProductListingPage() {
       if (lowerName.includes('electronic') || lowerName.includes('gadget')) return <Zap className="w-6 h-6" />;
       // Premium/New
       if (lowerName.includes('premium') || lowerName.includes('exclusive') || lowerName.includes('beauty') || lowerName.includes('cosmetic')) return <Star className="w-6 h-6" />;
-      
+
       return <Diamond className="w-6 h-6" />;
    };
 
@@ -88,13 +88,13 @@ export default function ProductListingPage() {
 
    // --- GROUP PRODUCTS BY CATEGORY (For Elite Selection) ---
    const isEliteView = typeFromUrl === "men" || typeFromUrl === "women" || typeFromUrl === "boysgirls";
-   const groupedProducts = isEliteView 
+   const groupedProducts = isEliteView
       ? products.reduce((acc: any, product: any) => {
-          const catName = product.categoryId?.name || "Boutique Collection";
-          if (!acc[catName]) acc[catName] = [];
-          acc[catName].push(product);
-          return acc;
-        }, {})
+         const catName = product.categoryId?.name || "Boutique Collection";
+         if (!acc[catName]) acc[catName] = [];
+         acc[catName].push(product);
+         return acc;
+      }, {})
       : null;
 
    const hasGroupedProducts = groupedProducts && Object.keys(groupedProducts).length > 0;
@@ -176,32 +176,32 @@ export default function ProductListingPage() {
             {/* 3. MAIN CONTENT AREA - FULL WIDTH BY DEFAULT */}
             <div className={`min-w-0 transition-all duration-500 flex flex-col ${isSidebarOpen ? 'lg:ml-80' : ''}`}>
                <div className="p-6 lg:p-12 max-w-[1600px] mx-auto">
-                  
+
                   {/* --- ELITE HERO SECTION (Dynamic for Men/Women) --- */}
                   {currentHero && (
                      <div className="relative mb-24 rounded-[3rem] overflow-hidden group border border-slate-200/50 shadow-2xl shadow-slate-900/10">
                         <div className="absolute inset-0 bg-slate-900">
-                           <div className="absolute inset-0 bg-cover bg-center opacity-30 mix-blend-overlay transition-transform duration-1000 group-hover:scale-105" 
-                                style={{ backgroundImage: `url(${currentHero.image})` }} />
+                           <div className="absolute inset-0 bg-cover bg-center opacity-30 mix-blend-overlay transition-transform duration-1000 group-hover:scale-105"
+                              style={{ backgroundImage: `url(${currentHero.image})` }} />
                            <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/20 to-transparent" />
                         </div>
-                        
+
                         <div className="relative p-12 lg:p-24 flex flex-col items-start gap-10">
                            <div className="flex items-center gap-3 px-5 py-2.5 bg-white/5 backdrop-blur-2xl rounded-full border border-white/10">
                               <div className="w-1.5 h-1.5 rounded-full bg-indigo-500 shadow-[0_0_12px_rgba(79,70,229,0.5)] animate-pulse" />
                               <span className="text-[9px] font-bold text-white uppercase tracking-[0.4em]">{currentHero.subtitle}</span>
                            </div>
-                           
+
                            <div className="max-w-2xl">
                               <h2 className="text-6xl lg:text-8xl font-black text-white uppercase tracking-tighter leading-none mb-8">
-                                 {currentHero.title} <br/>
+                                 {currentHero.title} <br />
                                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-300 via-slate-200 to-indigo-100">{currentHero.accent}</span>
                               </h2>
                               <p className="text-slate-400 text-xl font-light italic leading-relaxed border-l-2 border-indigo-500/30 pl-8">
                                  "{currentHero.quote}"
                               </p>
                            </div>
-                           
+
                            <div className="flex flex-wrap items-center gap-8 mt-6">
                               <button className="group relative px-12 py-5 bg-white text-slate-900 rounded-2xl text-[10px] font-black uppercase tracking-[0.3em] overflow-hidden transition-all active:scale-95">
                                  <span className="relative z-10 transition-colors group-hover:text-white">{currentHero.cta}</span>
@@ -238,7 +238,7 @@ export default function ProductListingPage() {
                         {typeFromUrl === "boysgirls" && (
                            <div className="absolute -top-24 -left-24 w-[600px] h-[600px] bg-cyan-400/10 blur-[120px] -z-10 rounded-full animate-pulse" />
                         )}
-                        
+
                         {Object.entries(groupedProducts).map(([catName, catProducts]: [string, any], index) => (
                            <section key={catName} className="relative group/section">
                               <header className="mb-20">
@@ -247,16 +247,15 @@ export default function ProductListingPage() {
                                        <div className="flex items-center gap-8">
                                           <div className="flex items-center gap-3">
                                              <div className={`w-1.5 h-1.5 rounded-full shadow-[0_0_15px_rgba(79,70,229,0.4)] ${typeFromUrl === 'boysgirls' ? 'bg-cyan-500 shadow-cyan-500/40' : 'bg-indigo-600 shadow-indigo-600/40'}`} />
-                                             <span className={`${typeFromUrl === 'boysgirls' ? 'text-cyan-600' : 'text-indigo-600'} font-black text-[9px] tracking-[0.6em] uppercase`}>Division / 0{index + 1}</span>
+                                             {/* <span className={`${typeFromUrl === 'boysgirls' ? 'text-cyan-600' : 'text-indigo-600'} font-black text-[9px] tracking-[0.6em] uppercase`}>Division / 0{index + 1}</span> */}
                                           </div>
                                           <div className="h-[1px] w-24 bg-gradient-to-r from-slate-200 to-transparent" />
                                        </div>
                                        <div className="flex items-center gap-6">
-                                          <div className={`w-16 h-16 rounded-2xl flex items-center justify-center border transition-all duration-700 ${
-                                             typeFromUrl === 'boysgirls' 
-                                             ? 'bg-cyan-50/50 text-cyan-600 border-cyan-100 group-hover/section:bg-cyan-500 group-hover/section:text-white group-hover/section:scale-110 shadow-sm' 
-                                             : 'bg-slate-50 text-slate-900 border-slate-100 group-hover/section:bg-slate-900 group-hover/section:text-white group-hover/section:scale-110 shadow-sm'
-                                          }`}>
+                                          <div className={`w-16 h-16 rounded-2xl flex items-center justify-center border transition-all duration-700 ${typeFromUrl === 'boysgirls'
+                                                ? 'bg-cyan-50/50 text-cyan-600 border-cyan-100 group-hover/section:bg-cyan-500 group-hover/section:text-white group-hover/section:scale-110 shadow-sm'
+                                                : 'bg-slate-50 text-slate-900 border-slate-100 group-hover/section:bg-slate-900 group-hover/section:text-white group-hover/section:scale-110 shadow-sm'
+                                             }`}>
                                              {getCategoryIcon(catName)}
                                           </div>
                                           <h3 className="text-5xl md:text-7xl font-black text-slate-900 uppercase tracking-tighter transition-all duration-1000 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover/section:translate-x-4">
@@ -272,7 +271,7 @@ export default function ProductListingPage() {
                                     </div>
                                  </div>
                               </header>
-                              
+
                               <div className={`grid gap-14 transition-all duration-1000 ease-[cubic-bezier(0.16,1,0.3,1)] ${isSidebarOpen
                                  ? 'grid-cols-1 sm:grid-cols-1 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5'
                                  : 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6'
