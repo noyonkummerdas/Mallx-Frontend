@@ -265,7 +265,7 @@ export default function ProductListingPage() {
                                     </div>
                                     <div className="hidden md:flex flex-col items-end gap-3 mb-4">
                                        <div className="px-4 py-1.5 bg-slate-50 rounded-full border border-slate-100">
-                                          <span className="text-[9px] font-black uppercase tracking-[0.3em] text-slate-400"> Inventory</span>
+                                          <span className="text-[9px] font-black uppercase tracking-[0.3em] text-slate-400">Authentic Inventory</span>
                                        </div>
                                        <span className="text-2xl font-black text-slate-950 tracking-tight">{catProducts.length} <span className="text-slate-300 font-light ml-1">Items</span></span>
                                     </div>
