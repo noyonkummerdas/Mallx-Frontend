@@ -306,7 +306,7 @@ export default function ProductListingPage() {
                            onClick={() => { setSelectedCategory(""); setSearch(""); }}
                            className="px-12 py-5 bg-slate-950 text-white rounded-2xl text-[10px] font-black uppercase tracking-[0.3em] hover:bg-indigo-600 transition-all active:scale-95 shadow-2xl shadow-slate-900/20"
                         >
-                           Reset Navigation
+                           Reset
                         </button>
                      </div>
                   )}
