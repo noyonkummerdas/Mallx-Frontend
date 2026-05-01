@@ -10,6 +10,14 @@ export const authApi = apiSlice.injectEndpoints({
         body: credentials,
       }),
       invalidatesTags: ["User"],
+      async onQueryStarted(arg, { queryFulfilled }) {
+        try {
+          const { data } = await queryFulfilled;
+          if (data?.token && !data?.twoFactorRequired) {
+            localStorage.setItem("mallx_token", data.token);
+          }
+        } catch (err) {}
+      },
       transformResponse: (response: any) => {
         if (response?.data?.user) {
           const user = response.data.user;
@@ -39,6 +47,15 @@ export const authApi = apiSlice.injectEndpoints({
         method: "POST",
         body: data,
       }),
+      invalidatesTags: ["User"],
+      async onQueryStarted(arg, { queryFulfilled }) {
+        try {
+          const { data } = await queryFulfilled;
+          if (data?.token) {
+            localStorage.setItem("mallx_token", data.token);
+          }
+        } catch (err) {}
+      },
       transformResponse: (response: any) => {
         if (response?.data?.user) {
           const user = response.data.user;

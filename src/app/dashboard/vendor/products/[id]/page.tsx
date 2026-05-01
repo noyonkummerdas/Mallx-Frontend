@@ -94,38 +94,45 @@ export default function ProductEditPage() {
   const extraFields = CATEGORY_FIELDS[selectedCategoryName] || [];
 
   const handleUpdate = async (e: React.FormEvent) => {
+    if (e && e.preventDefault) e.preventDefault();
+
     if (!formData.name || !formData.price || !formData.categoryId) {
       alert("Please fill in all required fields (Name, Price, Category).");
       return;
     }
 
+    const dataToSend = {
+      ...formData,
+      price: Number(formData.price),
+      stock: Number(formData.stock),
+      brand: formData.brand,
+      sku: formData.sku,
+      weight: Number(formData.weight),
+      warranty: formData.warranty,
+      dimensions: {
+        length: Number(formData.dimensions.length),
+        width: Number(formData.dimensions.width),
+        height: Number(formData.dimensions.height)
+      },
+      attributes: Object.entries(dynamicAttributes).map(([key, value]) => ({
+        key,
+        value
+      }))
+    };
+
+    console.log("🚀 Sending Update Data:", dataToSend);
+
     try {
       await updateProduct({
         productId: id,
-        productData: {
-          ...formData,
-          price: Number(formData.price),
-          stock: Number(formData.stock),
-          brand: formData.brand,
-          sku: formData.sku,
-          weight: Number(formData.weight),
-          warranty: formData.warranty,
-          dimensions: {
-            length: Number(formData.dimensions.length),
-            width: Number(formData.dimensions.width),
-            height: Number(formData.dimensions.height)
-          },
-          attributes: Object.entries(dynamicAttributes).map(([key, value]) => ({
-            key,
-            value
-          }))
-        }
+        productData: dataToSend
       }).unwrap();
       
       alert("Product updated successfully!");
     } catch (err: any) {
-      console.error("Update failed:", err);
-      const errorMsg = err.data?.message || err.error || "Failed to update product.";
+      console.error("❌ Update failed full error:", err);
+      // Try to extract a meaningful error message from the response
+      const errorMsg = err.data?.message || err.message || err.error || (err.status ? `Server error (Status: ${err.status})` : "Failed to update product.");
       alert(`Error: ${errorMsg}`);
     }
   };

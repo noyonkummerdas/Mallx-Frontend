@@ -19,7 +19,7 @@ interface RoleGuardProps {
 export default function RoleGuard({ children, allowedRole }: RoleGuardProps) {
   const router = useRouter();
   const [isAuthorized, setIsAuthorized] = useState(false);
-  const { data: userData, isLoading, isError } = useGetMeQuery({}, {
+  const { data: userData, isLoading, isError, isFetching } = useGetMeQuery({}, {
     // Only run the query if we think we have a token
     skip: typeof window === 'undefined' || !localStorage.getItem("mallx_token")
   });
@@ -33,7 +33,7 @@ export default function RoleGuard({ children, allowedRole }: RoleGuardProps) {
       return;
     }
 
-    if (!isLoading && !userData && isError) {
+    if (!isLoading && !isFetching && !userData && isError) {
       console.error("RoleGuard - [AUTH] Token invalid or expired, redirecting to login. Details:", isError);
       localStorage.removeItem("mallx_token");
       router.push("/auth/login");
@@ -60,9 +60,9 @@ export default function RoleGuard({ children, allowedRole }: RoleGuardProps) {
 
       setIsAuthorized(true);
     }
-  }, [userData, isLoading, isError, allowedRole, router]);
+  }, [userData, isLoading, isFetching, isError, allowedRole, router]);
 
-  if (isLoading || !isAuthorized) {
+  if (isLoading || isFetching || !isAuthorized) {
     return (
       <div className="min-h-screen bg-slate-50 flex flex-col items-center justify-center">
         <div className="w-12 h-12 border-4 border-slate-200 border-t-slate-900 rounded-full animate-spin mb-4" />
