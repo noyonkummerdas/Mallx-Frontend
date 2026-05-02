@@ -3,9 +3,9 @@
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useGetMeQuery } from "@/modules/identity/services/authApi";
-import { useGetCategoriesQuery } from "@/modules/shopping/services/productApi";
-import { useState, useEffect } from "react";
-import { ShoppingBag, User as UserIcon, Menu, Search, Mic, Bell, LayoutGrid, Compass } from "lucide-react";
+import { useGetCategoriesQuery, useGetProductsQuery } from "@/modules/shopping/services/productApi";
+import { useState, useEffect, useRef } from "react";
+import { ShoppingBag, User as UserIcon, Menu, Search, Mic, Bell, LayoutGrid, Compass, X, Loader2 } from "lucide-react";
 import { useCart } from "@/modules/shopping/hooks/useCart";
 
 export default function Navbar() {
@@ -17,24 +17,65 @@ export default function Navbar() {
   const [showPopup, setShowPopup] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isSuggestionsOpen, setIsSuggestionsOpen] = useState(false);
+  const [isListening, setIsListening] = useState(false);
+  const searchRef = useRef<HTMLDivElement>(null);
 
   const isAuthPage = pathname.startsWith("/auth");
   const isDashboard = pathname.startsWith("/dashboard");
   const isSupportMain = pathname === "/support";
 
-  const dbCategories = categoryData?.data || [];
+  // --- SEARCH SUGGESTIONS LOGIC ---
+  const { data: searchData, isFetching: isSearching } = useGetProductsQuery(
+    { name: searchQuery },
+    { skip: searchQuery.length < 2 }
+  );
 
-  const divisions = [
-    { label: "Marketplace", href: "/catalog/products" },
-    { label: "Men", href: "/catalog/products?type=men" },
-    { label: "Women", href: "/catalog/products?type=women" },
-    { label: "Boys & Girls", href: "/catalog/products?type=boysgirls" },
-    { label: "Kids", href: "/catalog/products?type=kids" },
-  ];
+  const suggestions = searchData?.data?.products?.slice(0, 8) || [];
 
-  const chips = [
-    ...divisions,
-  ];
+  const handleSearch = (e?: React.FormEvent, overrideQuery?: string) => {
+    if (e) e.preventDefault();
+    const finalQuery = overrideQuery || searchQuery;
+    if (finalQuery.trim()) {
+      router.push(`/catalog/products?search=${encodeURIComponent(finalQuery)}`);
+      setIsSuggestionsOpen(false);
+    }
+  };
+
+  // --- VOICE SEARCH LOGIC ---
+  const startVoiceSearch = () => {
+    const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+    if (!SpeechRecognition) {
+      alert("Voice search is not supported in this browser. Please try Chrome.");
+      return;
+    }
+
+    const recognition = new SpeechRecognition();
+    recognition.lang = "en-US";
+    recognition.interimResults = false;
+
+    recognition.onstart = () => setIsListening(true);
+    recognition.onend = () => setIsListening(false);
+    recognition.onerror = () => setIsListening(false);
+    
+    recognition.onresult = (event: any) => {
+      const transcript = event.results[0][0].transcript;
+      setSearchQuery(transcript);
+      handleSearch(undefined, transcript);
+    };
+
+    recognition.start();
+  };
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (searchRef.current && !searchRef.current.contains(event.target as Node)) {
+        setIsSuggestionsOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   useEffect(() => {
     if (!userData && !isAuthPage) {
@@ -46,13 +87,17 @@ export default function Navbar() {
   if (isAuthPage || isDashboard || isSupportMain) return null;
 
   const user = userData?.data?.user;
+  const dbCategories = categoryData?.data || [];
 
-  const handleSearch = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (searchQuery.trim()) {
-      router.push(`/catalog/products?search=${encodeURIComponent(searchQuery)}`);
-    }
-  };
+  const divisions = [
+    { label: "Marketplace", href: "/catalog/products" },
+    { label: "Men", href: "/catalog/products?type=men" },
+    { label: "Women", href: "/catalog/products?type=women" },
+    { label: "Boys & Girls", href: "/catalog/products?type=boysgirls" },
+    { label: "Kids", href: "/catalog/products?type=kids" },
+  ];
+
+  const chips = [...divisions];
 
   return (
     <>
@@ -67,7 +112,6 @@ export default function Navbar() {
         className={`fixed top-0 left-0 h-full w-[280px] bg-white z-[70] shadow-2xl transition-transform duration-300 transform ${isSidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}
       >
         <div className="flex flex-col h-full">
-          {/* Sidebar Header */}
           <div className="h-[72px] px-6 flex items-center gap-4 border-b border-slate-100">
             <button
               onClick={() => setIsSidebarOpen(false)}
@@ -81,9 +125,7 @@ export default function Navbar() {
             </Link>
           </div>
 
-          {/* Sidebar Content */}
           <div className="flex-1 overflow-y-auto py-6">
-            {/* Divisions Section */}
             <div className="px-3 mb-8">
               <div className="px-4 mb-2 flex items-center gap-2">
                 <Compass className="w-4 h-4 text-indigo-600" />
@@ -103,7 +145,6 @@ export default function Navbar() {
               </div>
             </div>
 
-            {/* Dynamic Categories Section */}
             {dbCategories.length > 0 && (
               <div className="px-3 mb-8">
                 <div className="px-4 mb-2 flex items-center gap-2">
@@ -137,7 +178,6 @@ export default function Navbar() {
             </div>
           </div>
 
-          {/* Sidebar Footer */}
           <div className="p-6 bg-slate-50 border-t border-slate-100">
             <p className="text-[10px] text-slate-400 font-medium">© 2026 MallX Elite. All rights reserved.</p>
           </div>
@@ -145,11 +185,8 @@ export default function Navbar() {
       </aside>
 
       <div className="sticky top-0 z-50 w-full flex flex-col">
-        {/* MAIN NAVBAR */}
         <nav className="w-full bg-white/90 backdrop-blur-md border-b border-slate-100 transition-all duration-300">
           <div className="max-w-[1400px] mx-auto px-4 sm:px-6 h-[72px] flex items-center justify-between gap-4">
-
-            {/* LEFT SECTION: Hamburger Menu & Logo */}
             <div className="flex items-center gap-4 sm:gap-6 min-w-fit">
               <button
                 onClick={() => setIsSidebarOpen(true)}
@@ -158,48 +195,91 @@ export default function Navbar() {
                 <Menu className="w-6 h-6 text-slate-700" strokeWidth={1.5} />
               </button>
               <Link href="/" className="flex items-center gap-2 group">
-                <div className="bg-slate-900 text-white rounded-lg px-2.5 py-1 font-black tracking-tighter text-lg leading-none transform group-hover:scale-105 transition-all shadow-lg shadow-slate-900/10">
-                  M
-                </div>
-                <span className="text-xl font-black tracking-tighter text-slate-900 uppercase hidden sm:block">
-                  MallX
-                </span>
+                <div className="bg-slate-900 text-white rounded-lg px-2.5 py-1 font-black tracking-tighter text-lg leading-none transform group-hover:scale-105 transition-all shadow-lg shadow-slate-900/10">M</div>
+                <span className="text-xl font-black tracking-tighter text-slate-900 uppercase hidden sm:block">MallX</span>
               </Link>
             </div>
 
-            {/* CENTER SECTION: Search Bar */}
-            <div className="flex-1 max-w-[720px] flex items-center gap-2 sm:gap-4 ml-4 sm:ml-8 mr-2 sm:mr-8">
-              <form
+            <div ref={searchRef} className="flex-1 max-w-[720px] relative flex items-center gap-2 sm:gap-4 ml-4 sm:ml-8 mr-2 sm:mr-8">
+              <form 
                 onSubmit={handleSearch}
                 className="flex flex-1 items-center bg-white border border-slate-300 rounded-full overflow-hidden shadow-inner focus-within:border-indigo-500 focus-within:shadow-[0_0_0_1px_rgba(79,70,229,0.1)] transition-all"
               >
                 <div className="hidden sm:flex items-center pl-4 pr-2">
                   <Search className="w-4 h-4 text-slate-400" />
                 </div>
-                <input
-                  type="text"
-                  placeholder="Search products..."
+                <input 
+                  type="text" 
+                  placeholder="Search products..." 
                   value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
+                  onChange={(e) => {
+                    setSearchQuery(e.target.value);
+                    setIsSuggestionsOpen(true);
+                  }}
+                  onFocus={() => setIsSuggestionsOpen(true)}
                   className="w-full bg-transparent px-4 sm:px-2 py-2.5 outline-none text-slate-700 placeholder-slate-400 text-sm sm:text-base"
                 />
-                <button
+                {searchQuery && (
+                   <button 
+                    type="button" 
+                    onClick={() => setSearchQuery("")}
+                    className="p-1 hover:bg-slate-100 rounded-full mr-1 transition-colors"
+                   >
+                     <X className="w-4 h-4 text-slate-400" />
+                   </button>
+                )}
+                <button 
                   type="submit"
                   className="px-4 sm:px-6 py-2.5 bg-slate-50 border-l border-slate-300 hover:bg-slate-100 transition-colors flex items-center justify-center group"
                 >
                   <Search className="w-5 h-5 text-slate-600 group-hover:text-slate-900 transition-colors" strokeWidth={1.5} />
                 </button>
               </form>
-              <button
+
+              {isSuggestionsOpen && (searchQuery.length >= 2 || suggestions.length > 0) && (
+                <div className="absolute top-[calc(100%+8px)] left-0 right-0 bg-white rounded-2xl shadow-2xl border border-slate-100 overflow-hidden z-[100] animate-in fade-in zoom-in-95 duration-200">
+                  {isSearching ? (
+                    <div className="p-8 flex items-center justify-center text-slate-400 gap-3">
+                      <Loader2 className="w-5 h-5 animate-spin" />
+                      <span className="text-sm font-medium">Hunting for products...</span>
+                    </div>
+                  ) : suggestions.length > 0 ? (
+                    <div className="py-2">
+                      {suggestions.map((product: any) => (
+                        <button
+                          key={product._id}
+                          onClick={() => {
+                            setSearchQuery(product.name);
+                            handleSearch(undefined, product.name);
+                          }}
+                          className="w-full flex items-center gap-4 px-5 py-3 hover:bg-slate-50 transition-colors group"
+                        >
+                          <Search className="w-4 h-4 text-slate-300 group-hover:text-indigo-600 transition-colors" />
+                          <div className="flex-1 text-left">
+                            <span className="text-sm font-medium text-slate-700 block line-clamp-1">{product.name}</span>
+                            <span className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">{product.categoryId?.name || "Premium Collection"}</span>
+                          </div>
+                        </button>
+                      ))}
+                    </div>
+                  ) : searchQuery.length >= 2 && (
+                    <div className="p-8 text-center text-slate-400">
+                      <p className="text-sm font-medium">No matches found for "{searchQuery}"</p>
+                    </div>
+                  )}
+                </div>
+              )}
+
+              <button 
                 type="button"
-                className="p-2.5 bg-slate-100 hover:bg-slate-200 rounded-full transition-colors flex-shrink-0 hidden sm:flex items-center justify-center"
+                onClick={startVoiceSearch}
+                className={`p-2.5 rounded-full transition-all flex-shrink-0 hidden sm:flex items-center justify-center ${isListening ? 'bg-red-500 text-white animate-pulse shadow-lg shadow-red-500/30' : 'bg-slate-100 hover:bg-slate-200 text-slate-700'}`}
                 title="Search with your voice"
               >
-                <Mic className="w-5 h-5 text-slate-700" strokeWidth={1.5} />
+                <Mic className="w-5 h-5" strokeWidth={1.5} />
               </button>
             </div>
 
-            {/* RIGHT SECTION: Icons & User Profile */}
             <div className="flex items-center gap-2 sm:gap-4 min-w-fit">
               <button className="p-2 hover:bg-slate-100 rounded-full transition-colors hidden md:block group">
                 <Bell className="w-6 h-6 text-slate-600 group-hover:text-slate-900 transition-colors" strokeWidth={1.5} />
@@ -234,7 +314,6 @@ export default function Navbar() {
           </div>
         </nav>
 
-        {/* CATEGORY BAR (The YouTube Style Chips) */}
         <div className="w-full bg-white/80 backdrop-blur-md border-b border-slate-100 py-3 overflow-hidden">
           <div className="max-w-[1400px] mx-auto px-4 sm:px-6">
             <div className="flex items-center justify-end gap-3 overflow-x-auto no-scrollbar scroll-smooth">
@@ -244,12 +323,7 @@ export default function Navbar() {
                   <Link
                     key={chip.label}
                     href={chip.href}
-                    className={`
-                      whitespace-nowrap px-4 py-1.5 rounded-lg text-sm font-medium transition-all duration-300
-                      ${isActive
-                        ? 'bg-slate-900 text-white shadow-md shadow-slate-900/10'
-                        : 'bg-slate-100 text-slate-700 hover:bg-slate-200'}
-                    `}
+                    className={`whitespace-nowrap px-4 py-1.5 rounded-lg text-sm font-medium transition-all duration-300 ${isActive ? 'bg-slate-900 text-white shadow-md shadow-slate-900/10' : 'bg-slate-100 text-slate-700 hover:bg-slate-200'}`}
                   >
                     {chip.label}
                   </Link>
