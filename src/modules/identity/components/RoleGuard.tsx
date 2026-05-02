@@ -19,13 +19,15 @@ interface RoleGuardProps {
 export default function RoleGuard({ children, allowedRole }: RoleGuardProps) {
   const router = useRouter();
   const [isAuthorized, setIsAuthorized] = useState(false);
-  const { data: userData, isLoading, isError, isFetching } = useGetMeQuery({}, {
+  const { data: userData, isLoading, isError, error, isFetching } = useGetMeQuery({}, {
     // Only run the query if we think we have a token
     skip: typeof window === 'undefined' || !localStorage.getItem("mallx_token")
   });
 
   useEffect(() => {
     const token = localStorage.getItem("mallx_token");
+    console.log("RoleGuard Debug - Token:", token ? "Exists" : "MISSING");
+    console.log("RoleGuard Debug - State:", { isLoading, isFetching, hasData: !!userData, isError, errorStatus: (error as any)?.status });
 
     if (!token) {
       console.warn("RoleGuard - [AUTH] No token found, redirecting to login.");
@@ -34,10 +36,14 @@ export default function RoleGuard({ children, allowedRole }: RoleGuardProps) {
     }
 
     if (!isLoading && !isFetching && !userData && isError) {
-      console.error("RoleGuard - [AUTH] Token invalid or expired, redirecting to login. Details:", isError);
-      localStorage.removeItem("mallx_token");
-      router.push("/auth/login");
-      return;
+      const fetchError = error as any;
+      console.log("RoleGuard Debug - Error detected:", fetchError?.status);
+      if (fetchError?.status === 401 || fetchError?.status === 403) {
+        console.error("RoleGuard - [AUTH] Token invalid or expired, redirecting to login. Details:", error);
+        localStorage.removeItem("mallx_token");
+        router.push("/auth/login");
+        return;
+      }
     }
 
     if (!isLoading && userData) {

@@ -33,20 +33,20 @@ export default function LoginPage() {
 
       switch(roleStr) {
         case "admin":
-          router.push("/dashboard/admin");
+          window.location.href = "/dashboard/admin";
           break;
         case "vendor":
-          router.push("/dashboard/vendor");
+          window.location.href = "/dashboard/vendor";
           break;
         case "partner":
-          router.push("/dashboard/partner");
+          window.location.href = "/dashboard/partner";
           break;
         case "deliveryboy":
-          router.push("/dashboard/delivery");
+          window.location.href = "/dashboard/delivery";
           break;
         default:
           console.warn("Role not found or default, redirecting to Customer. Role was:", roleStr);
-          router.push("/dashboard/customer");
+          window.location.href = "/dashboard/customer";
           break;
       }
     } catch (err) {

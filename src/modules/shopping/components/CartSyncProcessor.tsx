@@ -5,11 +5,15 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/store/store";
 import { useAddToCartMutation } from "../services/shoppingApi";
 import { useGetMeQuery } from "@/modules/identity/services/authApi";
+import { usePathname } from "next/navigation";
 import { clearLocalCart } from "../store/cartSlice";
 
 export default function CartSyncProcessor() {
   const dispatch = useDispatch();
-  const { data: userData } = useGetMeQuery({});
+  const pathname = usePathname();
+  const isAuthPage = pathname.startsWith("/auth");
+
+  const { data: userData } = useGetMeQuery({}, { skip: isAuthPage });
   const isAuthenticated = !!userData?.data?.user;
   const localItems = useSelector((state: RootState) => state.cart.localItems);
   const [addToCartApi] = useAddToCartMutation();

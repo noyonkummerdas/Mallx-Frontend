@@ -11,7 +11,13 @@ import { useCart } from "@/modules/shopping/hooks/useCart";
 export default function Navbar() {
   const pathname = usePathname();
   const router = useRouter();
-  const { data: userData, isLoading } = useGetMeQuery({});
+  const isAuthPage = pathname.startsWith("/auth");
+  const isDashboard = pathname.startsWith("/dashboard");
+  const isSupportMain = pathname === "/support";
+
+  const { data: userData, isLoading } = useGetMeQuery({}, { 
+    skip: isAuthPage || isDashboard || isSupportMain 
+  });
   const { data: categoryData } = useGetCategoriesQuery({});
   const { totalCount } = useCart();
   const [showPopup, setShowPopup] = useState(false);
@@ -21,9 +27,7 @@ export default function Navbar() {
   const [isListening, setIsListening] = useState(false);
   const searchRef = useRef<HTMLDivElement>(null);
 
-  const isAuthPage = pathname.startsWith("/auth");
-  const isDashboard = pathname.startsWith("/dashboard");
-  const isSupportMain = pathname === "/support";
+  // Route flags moved up for query skipping
 
   // --- SEARCH SUGGESTIONS LOGIC ---
   const { data: searchData, isFetching: isSearching } = useGetProductsQuery(
