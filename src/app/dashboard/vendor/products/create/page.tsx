@@ -55,11 +55,14 @@ export default function CreateProductPage() {
   const [imagePreviews, setImagePreviews] = useState<string[]>([]);
   const [isCategoryOpen, setIsCategoryOpen] = useState(false);
   const [isAudienceOpen, setIsAudienceOpen] = useState(false);
+  const [isWarrantyCustom, setIsWarrantyCustom] = useState(false);
 
   const [uploadProductImage, { isLoading: isUploadingImage }] = useUploadProductImageMutation();
 
+
   useEffect(() => {
     if (userData?.data?.user) {
+
       const role = userData.data.user.role?.toLowerCase();
       if (role !== "vendor") {
         router.push("/dashboard/customer");
@@ -369,12 +372,14 @@ export default function CreateProductPage() {
                             
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <select 
-                                    value={['No Warranty', '6 Months Local Warranty', '1 Year Local Warranty', '2 Years Local Warranty', 'Lifetime Warranty'].includes(newProduct.warranty) ? newProduct.warranty : (newProduct.warranty ? 'Custom' : '')}
+                                    value={isWarrantyCustom ? 'Custom' : (newProduct.warranty || '')}
                                     onChange={(e) => {
                                         const val = e.target.value;
                                         if (val === 'Custom') {
-                                            setNewProduct({...newProduct, warranty: " "}); // Use a space as a temporary marker to show the input
+                                            setIsWarrantyCustom(true);
+                                            setNewProduct({...newProduct, warranty: ""});
                                         } else {
+                                            setIsWarrantyCustom(false);
                                             setNewProduct({...newProduct, warranty: val});
                                         }
                                     }}
@@ -389,14 +394,26 @@ export default function CreateProductPage() {
                                     <option value="Custom">Custom / Other</option>
                                 </select>
 
-                                {(!['No Warranty', '6 Months Local Warranty', '1 Year Local Warranty', '2 Years Local Warranty', 'Lifetime Warranty'].includes(newProduct.warranty) && newProduct.warranty !== "") && (
-                                    <input 
-                                        type="text"
-                                        value={newProduct.warranty === " " ? "" : newProduct.warranty}
-                                        onChange={(e) => setNewProduct({...newProduct, warranty: e.target.value})}
-                                        className="w-full bg-slate-50/50 border border-slate-200 rounded-xl px-6 py-4 outline-none text-sm text-black font-semibold placeholder:text-slate-300 focus:border-black focus:bg-white transition-all shadow-sm animate-in fade-in slide-in-from-left-2 duration-300"
-                                        placeholder="Type custom warranty terms..."
-                                    />
+                                {isWarrantyCustom && (
+                                    <div className="relative flex-1 group/custom">
+                                        <input 
+                                            type="text"
+                                            value={newProduct.warranty}
+                                            onChange={(e) => setNewProduct({...newProduct, warranty: e.target.value})}
+                                            className="w-full bg-slate-50/50 border border-slate-200 rounded-xl px-6 py-4 outline-none text-sm text-black font-semibold placeholder:text-slate-300 focus:border-black focus:bg-white transition-all shadow-sm animate-in fade-in slide-in-from-left-2 duration-300 pr-12"
+                                            placeholder="Type custom warranty terms..."
+                                        />
+                                        <button 
+                                            type="button"
+                                            onClick={() => {
+                                                setIsWarrantyCustom(false);
+                                                setNewProduct({...newProduct, warranty: ""});
+                                            }}
+                                            className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-300 hover:text-red-500 transition-colors p-1"
+                                        >
+                                            <Trash2 size={16} />
+                                        </button>
+                                    </div>
                                 )}
                             </div>
                         </div>

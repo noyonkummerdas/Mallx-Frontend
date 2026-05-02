@@ -59,8 +59,12 @@ export default function ProductEditPage() {
   const [imagePreviews, setImagePreviews] = useState<string[]>([]);
   const [isCategoryOpen, setIsCategoryOpen] = useState(false);
   const [isAudienceOpen, setIsAudienceOpen] = useState(false);
+  const [isWarrantyCustom, setIsWarrantyCustom] = useState(false);
 
   useEffect(() => {
+    if (productData?.data?.product) {
+
+
     if (productData?.data?.product) {
       const p = productData.data.product;
       setFormData({
@@ -81,7 +85,16 @@ export default function ProductEditPage() {
         },
         type: p.type || "unisex"
       });
+
+      const standardOptions = ['No Warranty', '6 Months Local Warranty', '1 Year Local Warranty', '2 Years Local Warranty', 'Lifetime Warranty'];
+      if (p.warranty && !standardOptions.includes(p.warranty)) {
+        setIsWarrantyCustom(true);
+      } else {
+        setIsWarrantyCustom(false);
+      }
+
       if (p.attributes && Array.isArray(p.attributes)) {
+
         const attrRecord: Record<string, string> = {};
         p.attributes.forEach((attr: { key: string; value: string }) => {
           attrRecord[attr.key] = attr.value;
@@ -296,12 +309,14 @@ export default function ProductEditPage() {
                     
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <select 
-                            value={['No Warranty', '6 Months Local Warranty', '1 Year Local Warranty', '2 Years Local Warranty', 'Lifetime Warranty'].includes(formData.warranty) ? formData.warranty : (formData.warranty ? 'Custom' : '')}
+                            value={isWarrantyCustom ? 'Custom' : (formData.warranty || '')}
                             onChange={(e) => {
                                 const val = e.target.value;
                                 if (val === 'Custom') {
+                                    setIsWarrantyCustom(true);
                                     setFormData({...formData, warranty: ""});
                                 } else {
+                                    setIsWarrantyCustom(false);
                                     setFormData({...formData, warranty: val});
                                 }
                             }}
@@ -316,14 +331,26 @@ export default function ProductEditPage() {
                             <option value="Custom">Custom / Other</option>
                         </select>
 
-                        {(!['No Warranty', '6 Months Local Warranty', '1 Year Local Warranty', '2 Years Local Warranty', 'Lifetime Warranty'].includes(formData.warranty) || formData.warranty === "") && (
-                            <input 
-                                type="text"
-                                value={formData.warranty}
-                                onChange={(e) => setFormData({...formData, warranty: e.target.value})}
-                                className="w-full bg-slate-50/50 border border-slate-200 rounded-xl px-6 py-4 outline-none text-sm text-black font-semibold placeholder:text-slate-300 focus:border-black focus:bg-white transition-all shadow-sm animate-in fade-in slide-in-from-left-2 duration-300"
-                                placeholder="Type custom warranty terms..."
-                            />
+                        {isWarrantyCustom && (
+                            <div className="relative flex-1 group/custom">
+                                <input 
+                                    type="text"
+                                    value={formData.warranty}
+                                    onChange={(e) => setFormData({...formData, warranty: e.target.value})}
+                                    className="w-full bg-slate-50/50 border border-slate-200 rounded-xl px-6 py-4 outline-none text-sm text-black font-semibold placeholder:text-slate-300 focus:border-black focus:bg-white transition-all shadow-sm animate-in fade-in slide-in-from-left-2 duration-300 pr-12"
+                                    placeholder="Type custom warranty terms..."
+                                />
+                                <button 
+                                    type="button"
+                                    onClick={() => {
+                                        setIsWarrantyCustom(false);
+                                        setFormData({...formData, warranty: ""});
+                                    }}
+                                    className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-300 hover:text-red-500 transition-colors p-1"
+                                >
+                                    <Trash2 size={16} />
+                                </button>
+                            </div>
                         )}
                     </div>
                 </div>
