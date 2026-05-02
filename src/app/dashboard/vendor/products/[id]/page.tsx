@@ -7,7 +7,6 @@ import {
   useUpdateProductMutation, 
   useDeleteProductMutation,
   useGetCategoriesQuery,
-  useUploadProductImageMutation
 } from "@/modules/shopping/services/productApi";
 import { CATEGORY_FIELDS } from "@/modules/catalog/constants/categoryFields";
 import { 
@@ -18,7 +17,14 @@ import {
   ShoppingBag,
   ExternalLink,
   Eye,
-  Plus
+  Plus,
+  FileText,
+  Tag,
+  Info,
+  Layers,
+  Package,
+  ShieldCheck,
+  ChevronDown
 } from "lucide-react";
 import Link from "next/link";
 
@@ -46,10 +52,13 @@ export default function ProductEditPage() {
       length: "",
       width: "",
       height: ""
-    }
+    },
+    type: "unisex"
   });
   const [dynamicAttributes, setDynamicAttributes] = useState<Record<string, string>>({});
   const [imagePreviews, setImagePreviews] = useState<string[]>([]);
+  const [isCategoryOpen, setIsCategoryOpen] = useState(false);
+  const [isAudienceOpen, setIsAudienceOpen] = useState(false);
 
   useEffect(() => {
     if (productData?.data?.product) {
@@ -60,7 +69,17 @@ export default function ProductEditPage() {
         price: p.price.toString(),
         stock: p.stock.toString(),
         categoryId: p.categoryId?._id || p.categoryId,
-        status: p.status
+        status: p.status,
+        brand: p.brand || "",
+        sku: p.sku || "",
+        weight: p.weight?.toString() || "",
+        warranty: p.warranty || "",
+        dimensions: {
+          length: p.dimensions?.length?.toString() || "",
+          width: p.dimensions?.width?.toString() || "",
+          height: p.dimensions?.height?.toString() || ""
+        },
+        type: p.type || "unisex"
       });
       if (p.attributes && Array.isArray(p.attributes)) {
         const attrRecord: Record<string, string> = {};
@@ -71,18 +90,6 @@ export default function ProductEditPage() {
       } else {
         setDynamicAttributes({});
       }
-      setFormData(prev => ({
-        ...prev,
-        brand: p.brand || "",
-        sku: p.sku || "",
-        weight: p.weight?.toString() || "",
-        warranty: p.warranty || "",
-        dimensions: {
-          length: p.dimensions?.length?.toString() || "",
-          width: p.dimensions?.width?.toString() || "",
-          height: p.dimensions?.height?.toString() || ""
-        }
-      }));
       if (p.images) {
         setImagePreviews(p.images.map((img: any) => img.imageUrl || img.url));
       }
@@ -96,8 +103,8 @@ export default function ProductEditPage() {
   const handleUpdate = async (e: React.FormEvent) => {
     if (e && e.preventDefault) e.preventDefault();
 
-    if (!formData.name || !formData.price || !formData.categoryId) {
-      alert("Please fill in all required fields (Name, Price, Category).");
+    if (!formData.name || !formData.price || !formData.categoryId || !formData.type) {
+      alert("Please fill in all required fields (Name, Price, Category, Audience).");
       return;
     }
 
@@ -120,8 +127,6 @@ export default function ProductEditPage() {
       }))
     };
 
-    console.log("🚀 Sending Update Data:", dataToSend);
-
     try {
       await updateProduct({
         productId: id,
@@ -130,9 +135,7 @@ export default function ProductEditPage() {
       
       alert("Product updated successfully!");
     } catch (err: any) {
-      console.error("❌ Update failed full error:", err);
-      // Try to extract a meaningful error message from the response
-      const errorMsg = err.data?.message || err.message || err.error || (err.status ? `Server error (Status: ${err.status})` : "Failed to update product.");
+      const errorMsg = err.data?.message || err.message || err.error || "Failed to update product.";
       alert(`Error: ${errorMsg}`);
     }
   };
@@ -155,31 +158,8 @@ export default function ProductEditPage() {
   );
 
   return (
-    <div className="max-w-[1200px] mx-auto py-8">
-      {/* Breadcrumbs & Actions */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-10">
-        <div className="flex items-center gap-4 text-[10px] uppercase tracking-widest font-bold">
-          <Link href="/dashboard/vendor/products" className="text-slate-400 hover:text-black transition-colors flex items-center gap-2">
-            <ArrowLeft size={14} /> Inventory
-          </Link>
-          <ChevronRight size={12} className="text-slate-200" />
-          <span className="text-slate-900">{formData.name}</span>
-        </div>
-        
-        <div className="flex items-center gap-3">
-           <Link href={`/catalog/products/${id}`} target="_blank">
-              <button className="flex items-center gap-2 bg-white border border-slate-200 text-slate-900 px-5 py-3 rounded-xl text-[10px] uppercase tracking-widest font-bold hover:bg-slate-50 transition-all shadow-sm">
-                <ExternalLink size={14} /> View Live
-              </button>
-           </Link>
-           <button 
-            onClick={handleDelete}
-            className="flex items-center gap-2 bg-red-50 text-red-600 px-5 py-3 rounded-xl text-[10px] uppercase tracking-widest font-bold hover:bg-red-100 transition-all"
-           >
-            <Trash2 size={14} /> Delete
-           </button>
-        </div>
-      </div>
+    <div className="max-w-[1200px] mx-auto py-10 px-4">
+
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
         {/* Left Column: Form (8 Units) */}
@@ -202,113 +182,122 @@ export default function ProductEditPage() {
              ))}
           </div>
 
-          {/* General Info */}
+          {/* 01. General Specifications Module */}
           <div className="bg-white border border-slate-300 rounded-2xl p-8 shadow-sm">
-             <h4 className="text-[11px] text-black uppercase tracking-[0.2em] font-semibold mb-10">01. General Specifications</h4>
+             <div className="flex items-center gap-3 mb-10">
+                <div className="w-8 h-8 bg-slate-900 text-white rounded-lg flex items-center justify-center">
+                    <FileText size={16} />
+                </div>
+                <h4 className="text-[11px] text-black uppercase tracking-[0.2em] font-semibold">01. Core Identity</h4>
+                <div className="h-[1px] flex-1 bg-slate-50"></div>
+             </div>
              
-             <div className="space-y-10">
+             <div className="space-y-12">
                 <div className="group">
-                    <label className="text-[9px] text-slate-500 uppercase tracking-[0.25em] font-medium mb-4 block group-focus-within:text-black transition-all">Product Name</label>
+                    <div className="flex items-center gap-2 mb-4">
+                        <Tag size={12} className="text-slate-400" />
+                        <label className="text-[9px] text-slate-500 uppercase tracking-[0.25em] font-bold group-focus-within:text-black transition-all">Product Name</label>
+                    </div>
                     <input 
                         required
                         type="text"
                         value={formData.name}
                         onChange={(e) => setFormData({...formData, name: e.target.value})}
-                        className="w-full bg-[#fcfcfc] border-b-2 border-slate-200 px-0 py-4 outline-none text-xl text-black font-semibold placeholder:text-slate-300 focus:border-black transition-all"
-                        placeholder="e.g. Premium Wireless Headphones"
+                        className="w-full bg-slate-50/50 border border-slate-200 rounded-xl px-6 py-4 outline-none text-base text-black font-semibold placeholder:text-slate-300 focus:border-black focus:bg-white transition-all shadow-sm"
                     />
                 </div>
 
                 <div className="group">
-                    <label className="text-[9px] text-slate-500 uppercase tracking-[0.25em] font-medium mb-4 block group-focus-within:text-black transition-all">Description</label>
+                    <div className="flex items-center gap-2 mb-4">
+                        <Info size={12} className="text-slate-400" />
+                        <label className="text-[9px] text-slate-500 uppercase tracking-[0.25em] font-bold group-focus-within:text-black transition-all">Description</label>
+                    </div>
                     <textarea 
                         required
                         rows={6}
                         value={formData.description}
                         onChange={(e) => setFormData({...formData, description: e.target.value})}
-                        className="w-full bg-[#fcfcfc] border-b-2 border-slate-200 px-0 py-4 outline-none text-sm text-black font-medium leading-relaxed placeholder:text-slate-300 focus:border-black transition-all resize-none"
-                        placeholder="Detailed product information..."
+                        className="w-full bg-slate-50/50 border border-slate-200 rounded-xl px-6 py-4 outline-none text-sm text-black font-medium leading-relaxed placeholder:text-slate-300 focus:border-black focus:bg-white transition-all resize-none shadow-sm"
                     />
                 </div>
 
-                {/* Brand & SKU */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                     <div className="group">
-                        <label className="text-[9px] text-slate-500 uppercase tracking-[0.25em] font-medium mb-4 block group-focus-within:text-black transition-all">Brand</label>
+                        <div className="flex items-center gap-2 mb-4">
+                            <Layers size={12} className="text-slate-400" />
+                            <label className="text-[9px] text-slate-500 uppercase tracking-[0.25em] font-bold group-focus-within:text-black transition-all">Brand</label>
+                        </div>
                         <input 
                             type="text"
                             value={formData.brand}
                             onChange={(e) => setFormData({...formData, brand: e.target.value})}
-                            className="w-full bg-[#fcfcfc] border-b-2 border-slate-200 px-0 py-4 outline-none text-base text-black font-semibold placeholder:text-slate-300 focus:border-black transition-all"
-                            placeholder="e.g. Apple, Nike"
+                            className="w-full bg-slate-50/50 border border-slate-200 rounded-xl px-6 py-4 outline-none text-sm text-black font-semibold placeholder:text-slate-300 focus:border-black focus:bg-white transition-all shadow-sm"
                         />
                     </div>
                     <div className="group">
-                        <label className="text-[9px] text-slate-500 uppercase tracking-[0.25em] font-medium mb-4 block group-focus-within:text-black transition-all">Parent SKU</label>
+                        <div className="flex items-center gap-2 mb-4">
+                            <Package size={12} className="text-slate-400" />
+                            <label className="text-[9px] text-slate-500 uppercase tracking-[0.25em] font-bold group-focus-within:text-black transition-all">Parent SKU</label>
+                        </div>
                         <input 
                             type="text"
                             value={formData.sku}
                             onChange={(e) => setFormData({...formData, sku: e.target.value})}
-                            className="w-full bg-[#fcfcfc] border-b-2 border-slate-200 px-0 py-4 outline-none text-base text-black font-semibold placeholder:text-slate-300 focus:border-black transition-all"
-                            placeholder="e.g. MH-100-BLK"
+                            className="w-full bg-slate-50/50 border border-slate-200 rounded-xl px-6 py-4 outline-none text-sm text-black font-semibold placeholder:text-slate-300 focus:border-black focus:bg-white transition-all shadow-sm"
                         />
                     </div>
                 </div>
 
-                {/* Logistics: Weight & Dimensions */}
-                <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
                     <div className="group">
-                        <label className="text-[9px] text-slate-500 uppercase tracking-[0.25em] font-medium mb-4 block group-focus-within:text-black transition-all">Weight (KG)</label>
+                        <label className="text-[8px] text-slate-400 uppercase tracking-widest font-bold mb-3 block">Weight (KG)</label>
                         <input 
                             type="number"
                             step="0.01"
                             value={formData.weight}
                             onChange={(e) => setFormData({...formData, weight: e.target.value})}
-                            className="w-full bg-[#fcfcfc] border-b-2 border-slate-200 px-0 py-4 outline-none text-base text-black font-semibold placeholder:text-slate-300 focus:border-black transition-all"
-                            placeholder="0.5"
+                            className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 outline-none text-sm text-black font-bold focus:border-black transition-all"
                         />
                     </div>
                     <div className="group">
-                        <label className="text-[9px] text-slate-500 uppercase tracking-[0.25em] font-medium mb-4 block group-focus-within:text-black transition-all">Length (CM)</label>
+                        <label className="text-[8px] text-slate-400 uppercase tracking-widest font-bold mb-3 block">Length (CM)</label>
                         <input 
                             type="number"
                             value={formData.dimensions.length}
                             onChange={(e) => setFormData({...formData, dimensions: {...formData.dimensions, length: e.target.value}})}
-                            className="w-full bg-[#fcfcfc] border-b-2 border-slate-200 px-0 py-4 outline-none text-base text-black font-semibold placeholder:text-slate-300 focus:border-black transition-all"
-                            placeholder="10"
+                            className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 outline-none text-sm text-black font-bold focus:border-black transition-all"
                         />
                     </div>
                     <div className="group">
-                        <label className="text-[9px] text-slate-500 uppercase tracking-[0.25em] font-medium mb-4 block group-focus-within:text-black transition-all">Width (CM)</label>
+                        <label className="text-[8px] text-slate-400 uppercase tracking-widest font-bold mb-3 block">Width (CM)</label>
                         <input 
                             type="number"
                             value={formData.dimensions.width}
                             onChange={(e) => setFormData({...formData, dimensions: {...formData.dimensions, width: e.target.value}})}
-                            className="w-full bg-[#fcfcfc] border-b-2 border-slate-200 px-0 py-4 outline-none text-base text-black font-semibold placeholder:text-slate-300 focus:border-black transition-all"
-                            placeholder="10"
+                            className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 outline-none text-sm text-black font-bold focus:border-black transition-all"
                         />
                     </div>
                     <div className="group">
-                        <label className="text-[9px] text-slate-500 uppercase tracking-[0.25em] font-medium mb-4 block group-focus-within:text-black transition-all">Height (CM)</label>
+                        <label className="text-[8px] text-slate-400 uppercase tracking-widest font-bold mb-3 block">Height (CM)</label>
                         <input 
                             type="number"
                             value={formData.dimensions.height}
                             onChange={(e) => setFormData({...formData, dimensions: {...formData.dimensions, height: e.target.value}})}
-                            className="w-full bg-[#fcfcfc] border-b-2 border-slate-200 px-0 py-4 outline-none text-base text-black font-semibold placeholder:text-slate-300 focus:border-black transition-all"
-                            placeholder="10"
+                            className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 outline-none text-sm text-black font-bold focus:border-black transition-all"
                         />
                     </div>
                 </div>
 
-                {/* Warranty */}
                 <div className="group">
-                    <label className="text-[9px] text-slate-500 uppercase tracking-[0.25em] font-medium mb-4 block group-focus-within:text-black transition-all">Warranty Terms</label>
+                    <div className="flex items-center gap-2 mb-4">
+                        <ShieldCheck size={12} className="text-slate-400" />
+                        <label className="text-[9px] text-slate-500 uppercase tracking-[0.25em] font-bold group-focus-within:text-black transition-all">Warranty Terms</label>
+                    </div>
                     <input 
                         type="text"
                         value={formData.warranty}
                         onChange={(e) => setFormData({...formData, warranty: e.target.value})}
-                        className="w-full bg-[#fcfcfc] border-b-2 border-slate-200 px-0 py-4 outline-none text-base text-black font-semibold placeholder:text-slate-300 focus:border-black transition-all"
-                        placeholder="e.g. 1 Year Local Warranty"
+                        className="w-full bg-slate-50/50 border border-slate-200 rounded-xl px-6 py-4 outline-none text-sm text-black font-semibold placeholder:text-slate-300 focus:border-black focus:bg-white transition-all shadow-sm"
                     />
                 </div>
              </div>
@@ -329,7 +318,6 @@ export default function ProductEditPage() {
                                   value={dynamicAttributes[field.name] || ""}
                                   onChange={(e) => setDynamicAttributes({...dynamicAttributes, [field.name]: e.target.value})}
                                   className="w-full bg-[#fcfcfc] border-b-2 border-slate-200 px-0 py-3 outline-none text-base text-black font-semibold focus:border-black transition-all"
-                                  placeholder={field.placeholder}
                               />
                           </div>
                       ))}
@@ -401,22 +389,97 @@ export default function ProductEditPage() {
               </button>
            </div>
 
-           {/* Status Control */}
+           {/* Taxonomy & Audience Module (Updated) */}
            <div className="bg-white border border-slate-300 rounded-2xl p-8 shadow-sm">
-              <h4 className="text-[11px] text-black uppercase tracking-[0.2em] font-semibold mb-6">Management State</h4>
-              <div className="flex items-center gap-2 mb-8">
-                 <span className={`px-3 py-1.5 rounded-lg text-[9px] uppercase tracking-widest font-black ${
-                    formData.status === 'Active' ? 'bg-green-50 text-green-600' : 
-                    formData.status === 'Pending' ? 'bg-orange-50 text-orange-600' : 'bg-slate-100 text-slate-500'
-                 }`}>
-                    {formData.status}
-                 </span>
-                 <span className="text-[8px] text-slate-400 font-bold uppercase tracking-tighter">Current Lifecycle</span>
-              </div>
-              
-              <p className="text-[10px] text-slate-500 leading-relaxed mb-4 font-medium italic">
-                Note: Product status is controlled by regional administrators to ensure marketplace quality standards.
-              </p>
+               <h4 className="text-[11px] text-black uppercase tracking-[0.2em] font-semibold mb-8">05. Taxonomy & Audience</h4>
+               
+               <div className="space-y-8">
+                   {/* Category Selection */}
+                   <div className="relative">
+                       <label className="text-[9px] text-slate-500 uppercase tracking-[0.25em] font-medium mb-3 block">Category Domain</label>
+                       <button
+                           type="button"
+                           onClick={() => {
+                               setIsCategoryOpen(!isCategoryOpen);
+                               setIsAudienceOpen(false);
+                           }}
+                           className="w-full bg-slate-50 border border-slate-200 px-5 py-4 rounded-xl flex items-center justify-between transition-all hover:bg-slate-100 group"
+                       >
+                           <span className={`text-[10px] uppercase tracking-widest ${formData.categoryId ? 'text-black font-bold' : 'text-slate-400 font-medium'}`}>
+                               {categories.find((c: any) => c._id === formData.categoryId)?.name || "Select Category"}
+                           </span>
+                           <ChevronDown size={14} className={`text-slate-400 transition-transform duration-500 ${isCategoryOpen ? 'rotate-180' : ''}`} />
+                       </button>
+
+                       {isCategoryOpen && (
+                           <>
+                               <div className="fixed inset-0 z-10" onClick={() => setIsCategoryOpen(false)} />
+                               <div className="absolute top-full left-0 right-0 mt-3 bg-white border border-slate-300 rounded-2xl shadow-2xl z-20 overflow-hidden py-3 animate-in fade-in slide-in-from-top-4 duration-300">
+                                   <div className="max-h-72 overflow-y-auto">
+                                       {categories.map((cat: any) => (
+                                           <button
+                                               key={cat._id}
+                                               type="button"
+                                               onClick={() => {
+                                                   setFormData({...formData, categoryId: cat._id});
+                                                   setIsCategoryOpen(false);
+                                               }}
+                                               className={`w-full px-6 py-4 text-left text-[9px] uppercase tracking-[0.3em] font-bold transition-all hover:bg-black hover:text-white flex items-center justify-between group ${formData.categoryId === cat._id ? 'bg-slate-50 text-black' : 'text-slate-400 font-medium'}`}
+                                           >
+                                               {cat.name}
+                                           </button>
+                                       ))}
+                                   </div>
+                               </div>
+                           </>
+                       )}
+                   </div>
+
+                   {/* Audience Selection */}
+                   <div className="relative">
+                       <label className="text-[9px] text-slate-500 uppercase tracking-[0.25em] font-medium mb-3 block">Product Audience</label>
+                       <button
+                           type="button"
+                           onClick={() => {
+                               setIsAudienceOpen(!isAudienceOpen);
+                               setIsCategoryOpen(false);
+                           }}
+                           className="w-full bg-slate-50 border border-slate-200 px-5 py-4 rounded-xl flex items-center justify-between transition-all hover:bg-slate-100 group"
+                       >
+                           <span className={`text-[10px] uppercase tracking-widest text-black font-bold`}>
+                               {formData.type === 'boysgirls' ? 'Boys & Girls' : formData.type.charAt(0).toUpperCase() + formData.type.slice(1)}
+                           </span>
+                           <ChevronDown size={14} className={`text-slate-400 transition-transform duration-500 ${isAudienceOpen ? 'rotate-180' : ''}`} />
+                       </button>
+
+                       {isAudienceOpen && (
+                           <>
+                               <div className="fixed inset-0 z-10" onClick={() => setIsAudienceOpen(false)} />
+                               <div className="absolute top-full left-0 right-0 mt-3 bg-white border border-slate-300 rounded-2xl shadow-2xl z-20 overflow-hidden py-3 animate-in fade-in slide-in-from-top-4 duration-300">
+                                   {[
+                                       { id: 'men', label: 'Men' },
+                                       { id: 'women', label: 'Women' },
+                                       { id: 'kids', label: 'Kids' },
+                                       { id: 'boysgirls', label: 'Boys & Girls' },
+                                       { id: 'unisex', label: 'Unisex' }
+                                   ].map((audience) => (
+                                       <button
+                                           key={audience.id}
+                                           type="button"
+                                           onClick={() => {
+                                               setFormData({...formData, type: audience.id});
+                                               setIsAudienceOpen(false);
+                                           }}
+                                           className={`w-full px-6 py-4 text-left text-[9px] uppercase tracking-[0.3em] font-bold transition-all hover:bg-black hover:text-white flex items-center justify-between group ${formData.type === audience.id ? 'bg-slate-50 text-black' : 'text-slate-400 font-medium'}`}
+                                       >
+                                           {audience.label}
+                                       </button>
+                                   ))}
+                               </div>
+                           </>
+                       )}
+                   </div>
+               </div>
            </div>
 
         </div>
