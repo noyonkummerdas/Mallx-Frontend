@@ -188,7 +188,7 @@ export default function CreateProductPage() {
 
                     <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
                         {/* Hero/Main Image Slot */}
-                        <div className="md:col-span-8 group relative aspect-[4/3]">
+                        <div className="md:col-span-8 group relative aspect-square">
                             <div className={`w-full h-full bg-slate-50 border border-dashed border-slate-300 rounded-2xl flex flex-col items-center justify-center overflow-hidden transition-all duration-500 ${imagePreviews[0] ? 'border-none ring-1 ring-slate-200 shadow-2xl' : 'hover:bg-slate-100 hover:border-slate-400'}`}>
                                 {imagePreviews[0] ? (
                                     <>

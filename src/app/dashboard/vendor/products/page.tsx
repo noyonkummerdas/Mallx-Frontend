@@ -79,7 +79,7 @@ export default function VendorProductsPage() {
           {filteredProducts.map((product: any) => (
             <div key={product._id} className="bg-white border border-slate-200 rounded-[2rem] overflow-hidden group hover:shadow-2xl hover:shadow-slate-200/50 transition-all duration-500 hover:-translate-y-1 relative">
               {/* Product Image Container */}
-              <div className="aspect-[4/5] relative overflow-hidden bg-slate-50">
+              <div className="aspect-square relative overflow-hidden bg-slate-50">
                 {product.images?.[0] ? (
                   <img 
                     src={product.images[0].imageUrl || product.images[0].url} 

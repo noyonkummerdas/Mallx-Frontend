@@ -63,9 +63,6 @@ export default function ProductEditPage() {
 
   useEffect(() => {
     if (productData?.data?.product) {
-
-
-    if (productData?.data?.product) {
       const p = productData.data.product;
       setFormData({
         name: p.name,
@@ -94,7 +91,6 @@ export default function ProductEditPage() {
       }
 
       if (p.attributes && Array.isArray(p.attributes)) {
-
         const attrRecord: Record<string, string> = {};
         p.attributes.forEach((attr: { key: string; value: string }) => {
           attrRecord[attr.key] = attr.value;
@@ -108,6 +104,7 @@ export default function ProductEditPage() {
       }
     }
   }, [productData]);
+
 
   const categories = categoriesData?.data || [];
   const selectedCategoryName = categories.find((c: any) => c._id === formData.categoryId)?.name || "";
