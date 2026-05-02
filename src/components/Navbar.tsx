@@ -15,8 +15,8 @@ export default function Navbar() {
   const isDashboard = pathname.startsWith("/dashboard");
   const isSupportMain = pathname === "/support";
 
-  const { data: userData, isLoading } = useGetMeQuery({}, { 
-    skip: isAuthPage || isDashboard || isSupportMain 
+  const { data: userData, isLoading } = useGetMeQuery({}, {
+    skip: isAuthPage || isDashboard || isSupportMain
   });
   const { data: categoryData } = useGetCategoriesQuery({});
   const { totalCount } = useCart();
@@ -61,7 +61,7 @@ export default function Navbar() {
     recognition.onstart = () => setIsListening(true);
     recognition.onend = () => setIsListening(false);
     recognition.onerror = () => setIsListening(false);
-    
+
     recognition.onresult = (event: any) => {
       const transcript = event.results[0][0].transcript;
       setSearchQuery(transcript);
@@ -124,7 +124,7 @@ export default function Navbar() {
               <Menu className="w-6 h-6 text-slate-700" />
             </button>
             <Link href="/" className="flex items-center gap-2 group" onClick={() => setIsSidebarOpen(false)}>
-              <div className="bg-slate-900 text-white rounded-lg px-2 py-0.5 font-black text-lg">M</div>
+              {/* <div className="bg-slate-900 text-white rounded-lg px-2 py-0.5 font-black text-lg">M</div> */}
               <span className="text-xl font-black tracking-tighter text-slate-900 uppercase">MallX</span>
             </Link>
           </div>
@@ -205,16 +205,16 @@ export default function Navbar() {
             </div>
 
             <div ref={searchRef} className="flex-1 max-w-[720px] relative flex items-center gap-2 sm:gap-4 ml-4 sm:ml-8 mr-2 sm:mr-8">
-              <form 
+              <form
                 onSubmit={handleSearch}
                 className="flex flex-1 items-center bg-white border border-slate-300 rounded-full overflow-hidden shadow-inner focus-within:border-indigo-500 focus-within:shadow-[0_0_0_1px_rgba(79,70,229,0.1)] transition-all"
               >
                 <div className="hidden sm:flex items-center pl-4 pr-2">
                   <Search className="w-4 h-4 text-slate-400" />
                 </div>
-                <input 
-                  type="text" 
-                  placeholder="Search products..." 
+                <input
+                  type="text"
+                  placeholder="Search products..."
                   value={searchQuery}
                   onChange={(e) => {
                     setSearchQuery(e.target.value);
@@ -224,15 +224,15 @@ export default function Navbar() {
                   className="w-full bg-transparent px-4 sm:px-2 py-2.5 outline-none text-slate-700 placeholder-slate-400 text-sm sm:text-base"
                 />
                 {searchQuery && (
-                   <button 
-                    type="button" 
+                  <button
+                    type="button"
                     onClick={() => setSearchQuery("")}
                     className="p-1 hover:bg-slate-100 rounded-full mr-1 transition-colors"
-                   >
-                     <X className="w-4 h-4 text-slate-400" />
-                   </button>
+                  >
+                    <X className="w-4 h-4 text-slate-400" />
+                  </button>
                 )}
-                <button 
+                <button
                   type="submit"
                   className="px-4 sm:px-6 py-2.5 bg-slate-50 border-l border-slate-300 hover:bg-slate-100 transition-colors flex items-center justify-center group"
                 >
@@ -274,7 +274,7 @@ export default function Navbar() {
                 </div>
               )}
 
-              <button 
+              <button
                 type="button"
                 onClick={startVoiceSearch}
                 className={`p-2.5 rounded-full transition-all flex-shrink-0 hidden sm:flex items-center justify-center ${isListening ? 'bg-red-500 text-white animate-pulse shadow-lg shadow-red-500/30' : 'bg-slate-100 hover:bg-slate-200 text-slate-700'}`}
