@@ -360,19 +360,45 @@ export default function CreateProductPage() {
                             ))}
                         </div>
 
-                        {/* Warranty */}
+                        {/* Warranty Terms */}
                         <div className="group">
                             <div className="flex items-center gap-2 mb-4">
                                 <ShieldCheck size={12} className="text-slate-400" />
                                 <label className="text-[9px] text-slate-500 uppercase tracking-[0.25em] font-bold group-focus-within:text-black transition-all">Warranty Terms</label>
                             </div>
-                            <input 
-                                type="text"
-                                value={newProduct.warranty}
-                                onChange={(e) => setNewProduct({...newProduct, warranty: e.target.value})}
-                                className="w-full bg-slate-50/50 border border-slate-200 rounded-xl px-6 py-4 outline-none text-sm text-black font-semibold placeholder:text-slate-300 focus:border-black focus:bg-white transition-all shadow-sm"
-                                placeholder="e.g. 1 Year Local Warranty"
-                            />
+                            
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <select 
+                                    value={['No Warranty', '6 Months Local Warranty', '1 Year Local Warranty', '2 Years Local Warranty', 'Lifetime Warranty'].includes(newProduct.warranty) ? newProduct.warranty : (newProduct.warranty ? 'Custom' : '')}
+                                    onChange={(e) => {
+                                        const val = e.target.value;
+                                        if (val === 'Custom') {
+                                            setNewProduct({...newProduct, warranty: " "}); // Use a space as a temporary marker to show the input
+                                        } else {
+                                            setNewProduct({...newProduct, warranty: val});
+                                        }
+                                    }}
+                                    className="w-full bg-slate-50/50 border border-slate-200 rounded-xl px-6 py-4 outline-none text-sm text-black font-semibold focus:border-black focus:bg-white transition-all shadow-sm appearance-none cursor-pointer"
+                                >
+                                    <option value="" disabled>Select Warranty Term</option>
+                                    <option value="No Warranty">No Warranty</option>
+                                    <option value="6 Months Local Warranty">6 Months Local Warranty</option>
+                                    <option value="1 Year Local Warranty">1 Year Local Warranty</option>
+                                    <option value="2 Years Local Warranty">2 Years Local Warranty</option>
+                                    <option value="Lifetime Warranty">Lifetime Warranty</option>
+                                    <option value="Custom">Custom / Other</option>
+                                </select>
+
+                                {(!['No Warranty', '6 Months Local Warranty', '1 Year Local Warranty', '2 Years Local Warranty', 'Lifetime Warranty'].includes(newProduct.warranty) && newProduct.warranty !== "") && (
+                                    <input 
+                                        type="text"
+                                        value={newProduct.warranty === " " ? "" : newProduct.warranty}
+                                        onChange={(e) => setNewProduct({...newProduct, warranty: e.target.value})}
+                                        className="w-full bg-slate-50/50 border border-slate-200 rounded-xl px-6 py-4 outline-none text-sm text-black font-semibold placeholder:text-slate-300 focus:border-black focus:bg-white transition-all shadow-sm animate-in fade-in slide-in-from-left-2 duration-300"
+                                        placeholder="Type custom warranty terms..."
+                                    />
+                                )}
+                            </div>
                         </div>
                     </div>
                 </div>
