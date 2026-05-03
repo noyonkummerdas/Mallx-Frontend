@@ -199,8 +199,8 @@ export default function Navbar() {
                 <Menu className="w-6 h-6 text-slate-700" strokeWidth={1.5} />
               </button>
               <Link href="/" className="flex items-center gap-2 group">
-                <div className="bg-slate-900 text-white rounded-lg px-2.5 py-1 font-black tracking-tighter text-lg leading-none transform group-hover:scale-105 transition-all shadow-lg shadow-slate-900/10">M</div>
-                <span className="text-xl font-black tracking-tighter text-slate-900 uppercase hidden sm:block">MallX</span>
+                <div className="text-black-200 rounded-lg border-2 border-gray-300 px-3 py-2 font-black tracking-tighter text-xl leading-none transition-all shadow-sm ">E</div>
+                <span className="text-xl font-black tracking-tighter text-slate-900 uppercase hidden sm:block">Mall</span>
               </Link>
             </div>
 
