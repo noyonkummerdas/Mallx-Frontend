@@ -310,7 +310,7 @@ export default function Navbar() {
                 <Link href="/auth/login" className="ml-1 sm:ml-2">
                   <div className="flex items-center gap-2 px-4 py-2 border border-slate-200 hover:bg-slate-50 rounded-full transition-all text-sm font-bold text-slate-700">
                     <UserIcon className="w-4 h-4" />
-                    <span className="hidden sm:block uppercase tracking-wider text-[10px]">Sign </span>
+                    <span className="hidden sm:block uppercase tracking-wider text-[10px]">Sign in</span>
                   </div>
                 </Link>
               )}
