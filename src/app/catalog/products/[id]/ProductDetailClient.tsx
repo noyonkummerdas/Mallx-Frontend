@@ -94,8 +94,28 @@ export default function ProductDetailClient({ id }: { id: string }) {
       setReviewText("");
       alert("Review posted!");
     } catch (err: any) {
-      console.error("Failed to post review:", err);
-      const errorMessage = err?.data?.message || "Review post failed. Make sure you are logged in.";
+      // Create a more comprehensive error string for the console
+      const errorStr = err instanceof Error ? err.message : JSON.stringify(err, Object.getOwnPropertyNames(err), 2);
+      console.error("Failed to post review:", errorStr);
+      
+      let errorMessage = "Review post failed. Make sure you are logged in and have purchased this product.";
+      
+      if (err?.data?.message && Object.keys(err.data).length > 0) {
+        errorMessage = err.data.message;
+      } else if (err?.status === 403) {
+        errorMessage = "You do not have permission to post a review. Only Customers can review products.";
+      } else if (err?.status === 401) {
+        errorMessage = "Your session has expired or you are not logged in. Please log in again.";
+      } else if (err?.error) {
+        errorMessage = err.error;
+      } else if (err?.message) {
+        errorMessage = err.message;
+      } else if (typeof err === 'string') {
+        errorMessage = err;
+      } else if (err?.status) {
+        errorMessage = `Request failed with status ${err.status}`;
+      }
+      
       alert(errorMessage);
     }
   };
