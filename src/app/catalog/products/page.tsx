@@ -233,7 +233,7 @@ export default function ProductListingPage() {
                         ))}
                      </div>
                   ) : isEliteView && hasGroupedProducts ? (
-                     <div className={`space-y-48 animate-in fade-in slide-in-from-bottom-10 duration-1000 relative`}>
+                     <div className={`space-y-24 animate-in fade-in slide-in-from-bottom-10 duration-1000 relative`}>
                         {/* Dynamic Background Glow for Youthful Vibe */}
                         {typeFromUrl === "boysgirls" && (
                            <div className="absolute -top-24 -left-24 w-[600px] h-[600px] bg-cyan-400/10 blur-[120px] -z-10 rounded-full animate-pulse" />
@@ -272,7 +272,7 @@ export default function ProductListingPage() {
                                  </div>
                               </header>
 
-                              <div className={`grid gap-14 transition-all duration-1000 ease-[cubic-bezier(0.16,1,0.3,1)] ${isSidebarOpen
+                              <div className={`grid gap-8 transition-all duration-1000 ease-[cubic-bezier(0.16,1,0.3,1)] ${isSidebarOpen
                                  ? 'grid-cols-1 sm:grid-cols-1 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5'
                                  : 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6'
                                  }`}>
@@ -286,7 +286,7 @@ export default function ProductListingPage() {
                         ))}
                      </div>
                   ) : products.length > 0 ? (
-                     <div className={`grid gap-14 transition-all duration-1000 ease-[cubic-bezier(0.16,1,0.3,1)] ${isSidebarOpen
+                     <div className={`grid gap-8 transition-all duration-1000 ease-[cubic-bezier(0.16,1,0.3,1)] ${isSidebarOpen
                         ? 'grid-cols-1 sm:grid-cols-1 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5'
                         : 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6'
                         }`}>

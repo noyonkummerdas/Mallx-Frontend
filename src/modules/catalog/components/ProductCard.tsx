@@ -145,7 +145,7 @@ export default function ProductCard({ product, layout = 'vertical' }: ProductCar
   }
 
   return (
-    <div className="group relative wow-card p-0 transition-all duration-700 rounded-[2rem] overflow-hidden border border-slate-100/50 hover:z-10">
+    <div className="group relative wow-card p-0 transition-all duration-700 rounded-xl overflow-hidden border border-slate-100/50 hover:z-10">
       {/* 1. TOP BADGES & ACTIONS */}
       <div className="absolute top-5 left-5 z-20 flex flex-col gap-2">
         {product.isNewArrival && (
@@ -189,7 +189,7 @@ export default function ProductCard({ product, layout = 'vertical' }: ProductCar
       </Link>
 
       {/* 3. PRODUCT INFO */}
-      <div className="px-6 pb-8 pt-5 font-sans">
+      <div className="px-4 pb-6 pt-4 font-sans">
         <div className="flex items-center justify-between mb-2">
           <div className="flex items-center gap-2">
             {product.brand && (
@@ -272,7 +272,7 @@ export default function ProductCard({ product, layout = 'vertical' }: ProductCar
                   <div className="w-1.5 h-1.5 rounded-full bg-emerald-400 shadow-[0_0_10px_rgba(52,211,153,0.5)]" />
                   <span className="text-[8px] font-black text-slate-400 uppercase tracking-widest">Available</span>
                 </div>
-                <span className="text-[8px] font-black text-slate-300 uppercase tracking-widest">{product.stock} Units</span>
+                <span className="text-[8px] font-black text-black-300 uppercase tracking-widest">{product.stock} Units</span>
               </div>
             )}
           </div>
