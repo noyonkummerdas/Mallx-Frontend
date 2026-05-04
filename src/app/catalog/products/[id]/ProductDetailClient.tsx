@@ -24,7 +24,8 @@ import {
   Calendar,
   Layers,
   ExternalLink,
-  ChevronLeft
+  ChevronLeft,
+  Zap
 } from "lucide-react";
 
 export default function ProductDetailClient({ id }: { id: string }) {
@@ -83,6 +84,23 @@ export default function ProductDetailClient({ id }: { id: string }) {
     }
   };
 
+  const handleBuyNow = async () => {
+    try {
+      const flashPrice = product.activeFlashSale?.discountPrice;
+      const finalPrice = flashPrice || product.discountPrice || product.price;
+
+      await addToCart({
+        productId: product._id,
+        variantId: selectedVariant?._id,
+        quantity,
+        price: finalPrice
+      }).unwrap();
+      router.push("/shopping/checkout");
+    } catch (err) {
+      console.error("Failed to process buy now:", err);
+    }
+  };
+
   const handlePostReview = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!reviewText.trim()) return;
@@ -97,9 +115,9 @@ export default function ProductDetailClient({ id }: { id: string }) {
       // Create a more comprehensive error string for the console
       const errorStr = err instanceof Error ? err.message : JSON.stringify(err, Object.getOwnPropertyNames(err), 2);
       console.error("Failed to post review:", errorStr);
-      
+
       let errorMessage = "Review post failed. Make sure you are logged in and have purchased this product.";
-      
+
       if (err?.data?.message && Object.keys(err.data).length > 0) {
         errorMessage = err.data.message;
       } else if (err?.status === 403) {
@@ -115,7 +133,7 @@ export default function ProductDetailClient({ id }: { id: string }) {
       } else if (err?.status) {
         errorMessage = `Request failed with status ${err.status}`;
       }
-      
+
       alert(errorMessage);
     }
   };
@@ -127,7 +145,7 @@ export default function ProductDetailClient({ id }: { id: string }) {
   return (
     <main className="min-h-screen bg-[#F8F9FA] pb-24 font-sans text-slate-900">
       {/* 1. Full-Width Header */}
-      <header className="bg-white border-b border-slate-200 pt-10 pb-4">
+      <header className="bg-white pt-10 pb-8">
         <div className="max-w-7xl mx-auto px-6">
           {/* Breadcrumbs */}
           <nav className="flex items-center gap-2 text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-4">
@@ -171,9 +189,13 @@ export default function ProductDetailClient({ id }: { id: string }) {
               </button>
             </div>
           </div>
+        </div>
+      </header>
 
-          {/* Navigation Tabs (Premium Gradient Border Design) */}
-          <div className="mt-12 flex gap-4 overflow-x-auto scrollbar-hide pb-2">
+      {/* Sticky Navigation Tabs - Aligned with Navbar Division Row */}
+      <div className="sticky top-[72px] z-50 transition-all duration-300">
+        <div className="max-w-[1400px] mx-auto px-4 sm:px-6">
+          <div className="flex items-center justify-start gap-6 py-3">
             {[
               { id: "item-details", label: "Item Details" },
               { id: "reviews", label: `Reviews (${reviews.length})` },
@@ -187,7 +209,7 @@ export default function ProductDetailClient({ id }: { id: string }) {
               >
                 {/* Gradient Border Animation Overlay */}
                 <div className={`absolute inset-0 bg-gradient-to-r from-black via-gray-400 to-black opacity-0 group-hover:opacity-100 transition-opacity duration-500 ${activeTab === tab.id ? 'opacity-100 animate-[spin-slow_4s_linear_infinite]' : 'group-hover:animate-[spin-slow_4s_linear_infinite]'}`} />
-                
+
                 {/* Inner Content */}
                 <div className={`relative px-6 py-3 rounded-[10px] bg-white transition-all duration-300 flex items-center gap-2 whitespace-nowrap ${activeTab === tab.id ? 'text-black-200 shadow-inner' : 'text-black-200 group-hover:text-gray-400'}`}>
                   <span className="text-[11px] font-black uppercase tracking-[0.2em]">{tab.label}</span>
@@ -199,7 +221,7 @@ export default function ProductDetailClient({ id }: { id: string }) {
             ))}
           </div>
         </div>
-      </header>
+      </div>
 
       {/* 2. Main Layout (Grid 8/4) */}
       <div className="max-w-7xl mx-auto px-6 mt-8">
@@ -471,14 +493,25 @@ export default function ProductDetailClient({ id }: { id: string }) {
                     <button onClick={() => setQuantity(quantity + 1)} className="flex-1 h-full flex items-center justify-center hover:bg-white hover:shadow-sm rounded-xl transition-all text-slate-400 hover:text-slate-900"><Plus size={18} /></button>
                   </div>
 
-                  <button
-                    onClick={handleAddToCart}
-                    disabled={isAdding || product.stock <= 0}
-                    className="w-full h-16 bg-[#2ECC71] text-white font-black rounded-2xl text-[12px] uppercase tracking-[0.3em] shadow-lg shadow-emerald-500/10 hover:bg-[#27AE60] hover:scale-[1.02] transition-all active:scale-[0.98] disabled:opacity-20 flex items-center justify-center gap-3"
-                  >
-                    <ShoppingBag size={20} />
-                    {isAdding ? "Processing..." : "Add to Cart"}
-                  </button>
+                  <div className="flex flex-col gap-3">
+                    <button
+                      onClick={handleBuyNow}
+                      disabled={isAdding || product.stock <= 0}
+                      className="w-full h-16 bg-[#2ECC71] text-white font-black rounded-lg text-[12px] uppercase tracking-[0.3em] shadow-xl shadow-[#2ECC71]/20 hover:bg-emerald-500 hover:scale-[1.02] transition-all active:scale-[0.98] disabled:opacity-20 flex items-center justify-center gap-3"
+                    >
+                      {/* <Zap size={20} className="fill-yellow-400 text-yellow-400" /> */}
+                      {isAdding ? "Processing..." : "Buy Now"}
+                    </button>
+
+                    <button
+                      onClick={handleAddToCart}
+                      disabled={isAdding || product.stock <= 0}
+                      className="w-full h-14 bg-white border-2 border-[#2ECC71] text-[#2ECC71] font-black rounded-2xl text-[11px] uppercase tracking-widest hover:bg-emerald-50/50 transition-all active:scale-[0.98] disabled:opacity-20 flex items-center justify-center gap-3"
+                    >
+                      <ShoppingBag size={18} />
+                      {isAdding ? "Wait..." : "Add to Cart"}
+                    </button>
+                  </div>
                 </div>
 
                 <p className="mt-4 text-[9px] text-slate-400 text-center uppercase tracking-widest font-bold">
