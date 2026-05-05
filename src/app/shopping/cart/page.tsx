@@ -70,7 +70,11 @@ export default function CartPage() {
               cartItems.map((item: any) => (
                 <div key={item._id} className="bg-white border border-slate-200 rounded-xl p-4 flex flex-col sm:flex-row gap-4 items-center shadow-sm group hover:border-indigo-600/20 transition-all">
                   <div className="w-16 h-16 bg-slate-50 rounded-lg overflow-hidden flex-shrink-0 border border-slate-100 relative">
-                    <img src={item.productId?.images?.[0]?.url} alt={item.productId?.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
+                    <img 
+                      src={item.image || "https://images.unsplash.com/photo-1523275335684-37898b6baf30?q=80&w=1000"} 
+                      alt={item.productId?.name} 
+                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" 
+                    />
                     {item.productId?.discountPrice > 0 && item.productId?.discountPrice < item.productId?.price && (
                       <div className="absolute top-0 right-0 bg-red-600 text-[8px] font-black text-white px-2 py-1 rounded-bl-lg uppercase tracking-tighter">
                         -{Math.round(((item.productId.price - item.productId.discountPrice) / item.productId.price) * 100)}%
