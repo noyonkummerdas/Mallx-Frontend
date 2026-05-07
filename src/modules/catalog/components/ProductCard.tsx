@@ -133,7 +133,7 @@ export default function ProductCard({ product, layout = 'vertical' }: ProductCar
               className="flex-1 h-8 bg-slate-900 text-white rounded-lg text-[6.5px] sm:text-[7.5px] font-black uppercase tracking-widest hover:bg-action transition-all shadow-md active:scale-95 disabled:opacity-30 flex items-center justify-center gap-1 px-1 overflow-hidden"
             >
               <ShoppingBag className="w-3 h-3 shrink-0" />
-              <span className="truncate">Add to Cart</span>
+              <span className="truncate">Add</span>
             </button>
             <Link href={`/catalog/products/${product._id}`} className="size-8 border border-slate-100 rounded-lg hover:border-action transition-colors shrink-0 flex items-center justify-center bg-slate-50/50 hover:bg-white group/arrow">
               <ArrowUpRight className="w-3.5 h-3.5 text-slate-300 group-hover/arrow:text-action transition-all" />
