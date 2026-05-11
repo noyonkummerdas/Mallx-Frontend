@@ -256,7 +256,7 @@ export default function ProductCard({ product, layout = 'vertical' }: ProductCar
             ) : product.stock <= 10 ? (
               <div className="space-y-2">
                 <div className="flex justify-between items-center text-[8px] font-black uppercase tracking-[0.1em]">
-                  <span className="text-red-500 animate-pulse">Limited Edition</span>
+                  <span className="text-red-500 animate-pulse">Edition</span>
                   <span className="text-slate-400">{product.stock} Units Left</span>
                 </div>
                 <div className="w-full h-0.5 bg-slate-50 rounded-full overflow-hidden">
