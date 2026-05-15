@@ -7,6 +7,9 @@ import { useGetCategoriesQuery, useGetProductsQuery } from "@/modules/shopping/s
 import { useState, useEffect, useRef } from "react";
 import { ShoppingBag, User as UserIcon, Menu, Search, Mic, Bell, LayoutGrid, Compass, X, Loader2 } from "lucide-react";
 import { useCart } from "@/modules/shopping/hooks/useCart";
+import NotificationList from "@/modules/notifications/components/NotificationList";
+import { useGetNotificationsQuery } from "@/modules/notifications/services/notificationApi";
+import { toast } from "sonner";
 
 export default function Navbar() {
   const pathname = usePathname();
@@ -25,15 +28,24 @@ export default function Navbar() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isSuggestionsOpen, setIsSuggestionsOpen] = useState(false);
   const [isListening, setIsListening] = useState(false);
+  const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
   const searchRef = useRef<HTMLDivElement>(null);
+  const notificationRef = useRef<HTMLDivElement>(null);
 
   // Route flags moved up for query skipping
 
   // --- SEARCH SUGGESTIONS LOGIC ---
+  const user = userData?.data?.user;
+
   const { data: searchData, isFetching: isSearching } = useGetProductsQuery(
     { name: searchQuery },
     { skip: searchQuery.length < 2 }
   );
+
+  const { data: notificationData } = useGetNotificationsQuery({}, {
+    skip: !user
+  });
+  const unreadCount = notificationData?.data?.notifications?.filter((n: any) => !n.isRead).length || 0;
 
   const suggestions = searchData?.data?.products?.slice(0, 8) || [];
 
@@ -76,6 +88,9 @@ export default function Navbar() {
       if (searchRef.current && !searchRef.current.contains(event.target as Node)) {
         setIsSuggestionsOpen(false);
       }
+      if (notificationRef.current && !notificationRef.current.contains(event.target as Node)) {
+        setIsNotificationsOpen(false);
+      }
     };
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
@@ -90,7 +105,6 @@ export default function Navbar() {
 
   if (isAuthPage || isDashboard || isSupportMain) return null;
 
-  const user = userData?.data?.user;
   const dbCategories = categoryData?.data || [];
 
   const divisions = [
@@ -285,9 +299,25 @@ export default function Navbar() {
             </div>
 
             <div className="flex items-center gap-2 sm:gap-4 min-w-fit">
-              <button className="p-2 hover:bg-slate-100 rounded-full transition-colors hidden md:block group">
-                <Bell className="w-6 h-6 text-slate-600 group-hover:text-slate-900 transition-colors" strokeWidth={1.5} />
+            <div ref={notificationRef} className="relative">
+              <button 
+                onClick={() => setIsNotificationsOpen(!isNotificationsOpen)}
+                className={`p-2 rounded-full transition-all relative group ${isNotificationsOpen ? 'bg-slate-900 text-white' : 'hover:bg-slate-100 text-slate-600'}`}
+              >
+                <Bell className={`w-6 h-6 transition-colors ${isNotificationsOpen ? 'text-white' : 'group-hover:text-slate-900'}`} strokeWidth={1.5} />
+                {unreadCount > 0 && (
+                  <span className="absolute top-1.5 right-1.5 w-3.5 h-3.5 bg-indigo-600 text-[8px] font-black text-white flex items-center justify-center rounded-full border-2 border-white shadow-sm animate-pulse">
+                    {unreadCount}
+                  </span>
+                )}
               </button>
+
+              {isNotificationsOpen && (
+                <div className="absolute top-[calc(100%+12px)] right-0 w-[360px] max-h-[520px] bg-white rounded-2xl shadow-2xl border border-slate-100 overflow-hidden z-[100] animate-in fade-in zoom-in-95 duration-200">
+                  <NotificationList />
+                </div>
+              )}
+            </div>
 
               <Link href="/shopping/cart" className="relative p-2 hover:bg-slate-100 rounded-full transition-colors flex items-center justify-center group">
                 <ShoppingBag className="w-6 h-6 text-slate-600 group-hover:text-indigo-600 transition-colors" strokeWidth={1.5} />
