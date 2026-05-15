@@ -339,18 +339,30 @@ export default function Navbar() {
       </div>
 
       {showPopup && (
-        <div className="fixed bottom-6 left-6 right-6 md:left-auto md:right-6 md:max-w-[320px] bg-white rounded-2xl shadow-2xl p-6 border border-slate-100 animate-in slide-in-from-bottom-10 duration-700 z-[100]">
-          <button onClick={() => setShowPopup(false)} className="absolute top-4 right-4 text-slate-400 hover:text-slate-900 transition-colors">✕</button>
-          <div className="w-12 h-12 bg-indigo-50 rounded-xl flex items-center justify-center mb-4">
-            <ShoppingBag className="w-6 h-6 text-indigo-600" />
+        <div className="fixed bottom-4 left-4 right-4 md:left-auto md:right-8 md:bottom-8 md:max-w-[340px] bg-white rounded-[2rem] shadow-[0_20px_50px_rgba(0,0,0,0.1)] p-7 border border-slate-100 animate-in slide-in-from-bottom-10 duration-700 z-[100] group">
+          <button 
+            onClick={() => setShowPopup(false)} 
+            className="absolute top-5 right-5 p-1 text-slate-300 hover:text-slate-900 hover:bg-slate-50 rounded-full transition-all"
+            aria-label="Close popup"
+          >
+            <X className="w-4 h-4" />
+          </button>
+          <div className="w-14 h-14 bg-indigo-50 rounded-2xl flex items-center justify-center mb-5 group-hover:scale-110 transition-transform duration-500">
+            <ShoppingBag className="w-7 h-7 text-indigo-600" />
           </div>
-          <h4 className="text-lg font-black mb-1 text-slate-900 tracking-tight">Experience MallX</h4>
-          <p className="text-sm text-slate-500 leading-relaxed mb-6">Join our elite community for personalized offers and premium collections.</p>
-          <Link href="/auth/register" onClick={() => setShowPopup(false)}>
-            <button className="w-full bg-slate-900 hover:bg-indigo-600 text-white py-3 rounded-xl text-xs font-black uppercase tracking-[0.15em] transition-all shadow-lg shadow-slate-900/20 active:scale-95">
+          <h4 className="text-xl font-black mb-2 text-slate-900 tracking-tight">Experience MallX</h4>
+          <p className="text-sm text-slate-500 leading-relaxed mb-7">Join our elite community for personalized offers and premium collections.</p>
+          <Link href="/auth/register" onClick={() => setShowPopup(false)} className="block">
+            <button className="w-full bg-slate-900 hover:bg-indigo-600 text-white py-4 rounded-2xl text-[11px] font-black uppercase tracking-[0.2em] transition-all shadow-xl shadow-slate-900/10 active:scale-95">
               Claim Membership
             </button>
           </Link>
+          <button 
+            onClick={() => setShowPopup(false)}
+            className="w-full mt-3 py-2 text-[10px] font-bold text-slate-400 uppercase tracking-widest hover:text-slate-600 transition-colors"
+          >
+            Maybe Later
+          </button>
         </div>
       )}
     </>

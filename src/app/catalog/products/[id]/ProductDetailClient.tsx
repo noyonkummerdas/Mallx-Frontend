@@ -80,7 +80,7 @@ export default function ProductDetailClient({ id }: { id: string }) {
       }).unwrap();
       router.push("/shopping/cart");
     } catch (err) {
-      console.error("Failed to add to cart:", err);
+      // console.error("Failed to add to cart:", err);
     }
   };
 
@@ -97,7 +97,7 @@ export default function ProductDetailClient({ id }: { id: string }) {
       }).unwrap();
       router.push("/shopping/checkout");
     } catch (err) {
-      console.error("Failed to process buy now:", err);
+      // console.error("Failed to process buy now:", err);
     }
   };
 
@@ -112,9 +112,7 @@ export default function ProductDetailClient({ id }: { id: string }) {
       setReviewText("");
       alert("Review posted!");
     } catch (err: any) {
-      // Create a more comprehensive error string for the console
-      const errorStr = err instanceof Error ? err.message : JSON.stringify(err, Object.getOwnPropertyNames(err), 2);
-      console.error("Failed to post review:", errorStr);
+      // Failed to post review
 
       let errorMessage = "Review post failed. Make sure you are logged in and have purchased this product.";
 
@@ -193,9 +191,9 @@ export default function ProductDetailClient({ id }: { id: string }) {
       </header>
 
       {/* Sticky Navigation Tabs - Aligned with Navbar Division Row */}
-      <div className="sticky top-[72px] z-50 transition-all duration-300">
-        <div className="max-w-[1400px] mx-auto px-4 sm:px-6">
-          <div className="flex items-center justify-start gap-6 py-3">
+      <div className="sticky top-[72px] z-40 bg-[#F8F9FA]/80 backdrop-blur-md border-b border-slate-200/50 transition-all duration-300">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6">
+          <div className="flex items-center justify-start gap-4 sm:gap-6 py-3 overflow-x-auto scrollbar-hide scroll-smooth">
             {[
               { id: "item-details", label: "Item Details" },
               { id: "reviews", label: `Reviews (${reviews.length})` },
