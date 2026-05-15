@@ -5,6 +5,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { ReduxProvider } from "@/store/providers";
 import CartSyncProcessor from "@/modules/shopping/components/CartSyncProcessor";
+import { Toaster } from "sonner";
 
 const poppins = Poppins({
   weight: ["400"],
@@ -29,6 +30,7 @@ export default function RootLayout({
       >
         <ReduxProvider>
           <CartSyncProcessor />
+          <Toaster position="top-center" richColors />
           <Navbar />
           {children}
           <Footer />

@@ -4,6 +4,8 @@ import { useGetProductQuery, usePostProductReviewMutation } from "@/modules/shop
 import { useAddToCartMutation } from "@/modules/shopping/services/shoppingApi";
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
+import { toast } from "sonner";
+import Image from "next/image";
 import {
   Star,
   ShoppingBag,
@@ -78,8 +80,10 @@ export default function ProductDetailClient({ id }: { id: string }) {
         quantity,
         price: finalPrice
       }).unwrap();
+      toast.success("Product added to your bag!");
       router.push("/shopping/cart");
     } catch (err) {
+      toast.error("Failed to add to cart. Please try again.");
       // console.error("Failed to add to cart:", err);
     }
   };
@@ -95,8 +99,10 @@ export default function ProductDetailClient({ id }: { id: string }) {
         quantity,
         price: finalPrice
       }).unwrap();
+      toast.success("Order sequence initiated!");
       router.push("/shopping/checkout");
     } catch (err) {
+      toast.error("Process failed. Ensure you are authenticated.");
       // console.error("Failed to process buy now:", err);
     }
   };
@@ -110,7 +116,7 @@ export default function ProductDetailClient({ id }: { id: string }) {
         reviewData: { rating, comment: reviewText }
       }).unwrap();
       setReviewText("");
-      alert("Review posted!");
+      toast.success("Review narrated successfully!");
     } catch (err: any) {
       // Failed to post review
 
@@ -132,7 +138,7 @@ export default function ProductDetailClient({ id }: { id: string }) {
         errorMessage = `Request failed with status ${err.status}`;
       }
 
-      alert(errorMessage);
+      toast.error(errorMessage);
     }
   };
 
@@ -233,10 +239,12 @@ export default function ProductDetailClient({ id }: { id: string }) {
                 {/* Main Preview Area */}
                 <div className="relative aspect-video bg-[#FBFBFC] rounded-2xl overflow-hidden group">
                   {images[activeImageIndex] ? (
-                    <img
+                    <Image
                       src={images[activeImageIndex].imageUrl || images[activeImageIndex].url}
                       alt={product.name}
-                      className="w-full h-full object-contain p-8 transition-transform duration-700 group-hover:scale-105"
+                      fill
+                      className="object-contain p-8 transition-transform duration-700 group-hover:scale-105"
+                      priority
                     />
                   ) : (
                     <div className="w-full h-full flex flex-col items-center justify-center text-slate-200">
@@ -275,7 +283,12 @@ export default function ProductDetailClient({ id }: { id: string }) {
                         className={`relative w-20 h-20 rounded-xl overflow-hidden border-2 transition-all flex-shrink-0 bg-slate-50 ${activeImageIndex === i ? 'border-indigo-600 shadow-md scale-105' : 'border-transparent opacity-40 hover:opacity-100 hover:border-slate-200'
                           }`}
                       >
-                        <img src={img.imageUrl || img.url} className="w-full h-full object-contain p-2" />
+                        <Image 
+                          src={img.imageUrl || img.url} 
+                          alt={`${product.name} thumbnail ${i}`}
+                          fill
+                          className="object-contain p-2" 
+                        />
                       </button>
                     ))}
                   </div>
@@ -378,8 +391,13 @@ export default function ProductDetailClient({ id }: { id: string }) {
                       <div key={i} className="relative pb-10 border-b border-slate-100 last:border-0">
                         <div className="flex items-start justify-between">
                           <div className="flex items-center gap-4">
-                            <div className="w-12 h-12 rounded-2xl border border-slate-100 overflow-hidden bg-white shadow-sm">
-                              <img src={rev.userId?.photo || `https://ui-avatars.com/api/?name=${rev.userId?.name}`} className="w-full h-full object-cover" />
+                            <div className="w-12 h-12 rounded-2xl border border-slate-100 overflow-hidden bg-white shadow-sm relative">
+                              <Image 
+                                src={rev.userId?.photo || `https://ui-avatars.com/api/?name=${rev.userId?.name}`} 
+                                alt={rev.userId?.name || "Patron"}
+                                fill
+                                className="object-cover" 
+                              />
                             </div>
                             <div>
                               <h5 className="text-sm font-black text-slate-900 uppercase tracking-tight">{rev.userId?.name || "Patron"}</h5>
@@ -520,8 +538,13 @@ export default function ProductDetailClient({ id }: { id: string }) {
               {/* Quick Vendor Section in Sidebar */}
               <div className="p-8 bg-[#FBFBFC]">
                 <div className="flex items-center gap-4 mb-6">
-                  <div className="w-14 h-14 rounded-2xl border-2 border-white shadow-md overflow-hidden bg-white">
-                    <img src={shop?.logo || `https://ui-avatars.com/api/?name=${shop?.shopName}`} className="w-full h-full object-cover" />
+                  <div className="w-14 h-14 rounded-2xl border-2 border-white shadow-md overflow-hidden bg-white relative">
+                    <Image 
+                      src={shop?.logo || `https://ui-avatars.com/api/?name=${shop?.shopName}`} 
+                      alt={shop?.shopName || "Exclusive Vendor"}
+                      fill
+                      className="object-cover" 
+                    />
                   </div>
                   <div className="flex-1">
                     <h4 className="text-[13px] font-black text-slate-900 uppercase tracking-tight mb-1">{shop?.shopName || "Exclusive Vendor"}</h4>

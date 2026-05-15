@@ -5,6 +5,7 @@ import { Star, Eye, ShoppingBag, ArrowUpRight } from "lucide-react";
 import { useCart } from "@/modules/shopping/hooks/useCart";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 interface ProductCardProps {
   product: {
@@ -61,10 +62,11 @@ export default function ProductCard({ product, layout = 'vertical' }: ProductCar
       <div className="group relative wow-card p-0 transition-all duration-500 rounded-xl flex items-stretch hover:shadow-2xl hover:shadow-slate-200/50 hover:border-action/20 overflow-hidden h-48 sm:h-56">
         {/* IMAGE CONTAINER - 60% */}
         <Link href={`/catalog/products/${product._id}`} className="relative w-[60%] overflow-hidden bg-slate-50 border-r border-slate-100 block shrink-0">
-          <img
+          <Image
             src={product.images?.[0]?.imageUrl || "https://images.unsplash.com/photo-1523275335684-37898b6baf30?q=80&w=1000"}
-            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000"
+            className="object-cover group-hover:scale-110 transition-transform duration-1000"
             alt={product.name}
+            fill
           />
           {discountPercent > 0 && (
             <div className="absolute top-0 right-0 overflow-hidden w-16 h-16 z-10">
@@ -126,17 +128,17 @@ export default function ProductCard({ product, layout = 'vertical' }: ProductCar
           </div>
 
           {/* Buttons Row */}
-          <div className="flex items-center gap-1.5 w-full">
+          <div className="flex items-center gap-1.5 w-full mt-2">
             <button
               onClick={handleQuickAdd}
               disabled={isAdding || (product.stock !== undefined && product.stock <= 0)}
-              className="flex-1 h-8 bg-slate-900 text-white rounded-lg text-[6.5px] sm:text-[7.5px] font-black uppercase tracking-widest hover:bg-action transition-all shadow-md active:scale-95 disabled:opacity-30 flex items-center justify-center gap-1 px-1 overflow-hidden"
+              className="flex-1 h-10 sm:h-8 bg-slate-900 text-white rounded-lg text-[6.5px] sm:text-[7.5px] font-black uppercase tracking-widest hover:bg-action transition-all shadow-md active:scale-95 disabled:opacity-30 flex items-center justify-center gap-1 px-1 overflow-hidden"
             >
               <ShoppingBag className="w-3 h-3 shrink-0" />
               <span className="truncate">Add to Cart</span>
             </button>
-            <Link href={`/catalog/products/${product._id}`} className="size-8 border border-slate-100 rounded-lg hover:border-action transition-colors shrink-0 flex items-center justify-center bg-slate-50/50 hover:bg-white group/arrow">
-              <ArrowUpRight className="w-3.5 h-3.5 text-slate-300 group-hover/arrow:text-action transition-all" />
+            <Link href={`/catalog/products/${product._id}`} className="size-10 sm:size-8 border border-slate-100 rounded-lg hover:border-action transition-colors shrink-0 flex items-center justify-center bg-slate-50/50 hover:bg-white group/arrow">
+              <ArrowUpRight className="w-4 h-4 text-slate-300 group-hover/arrow:text-action transition-all" />
             </Link>
           </div>
         </div>
@@ -170,10 +172,11 @@ export default function ProductCard({ product, layout = 'vertical' }: ProductCar
 
       {/* 2. IMAGE CONTAINER */}
       <Link href={`/catalog/products/${product._id}`} className="block relative aspect-square overflow-hidden bg-slate-50/20 font-sans">
-        <img
+        <Image
           src={product.images?.[0]?.imageUrl || "https://images.unsplash.com/photo-1523275335684-37898b6baf30?q=80&w=1000"}
-          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000 ease-out"
+          className="object-cover group-hover:scale-110 transition-transform duration-1000 ease-out"
           alt={product.name}
+          fill
         />
 
         {/* Discount Badge - Triangular Corner */}
