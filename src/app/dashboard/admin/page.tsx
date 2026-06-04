@@ -236,7 +236,7 @@ export default function AdminDashboard() {
                  radius={[12, 12, 4, 4]} 
                  barSize={32}
                >
-                 {chartData.map((entry, index) => (
+                 {chartData.map((entry: any, index: number) => (
                     <Cell 
                       key={`cell-${index}`} 
                       fill={entry.sales > 0 ? 'url(#salesGradient)' : '#f1f5f9'} 

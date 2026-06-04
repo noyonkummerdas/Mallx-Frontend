@@ -1,10 +1,10 @@
 "use client";
 
 import { useVerifyOtpMutation } from "@/modules/identity/services/authApi";
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 
-export default function VerifyOtpPage() {
+function VerifyOtpContent() {
   const [otp, setOtp] = useState("");
   const [verifyOtp, { isLoading, error }] = useVerifyOtpMutation();
   const router = useRouter();
@@ -79,5 +79,17 @@ export default function VerifyOtpPage() {
         </div>
       </div>
     </main>
+  );
+}
+
+export default function VerifyOtpPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-slate-50 flex items-center justify-center">
+        <p className="text-slate-500 font-medium animate-pulse">Loading verification...</p>
+      </div>
+    }>
+      <VerifyOtpContent />
+    </Suspense>
   );
 }

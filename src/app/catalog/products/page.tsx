@@ -3,14 +3,14 @@
 import { useGetProductsQuery, useGetCategoriesQuery } from "@/modules/shopping/services/productApi";
 import ProductCard from "@/modules/catalog/components/ProductCard";
 import Link from "next/link";
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import {
    Filter, X, ChevronRight, LayoutGrid, Search, SlidersHorizontal,
    Shirt, Watch, Briefcase, Zap, Star, Package, Diamond
 } from "lucide-react";
 
-export default function ProductListingPage() {
+function ProductListingContent() {
    const searchParams = useSearchParams();
    const categoryIdFromUrl = searchParams.get("categoryId");
    const typeFromUrl = searchParams.get("type");
@@ -306,7 +306,7 @@ export default function ProductListingPage() {
                            onClick={() => { setSelectedCategory(""); setSearch(""); }}
                            className="px-12 py-5 bg-slate-950 text-white rounded-2xl text-[10px] font-black uppercase tracking-[0.3em] hover:bg-indigo-600 transition-all active:scale-95 shadow-2xl shadow-slate-900/20"
                         >
-                           Reset Navigation
+                           Reset 
                         </button>
                      </div>
                   )}
@@ -314,5 +314,17 @@ export default function ProductListingPage() {
             </div>
          </div>
       </main>
+   );
+}
+
+export default function ProductListingPage() {
+   return (
+      <Suspense fallback={
+         <div className="min-h-screen bg-slate-50 flex items-center justify-center">
+            <p className="text-slate-500 font-medium animate-pulse">Loading catalog...</p>
+         </div>
+      }>
+         <ProductListingContent />
+      </Suspense>
    );
 }

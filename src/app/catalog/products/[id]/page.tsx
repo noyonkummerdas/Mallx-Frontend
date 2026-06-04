@@ -3,7 +3,8 @@ import ProductDetailClient from './ProductDetailClient';
 
 export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
   const { id } = await params;
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api/v1'}/products/${id}`);
+  const baseUrl = (process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000').replace(/\/$/, '');
+  const res = await fetch(`${baseUrl}/api/v1/products/${id}`);
   const data = await res.json();
   const product = data?.data?.product;
   
