@@ -7,7 +7,7 @@ export default function VendorMarketingPage() {
     <div className="max-w-7xl mx-auto py-8">
       <header className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-10">
         <div>
-          <h1 className="text-base font-bold text-slate-900 uppercase tracking-tighter">Growth & Promotions</h1>
+          <h1 className="text-base font-bold text-slate-900 uppercase tracking-tighter">   Promotions</h1>
           <p className="text-sm text-slate-500 uppercase tracking-widest mt-1">Boost your shop visibility and sales</p>
         </div>
         <button className="flex items-center gap-2 bg-slate-900 text-white px-6 py-3 rounded-xl text-sm uppercase tracking-widest font-bold hover:bg-black transition-all shadow-lg active:scale-95">
